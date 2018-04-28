@@ -1,0 +1,686 @@
+package ru.freee.f12018;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
+import android.os.Build;
+import android.os.CountDownTimer;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Arrays;
+
+public class RaceActivity extends AppCompatActivity {
+
+    String trackName;
+    String[] names;
+    int timeOfLap;
+    int laps;
+    int thisLap = 0;
+    int crashID, crashValue;
+    int finishCount = 0;
+    DriverRace[] racers;
+    TextView[] racerNames, racerLaps, racerTotal, racerThis, racerLast, racerBest, racerPositions;
+    TextView lap, gap, top;
+    boolean showTotal = true, showLeader = false, showInterval = false, finish = false, endOfRace = false;
+    LinearLayout namesLayout, lapsLayout, posLayout, gapsLayout, thisLayout, lastLayout, bestLayout;
+    int bestLap = 500000;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_race_activivty);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        String type = getIntent().getStringExtra("Type");
+
+        gap = findViewById(R.id.gap);
+
+        gapsLayout = findViewById(R.id.gaps);
+
+        gapsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeView();
+            }
+        });
+
+        top = findViewById(R.id.top);
+        top.setText("");
+
+        trackName = getIntent().getStringExtra("Track");
+        timeOfLap = getIntent().getIntExtra("Time", timeOfLap);
+        laps = getIntent().getIntExtra("Laps", 0);
+        setTitle("Race in " + trackName);
+
+        TabHost tabs = findViewById(R.id.tabHost);
+        tabs.setup();
+
+        TabHost.TabSpec tabSpec = tabs.newTabSpec("tag1");
+
+        tabSpec.setContent(R.id.tab1);
+        tabSpec.setIndicator("Race");
+        tabs.addTab(tabSpec);
+
+        tabSpec = tabs.newTabSpec("tag2");
+        tabSpec.setContent(R.id.tab2);
+        tabSpec.setIndicator("");
+        tabs.addTab(tabSpec);
+
+        if (type.equals("Race")){
+            names = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
+                                "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
+                                "Gasly", "Hartley", "Grosjean", "Magnussen",
+                                "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
+            createDrivers();
+        }
+        if (type.equals("Weekend")) {
+            names = getNamesFromIntent();
+            createDrivers();
+        }
+
+        initializeTextViews();
+
+        update();
+
+        lap = findViewById(R.id.lap);
+        lap.setText(thisLap + "/" + laps);
+
+        if (laps >= 20) {
+            for (int i = 0; i < 20; i++) {
+                racers[i].pitLap = (int) (Math.random() * (laps / 2) + (laps / 2) - 2);
+            }
+        }
+
+        crashValue = getIntent().getIntExtra("Crash", 50000);
+        Log.i("Crash freq", String.valueOf(crashValue));
+        crashID = (int) (Math.random() * crashValue + 1);
+        Log.i("Crash", "Crash ID in this race: " + crashID);
+
+        new CountDownTimer(6000, 1000) {
+
+            @Override
+            public void onTick(long l) {
+                lap.setText("Race will start in " + l / 1000 + " seconds");
+            }
+
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void onFinish() {
+                thisLap = 1;
+                top.setText("Laps:");
+                top.setBackgroundColor(getColor(R.color.colorGreen));
+                lap.setText(thisLap + "/" + laps);
+                lap.setBackgroundColor(getColor(R.color.colorGreen));
+                for (int i = 0; i < 20; i++) {
+                    racers[i].allPositions[0] = i + 1;
+                    Log.i(racers[i].shortName, Arrays.toString(racers[i].allPositions));
+                    startRace(racers[i]);
+                }
+                cancel();
+            }
+        }.start();
+    }
+
+    private String[] getNamesFromIntent() {
+        String[] result = new String[20];
+        String top = "top";
+        for(int i = 0; i < 20; i++){
+            result[i] = getIntent().getStringExtra(top + (i+1));
+        }
+        return result;
+    }
+
+    private void exit() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(RaceActivity.this);
+        builder.setTitle("Confirm quit");  // заголовок
+        builder.setMessage("Do you really want to quit?"); // сообщение
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.setCancelable(true);
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void startRace(final DriverRace racer) {
+        int position = -1;
+        for (int i = 0; i < 20; i++) {
+            if (racer.equals(racers[i]))
+                position = i;
+        }
+        racer.laps = 1;
+        racer.futureLap = (int) (Math.random() * (racer.rightTime - racer.leftTime) +
+                racer.leftTime + 10000 + position * 350);
+        new CountDownTimer(racer.futureLap, 25) {
+
+            @Override
+            public void onTick(long l) {
+                racer.lapTime = (int) (racer.futureLap - l);
+                update();
+            }
+
+            @Override
+            public void onFinish() {
+                racer.totalTime += racer.futureLap;
+                racer.lastTime = racer.futureLap;
+                if (racer.lastTime < racer.bestTime) {
+                    racer.bestTime = racer.lastTime;
+                    if (racer.bestTime < bestLap)
+                        bestLap = racer.bestTime;
+                }
+                racer.lapTime = 0;
+                racer.laps++;
+                Arrays.sort(racers);
+                int position = -1;
+                for (int i = 0; i < 20; i++) {
+                    racers[i].allPositions[1] = i + 1;
+                    if (racer.equals(racers[i]))
+                        position = i;
+                }
+                Log.i(racer.shortName, Arrays.toString(racer.allPositions));
+                if (position == 0) {
+                    thisLap = racer.laps;
+                    lap.setText(thisLap + "/" + laps);
+                }
+                startLap(racer);
+                cancel();
+            }
+        }.start();
+    }
+
+    private void startLap(final DriverRace racer) {
+        racer.timeOnPit = 0;
+        int pitChance = (int) (Math.random() * 50 + 1);
+        if (racer.laps == racer.lapTime || pitChance == 15 && racer.laps <= laps - 3)
+            racer.timeOnPit = (int) (Math.random() * 5000 + 12000);
+        int drs = 0;
+        if(racers[0].laps >= 5){
+            for(int i = 0; i < 20; i++){
+                if(racers[i].equals(racer)){
+                    if(i == 0)
+                        break;
+                    if(racer.totalTime - racers[i-1].totalTime <= 1000)
+                        drs = (int) (Math.random()*1300 + 200);
+                }
+            }
+            Log.i("DRS for " + racer.name, Integer.toString(drs));
+        }
+        racer.futureLap = (int) (Math.random() * (racer.rightTime - racer.leftTime) +
+                racer.leftTime + racer.timeOnPit - drs);
+        new CountDownTimer(racer.futureLap, 25) {
+            int crash = 0;
+
+            @Override
+            public void onTick(long l) {
+                crash = (int) (Math.random() * crashValue + 1);
+                if (crash == crashID && !racer.crashed) {
+                    racer.crashed = true;
+                    racer.finished = true;
+                    finishCount++;
+                    Log.i("Crash", racer.name + " crashed!");
+                    Log.i("Crash", "Count: " + finishCount);
+                    Arrays.sort(racers);
+                    if (finishCount == 20)
+                        finishRace();
+                    cancel();
+                } else {
+                    racer.lapTime = (int) (racer.futureLap - l);
+                }
+                update();
+            }
+
+            @Override
+            public void onFinish() {
+                if (!racer.crashed) {
+                    racer.totalTime += racer.futureLap;
+                    racer.lastTime = racer.futureLap;
+                    if (racer.lastTime < racer.bestTime) {
+                        racer.bestTime = racer.lastTime;
+                        if (racer.bestTime < bestLap)
+                            bestLap = racer.bestTime;
+                    }
+                    racer.lapTime = 0;
+                    racer.laps++;
+                    Arrays.sort(racers);
+                    int position = -1;
+                    for (int i = 0; i < 20; i++) {
+                        if (racers[i].laps == racers[0].laps)
+                            racers[i].allPositions[racers[i].laps - 1] = i + 1;
+                        if (racer.equals(racers[i]))
+                            position = i;
+                    }
+                    racer.allPositions[racer.laps - 1] = position + 1;
+                    Log.i(racer.shortName, Arrays.toString(racer.allPositions));
+                    if (position == 0) {
+                        thisLap = racer.laps;
+                        lap.setText(thisLap + "/" + laps);
+                    }
+                }
+                if (racer.laps <= laps && !finish)
+                    startLap(racer);
+                else {
+                    finish = true;
+                    racer.finished = true;
+                    finishCount++;
+                    Log.i("Finished: ", racer.name);
+                    finishRace();
+                }
+                cancel();
+            }
+        }.start();
+    }
+
+    @SuppressLint("SetTextI18n")
+    @TargetApi(Build.VERSION_CODES.M)
+    private void finishRace() {
+        System.gc();
+        top.setText("");
+        top.setBackgroundColor(getColor(R.color.colorWhite));
+        lap.setText("FINISH");
+        lap.setBackgroundColor(getColor(R.color.colorWhite));
+        for (int i = 0; i < 20; i++) {
+            if (racers[i].finished || racers[i].crashed) {
+                racerLaps[i].setText("");
+                if (showTotal && !racers[i].crashed) {
+                    racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
+                } else if (showLeader && !racers[i].crashed) {
+                    if (i == 0)
+                        racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
+                    else
+                        racerTotal[i].setText("+" + DriverRace.generateTime(racers[i].totalTime -
+                                racers[0].totalTime));
+                } else if (showInterval && !racers[i].crashed) {
+                    if (i == 0)
+                        racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
+                    else
+                        racerTotal[i].setText("+" + DriverRace.generateTime(racers[i].totalTime -
+                                racers[i - 1].totalTime));
+                }
+                racerThis[i].setText("");
+                racerLast[i].setText(DriverRace.generateTime(racers[i].lastTime));
+                racerBest[i].setText(DriverRace.generateTime(racers[i].bestTime));
+            }
+        }
+        if (finishCount == 20) {
+            //finish
+            endOfRace = true;
+            Toast.makeText(getApplicationContext(), "FINISH", Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < 20; i++)
+                racerTotal[i].setTextColor(getColor(R.color.colorWhite));
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @SuppressLint("SetTextI18n")
+    private void update() {
+        for (int i = 0; i < 20; i++) {
+            racerNames[i].setText("        " + racers[i].shortName);
+            setTeamImage(racers[i].name, i);
+            if (racers[i].laps == 0) {
+                racerLaps[i].setText("");
+                racerTotal[i].setText("");
+                racerThis[i].setText("");
+                racerLast[i].setText("");
+                racerBest[i].setText("");
+                continue;
+            }
+            if (racers[i].laps == 1) {
+                racerLaps[i].setText(String.valueOf(racers[i].laps));
+                racerTotal[i].setText("");
+                racerThis[i].setText(DriverRace.generateTime(racers[i].lapTime));
+                racerLast[i].setText("");
+                racerBest[i].setText("");
+                continue;
+            }
+            if (racers[i].finished && !racers[i].crashed) {
+                racerTotal[i].setTextColor(getColor(R.color.colorWhite));
+                racerLaps[i].setText("");
+                if (showTotal) {
+                    racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
+                } else if (showLeader) {
+                    if (i == 0)
+                        racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
+                    else
+                        racerTotal[i].setText("+" + DriverRace.generateTime(racers[i].totalTime -
+                                racers[0].totalTime));
+                } else if (showInterval) {
+                    if (i == 0)
+                        racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
+                    else
+                        racerTotal[i].setText("+" + DriverRace.generateTime(racers[i].totalTime -
+                                racers[i - 1].totalTime));
+                }
+                racerThis[i].setText("");
+                racerLast[i].setText(DriverRace.generateTime(racers[i].lastTime));
+                racerBest[i].setText(DriverRace.generateTime(racers[i].bestTime));
+                continue;
+            }
+            if (racers[i].crashed) {
+                racerLaps[i].setText(String.valueOf(racers[i].laps));
+                racerTotal[i].setText("");
+                racerPositions[i].setTextColor(getColor(R.color.colorWhite));
+                racerPositions[i].setText("-");
+                racerThis[i].setText("OUT");
+                racerLast[i].setText(DriverRace.generateTime(racers[i].lastTime));
+                racerBest[i].setText(DriverRace.generateTime(racers[i].bestTime));
+                continue;
+            }
+            racerLaps[i].setText(String.valueOf(racers[i].laps));
+            if (racers[i].laps == racers[0].laps) {
+                racerTotal[i].setTextColor(getColor(R.color.colorWhite));
+                if (showTotal) {
+                    racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
+                } else if (showLeader) {
+                    if (i == 0)
+                        racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
+                    else
+                        racerTotal[i].setText("+" + DriverRace.generateTime(racers[i].totalTime -
+                                racers[0].totalTime));
+                } else if (showInterval) {
+                    if (i == 0)
+                        racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
+                    else
+                        racerTotal[i].setText("+" + DriverRace.generateTime(racers[i].totalTime -
+                                racers[i - 1].totalTime));
+                }
+                if(i != 0 && racers[i].totalTime - racers[i-1].totalTime <= 1000 && racers[i].laps >= 5)
+                    racerTotal[i].setTextColor(getColor(R.color.colorGreen));
+                else
+                    racerTotal[i].setTextColor(getColor(R.color.colorWhite));
+            } else
+                racerTotal[i].setText("");
+            {
+                int pos = racers[i].allPositions[racers[i].laps - 1];
+                int last = racers[i].allPositions[racers[i].laps - 2];
+                int dif = last - pos;
+                if (dif == 0) {
+                    racerPositions[i].setTextColor(getColor(R.color.colorWhite));
+                    racerPositions[i].setText("-");
+                } else if (dif > 0) {
+                    racerPositions[i].setTextColor(getColor(R.color.colorGreen));
+                    racerPositions[i].setText("+" + dif);
+                } else {
+                    racerPositions[i].setTextColor(getColor(R.color.colorRed));
+                    racerPositions[i].setText("-" + Math.abs(dif));
+                }
+            }
+            if (racers[i].timeOnPit == 0)
+                racerThis[i].setText(DriverRace.generateTime(racers[i].lapTime));
+            else {
+                if (racers[i].lapTime < racers[i].futureLap - racers[i].timeOnPit)
+                    racerThis[i].setText(DriverRace.generateTime(racers[i].lapTime));
+                else
+                    racerThis[i].setText("PIT");
+            }
+            racerLast[i].setText(DriverRace.generateTime(racers[i].lastTime));
+            racerBest[i].setText(DriverRace.generateTime(racers[i].bestTime));
+        }
+        //best lap
+        for (int i = 0; i < 20; i++) {
+            if (racers[i].bestTime == bestLap) {
+                racerBest[i].setTextColor(getColor(R.color.colorPurple));
+                if (racers[i].lastTime == bestLap) {
+                    racerLast[i].setTextColor(getColor(R.color.colorPurple));
+                } else {
+                    racerLast[i].setTextColor(getColor(R.color.colorWhite));
+                }
+            } else {
+                racerBest[i].setTextColor(getColor(R.color.colorWhite));
+                racerLast[i].setTextColor(getColor(R.color.colorWhite));
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setTeamImage(String name, int index) {
+        switch (name) {
+            case "Hamilton":
+            case "Bottas":
+                racerNames[index].setBackground(getDrawable(R.drawable.mercedes2));
+                break;
+            case "Vettel":
+            case "Raikkonen":
+                racerNames[index].setBackground(getDrawable(R.drawable.ferrari2));
+                break;
+            case "Ricciardo":
+            case "Verstappen":
+                racerNames[index].setBackground(getDrawable(R.drawable.redbull2));
+                break;
+            case "Perez":
+            case "Ocon":
+                racerNames[index].setBackground(getDrawable(R.drawable.forceindia2));
+                break;
+            case "Stroll":
+            case "Sirotkin":
+                racerNames[index].setBackground(getDrawable(R.drawable.williams2));
+                break;
+            case "Hulkenberg":
+            case "Sainz":
+                racerNames[index].setBackground(getDrawable(R.drawable.renault2));
+                break;
+            case "Gasly":
+            case "Hartley":
+                racerNames[index].setBackground(getDrawable(R.drawable.tororosso2));
+                break;
+            case "Grosjean":
+            case "Magnussen":
+                racerNames[index].setBackground(getDrawable(R.drawable.haas2));
+                break;
+            case "Alonso":
+            case "Vandoorne":
+                racerNames[index].setBackground(getDrawable(R.drawable.mclaren2));
+                break;
+            case "Ericsson":
+            case "Leclerc":
+                racerNames[index].setBackground(getDrawable(R.drawable.sauber2));
+                break;
+        }
+    }
+
+    private void changeView() {
+        if (showTotal) {
+            gap.setText("Leader");
+            showTotal = false;
+            showLeader = true;
+            showInterval = false;
+            update();
+            return;
+        }
+        if (showLeader) {
+            gap.setText("Interval");
+            showTotal = false;
+            showLeader = false;
+            showInterval = true;
+            update();
+            return;
+        }
+        if (showInterval) {
+            gap.setText("Total");
+            showTotal = true;
+            showLeader = false;
+            showInterval = false;
+            update();
+        }
+    }
+
+    private void createDrivers() {
+        racers = new DriverRace[20];
+        for(int i = 0; i < 20; i++){
+            racers[i] = new DriverRace(names[i], timeOfLap);
+            racers[i].allPositions = new int[laps + 2];
+        }
+    }
+
+    private void initializeTextViews() {
+        racerNames = new TextView[20];
+        racerNames[0] = findViewById(R.id.name1);
+        racerNames[1] = findViewById(R.id.name2);
+        racerNames[2] = findViewById(R.id.name3);
+        racerNames[3] = findViewById(R.id.name4);
+        racerNames[4] = findViewById(R.id.name5);
+        racerNames[5] = findViewById(R.id.name6);
+        racerNames[6] = findViewById(R.id.name7);
+        racerNames[7] = findViewById(R.id.name8);
+        racerNames[8] = findViewById(R.id.name9);
+        racerNames[9] = findViewById(R.id.name10);
+        racerNames[10] = findViewById(R.id.name11);
+        racerNames[11] = findViewById(R.id.name12);
+        racerNames[12] = findViewById(R.id.name13);
+        racerNames[13] = findViewById(R.id.name14);
+        racerNames[14] = findViewById(R.id.name15);
+        racerNames[15] = findViewById(R.id.name16);
+        racerNames[16] = findViewById(R.id.name17);
+        racerNames[17] = findViewById(R.id.name18);
+        racerNames[18] = findViewById(R.id.name19);
+        racerNames[19] = findViewById(R.id.name20);
+        racerLaps = new TextView[20];
+        racerLaps[0] = findViewById(R.id.lap1);
+        racerLaps[1] = findViewById(R.id.lap2);
+        racerLaps[2] = findViewById(R.id.lap3);
+        racerLaps[3] = findViewById(R.id.lap4);
+        racerLaps[4] = findViewById(R.id.lap5);
+        racerLaps[5] = findViewById(R.id.lap6);
+        racerLaps[6] = findViewById(R.id.lap7);
+        racerLaps[7] = findViewById(R.id.lap8);
+        racerLaps[8] = findViewById(R.id.lap9);
+        racerLaps[9] = findViewById(R.id.lap10);
+        racerLaps[10] = findViewById(R.id.lap11);
+        racerLaps[11] = findViewById(R.id.lap12);
+        racerLaps[12] = findViewById(R.id.lap13);
+        racerLaps[13] = findViewById(R.id.lap14);
+        racerLaps[14] = findViewById(R.id.lap15);
+        racerLaps[15] = findViewById(R.id.lap16);
+        racerLaps[16] = findViewById(R.id.lap17);
+        racerLaps[17] = findViewById(R.id.lap18);
+        racerLaps[18] = findViewById(R.id.lap19);
+        racerLaps[19] = findViewById(R.id.lap20);
+        racerTotal = new TextView[20];
+        racerTotal[0] = findViewById(R.id.total1);
+        racerTotal[1] = findViewById(R.id.total2);
+        racerTotal[2] = findViewById(R.id.total3);
+        racerTotal[3] = findViewById(R.id.total4);
+        racerTotal[4] = findViewById(R.id.total5);
+        racerTotal[5] = findViewById(R.id.total6);
+        racerTotal[6] = findViewById(R.id.total7);
+        racerTotal[7] = findViewById(R.id.total8);
+        racerTotal[8] = findViewById(R.id.total9);
+        racerTotal[9] = findViewById(R.id.total10);
+        racerTotal[10] = findViewById(R.id.total11);
+        racerTotal[11] = findViewById(R.id.total12);
+        racerTotal[12] = findViewById(R.id.total13);
+        racerTotal[13] = findViewById(R.id.total14);
+        racerTotal[14] = findViewById(R.id.total15);
+        racerTotal[15] = findViewById(R.id.total16);
+        racerTotal[16] = findViewById(R.id.total17);
+        racerTotal[17] = findViewById(R.id.total18);
+        racerTotal[18] = findViewById(R.id.total19);
+        racerTotal[19] = findViewById(R.id.total20);
+        racerThis = new TextView[20];
+        racerThis[0] = findViewById(R.id.this1);
+        racerThis[1] = findViewById(R.id.this2);
+        racerThis[2] = findViewById(R.id.this3);
+        racerThis[3] = findViewById(R.id.this4);
+        racerThis[4] = findViewById(R.id.this5);
+        racerThis[5] = findViewById(R.id.this6);
+        racerThis[6] = findViewById(R.id.this7);
+        racerThis[7] = findViewById(R.id.this8);
+        racerThis[8] = findViewById(R.id.this9);
+        racerThis[9] = findViewById(R.id.this10);
+        racerThis[10] = findViewById(R.id.this11);
+        racerThis[11] = findViewById(R.id.this12);
+        racerThis[12] = findViewById(R.id.this13);
+        racerThis[13] = findViewById(R.id.this14);
+        racerThis[14] = findViewById(R.id.this15);
+        racerThis[15] = findViewById(R.id.this16);
+        racerThis[16] = findViewById(R.id.this17);
+        racerThis[17] = findViewById(R.id.this18);
+        racerThis[18] = findViewById(R.id.this19);
+        racerThis[19] = findViewById(R.id.this20);
+        racerLast = new TextView[20];
+        racerLast[0] = findViewById(R.id.last1);
+        racerLast[1] = findViewById(R.id.last2);
+        racerLast[2] = findViewById(R.id.last3);
+        racerLast[3] = findViewById(R.id.last4);
+        racerLast[4] = findViewById(R.id.last5);
+        racerLast[5] = findViewById(R.id.last6);
+        racerLast[6] = findViewById(R.id.last7);
+        racerLast[7] = findViewById(R.id.last8);
+        racerLast[8] = findViewById(R.id.last9);
+        racerLast[9] = findViewById(R.id.last10);
+        racerLast[10] = findViewById(R.id.last11);
+        racerLast[11] = findViewById(R.id.last12);
+        racerLast[12] = findViewById(R.id.last13);
+        racerLast[13] = findViewById(R.id.last14);
+        racerLast[14] = findViewById(R.id.last15);
+        racerLast[15] = findViewById(R.id.last16);
+        racerLast[16] = findViewById(R.id.last17);
+        racerLast[17] = findViewById(R.id.last18);
+        racerLast[18] = findViewById(R.id.last19);
+        racerLast[19] = findViewById(R.id.last20);
+        racerBest = new TextView[20];
+        racerBest[0] = findViewById(R.id.best1);
+        racerBest[1] = findViewById(R.id.best2);
+        racerBest[2] = findViewById(R.id.best3);
+        racerBest[3] = findViewById(R.id.best4);
+        racerBest[4] = findViewById(R.id.best5);
+        racerBest[5] = findViewById(R.id.best6);
+        racerBest[6] = findViewById(R.id.best7);
+        racerBest[7] = findViewById(R.id.best8);
+        racerBest[8] = findViewById(R.id.best9);
+        racerBest[9] = findViewById(R.id.best10);
+        racerBest[10] = findViewById(R.id.best11);
+        racerBest[11] = findViewById(R.id.best12);
+        racerBest[12] = findViewById(R.id.best13);
+        racerBest[13] = findViewById(R.id.best14);
+        racerBest[14] = findViewById(R.id.best15);
+        racerBest[15] = findViewById(R.id.best16);
+        racerBest[16] = findViewById(R.id.best17);
+        racerBest[17] = findViewById(R.id.best18);
+        racerBest[18] = findViewById(R.id.best19);
+        racerBest[19] = findViewById(R.id.best20);
+        racerPositions = new TextView[20];
+        racerPositions[0] = findViewById(R.id.pos1);
+        racerPositions[1] = findViewById(R.id.pos2);
+        racerPositions[2] = findViewById(R.id.pos3);
+        racerPositions[3] = findViewById(R.id.pos4);
+        racerPositions[4] = findViewById(R.id.pos5);
+        racerPositions[5] = findViewById(R.id.pos6);
+        racerPositions[6] = findViewById(R.id.pos7);
+        racerPositions[7] = findViewById(R.id.pos8);
+        racerPositions[8] = findViewById(R.id.pos9);
+        racerPositions[9] = findViewById(R.id.pos10);
+        racerPositions[10] = findViewById(R.id.pos11);
+        racerPositions[11] = findViewById(R.id.pos12);
+        racerPositions[12] = findViewById(R.id.pos13);
+        racerPositions[13] = findViewById(R.id.pos14);
+        racerPositions[14] = findViewById(R.id.pos15);
+        racerPositions[15] = findViewById(R.id.pos16);
+        racerPositions[16] = findViewById(R.id.pos17);
+        racerPositions[17] = findViewById(R.id.pos18);
+        racerPositions[18] = findViewById(R.id.pos19);
+        racerPositions[19] = findViewById(R.id.pos20);
+    }
+}
