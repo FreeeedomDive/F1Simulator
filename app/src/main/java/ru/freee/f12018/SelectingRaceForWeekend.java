@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.QuickContactBadge;
+import android.widget.RadioButton;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +68,10 @@ public class SelectingRaceForWeekend extends AppCompatActivity {
             }
         });
 
+        final RadioButton oneRound = findViewById(R.id.oneRound);
+        final RadioButton threeRounds = findViewById(R.id.threeRounds);
+        threeRounds.setChecked(true);
+
         Button start = findViewById(R.id.start);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +83,10 @@ public class SelectingRaceForWeekend extends AppCompatActivity {
                     i.putExtra("Sector 2", selectedTrack.sec2);
                     i.putExtra("Sector 3", selectedTrack.sec3);
                     i.putExtra("Time", selectedTrack.time);
+                    if(oneRound.isChecked())
+                        i.putExtra("Segments", "One");
+                    else
+                        i.putExtra("Segments", "Three");
                     startActivity(i);
                 }
             }

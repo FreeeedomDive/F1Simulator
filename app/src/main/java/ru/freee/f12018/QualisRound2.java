@@ -19,8 +19,9 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class QualisRound1 extends AppCompatActivity {
+public class QualisRound2 extends AppCompatActivity {
 
+    String names[];
     String trackName;
     int sec1, sec2, sec3, trackTime;
     int bestSec1 = 500000, bestSec2 = 500000, bestSec3 = 500000;
@@ -36,25 +37,34 @@ public class QualisRound1 extends AppCompatActivity {
     RaceThread secondThread;
     GraphicsTask graphicsTask;
     Timer timer;
-    String rounds;
+    int timeOfLap, laps, crashValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qualis_round1);
+        setContentView(R.layout.activity_qualis_round2);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         table = findViewById(R.id.table);
-        trackName = getIntent().getStringExtra("Name");
+        String type = getIntent().getStringExtra("Type");
+        timeOfLap = getIntent().getIntExtra("Time", timeOfLap);
+        laps = getIntent().getIntExtra("Laps", 0);
+        trackName = getIntent().getStringExtra("Track");
         sec1 = getIntent().getIntExtra("Sector 1", 0);
         sec2 = getIntent().getIntExtra("Sector 2", 0);
         sec3 = getIntent().getIntExtra("Sector 3", 0);
         Log.i("Sectors on this track", sec1 + " " + sec2 + " " + sec3);
         trackTime = getIntent().getIntExtra("Time", 0);
-        rounds = getIntent().getStringExtra("Segments");
+        crashValue = getIntent().getIntExtra("Crash", 50000);
+
+        names = new String[20];
+        for(int i = 0; i < 20; i++)
+            names[i] = getIntent().getStringExtra("top" + (i+1));
+        racers = new DriverQualis[15];
+        for(int i = 0; i < 15; i++){
+            racers[i] = new DriverQualis(names[i], sec1, sec2, sec3);
+        }
         initializeTextViews();
-        createDrivers();
-        setTitle("Qualification Round 1 - " + trackName);
-        update();
+        setTitle("Qualification Round 2 - " + trackName);
         secondThread = new RaceThread();
         graphicsTask = new GraphicsTask();
         timer = new Timer();
@@ -78,8 +88,8 @@ public class QualisRound1 extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void endRound() {
-        Toast.makeText(getApplicationContext(), "End of round 1", Toast.LENGTH_SHORT).show();
-        table.setBackground(getDrawable(R.drawable.tablequals1finish));
+        Toast.makeText(getApplicationContext(), "End of round 2", Toast.LENGTH_SHORT).show();
+        table.setBackground(getDrawable(R.drawable.tablequals2finish));
         new CountDownTimer(5000, 1000) {
 
             @Override
@@ -89,10 +99,7 @@ public class QualisRound1 extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if(rounds.equals("One"))
-                    moveToRace();
-                else
-                    moveToNextRound();
+                moveToNextRound();
                 timer.cancel();
                 cancel();
             }
@@ -100,25 +107,14 @@ public class QualisRound1 extends AppCompatActivity {
     }
 
     private void moveToNextRound() {
-        Intent intent = new Intent(QualisRound1.this, QualisRound2.class);
-        for (int i = 0; i < 20; i++)
+        Intent intent = new Intent(QualisRound2.this, QualisRound3.class);
+        for (int i = 0; i < 15; i++)
             intent.putExtra("top" + (i + 1), racers[i].name);
+        for (int i = 15; i < 20; i++)
+            intent.putExtra("top" + (i + 1), names[i]);
         intent.putExtra("Sector 1", sec1);
         intent.putExtra("Sector 2", sec2);
         intent.putExtra("Sector 3", sec3);
-        intent.putExtra("Type", "Weekend");
-        intent.putExtra("Track", trackName);
-        intent.putExtra("Time", trackTime);
-        intent.putExtra("Laps", 1200000 / trackTime);
-        intent.putExtra("Crash", 100000);
-        startActivity(intent);
-    }
-
-    private void moveToRace() {
-        Intent intent = new Intent(QualisRound1.this, RaceActivity.class);
-        for (int i = 0; i < 20; i++) {
-            intent.putExtra("top" + (i + 1), racers[i].name);
-        }
         intent.putExtra("Type", "Weekend");
         intent.putExtra("Track", trackName);
         intent.putExtra("Time", trackTime);
@@ -139,9 +135,9 @@ public class QualisRound1 extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void update() {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 15; i++) {
             racerNames[i].setText("       " + racers[i].shortName);
             setTeamImage(racers[i].name, i);
 
@@ -243,8 +239,8 @@ public class QualisRound1 extends AppCompatActivity {
             } else
                 racerSec3[i].setText(" ");
             int goal = 0;
-            if (i > 14)
-                goal = 14;
+            if (i > 9)
+                goal = 9;
             if (racers[i].thisSec3 != 0 && racers[i].bestTime != 500000) {
                 int gap = racers[goal].bestSec3 - racers[i].thisSec3;
                 if (gap > 0)
@@ -273,7 +269,7 @@ public class QualisRound1 extends AppCompatActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setTeamImage(String name, int index) {
         switch (name) {
             case "Hamilton":
@@ -319,32 +315,8 @@ public class QualisRound1 extends AppCompatActivity {
         }
     }
 
-    private void createDrivers() {
-        racers = new DriverQualis[20];
-        racers[0] = new DriverQualis("Hamilton", sec1, sec2, sec3);
-        racers[1] = new DriverQualis("Bottas", sec1, sec2, sec3);
-        racers[2] = new DriverQualis("Vettel", sec1, sec2, sec3);
-        racers[3] = new DriverQualis("Raikkonen", sec1, sec2, sec3);
-        racers[4] = new DriverQualis("Ricciardo", sec1, sec2, sec3);
-        racers[5] = new DriverQualis("Verstappen", sec1, sec2, sec3);
-        racers[6] = new DriverQualis("Perez", sec1, sec2, sec3);
-        racers[7] = new DriverQualis("Ocon", sec1, sec2, sec3);
-        racers[8] = new DriverQualis("Stroll", sec1, sec2, sec3);
-        racers[9] = new DriverQualis("Sirotkin", sec1, sec2, sec3);
-        racers[10] = new DriverQualis("Hulkenberg", sec1, sec2, sec3);
-        racers[11] = new DriverQualis("Sainz", sec1, sec2, sec3);
-        racers[12] = new DriverQualis("Gasly", sec1, sec2, sec3);
-        racers[13] = new DriverQualis("Hartley", sec1, sec2, sec3);
-        racers[14] = new DriverQualis("Grosjean", sec1, sec2, sec3);
-        racers[15] = new DriverQualis("Magnussen", sec1, sec2, sec3);
-        racers[16] = new DriverQualis("Alonso", sec1, sec2, sec3);
-        racers[17] = new DriverQualis("Vandoorne", sec1, sec2, sec3);
-        racers[18] = new DriverQualis("Ericsson", sec1, sec2, sec3);
-        racers[19] = new DriverQualis("Leclerc", sec1, sec2, sec3);
-    }
-
     private void initializeTextViews() {
-        racerNames = new TextView[20];
+        racerNames = new TextView[15];
         racerNames[0] = findViewById(R.id.name1);
         racerNames[1] = findViewById(R.id.name2);
         racerNames[2] = findViewById(R.id.name3);
@@ -360,12 +332,7 @@ public class QualisRound1 extends AppCompatActivity {
         racerNames[12] = findViewById(R.id.name13);
         racerNames[13] = findViewById(R.id.name14);
         racerNames[14] = findViewById(R.id.name15);
-        racerNames[15] = findViewById(R.id.name16);
-        racerNames[16] = findViewById(R.id.name17);
-        racerNames[17] = findViewById(R.id.name18);
-        racerNames[18] = findViewById(R.id.name19);
-        racerNames[19] = findViewById(R.id.name20);
-        racerThis = new TextView[20];
+        racerThis = new TextView[15];
         racerThis[0] = findViewById(R.id.this1);
         racerThis[1] = findViewById(R.id.this2);
         racerThis[2] = findViewById(R.id.this3);
@@ -381,12 +348,7 @@ public class QualisRound1 extends AppCompatActivity {
         racerThis[12] = findViewById(R.id.this13);
         racerThis[13] = findViewById(R.id.this14);
         racerThis[14] = findViewById(R.id.this15);
-        racerThis[15] = findViewById(R.id.this16);
-        racerThis[16] = findViewById(R.id.this17);
-        racerThis[17] = findViewById(R.id.this18);
-        racerThis[18] = findViewById(R.id.this19);
-        racerThis[19] = findViewById(R.id.this20);
-        racerLast = new TextView[20];
+        racerLast = new TextView[15];
         racerLast[0] = findViewById(R.id.last1);
         racerLast[1] = findViewById(R.id.last2);
         racerLast[2] = findViewById(R.id.last3);
@@ -402,12 +364,7 @@ public class QualisRound1 extends AppCompatActivity {
         racerLast[12] = findViewById(R.id.last13);
         racerLast[13] = findViewById(R.id.last14);
         racerLast[14] = findViewById(R.id.last15);
-        racerLast[15] = findViewById(R.id.last16);
-        racerLast[16] = findViewById(R.id.last17);
-        racerLast[17] = findViewById(R.id.last18);
-        racerLast[18] = findViewById(R.id.last19);
-        racerLast[19] = findViewById(R.id.last20);
-        racerBest = new TextView[20];
+        racerBest = new TextView[15];
         racerBest[0] = findViewById(R.id.best1);
         racerBest[1] = findViewById(R.id.best2);
         racerBest[2] = findViewById(R.id.best3);
@@ -423,12 +380,7 @@ public class QualisRound1 extends AppCompatActivity {
         racerBest[12] = findViewById(R.id.best13);
         racerBest[13] = findViewById(R.id.best14);
         racerBest[14] = findViewById(R.id.best15);
-        racerBest[15] = findViewById(R.id.best16);
-        racerBest[16] = findViewById(R.id.best17);
-        racerBest[17] = findViewById(R.id.best18);
-        racerBest[18] = findViewById(R.id.best19);
-        racerBest[19] = findViewById(R.id.best20);
-        racerSec1 = new TextView[20];
+        racerSec1 = new TextView[15];
         racerSec1[0] = findViewById(R.id.sec11);
         racerSec1[1] = findViewById(R.id.sec12);
         racerSec1[2] = findViewById(R.id.sec13);
@@ -444,12 +396,7 @@ public class QualisRound1 extends AppCompatActivity {
         racerSec1[12] = findViewById(R.id.sec113);
         racerSec1[13] = findViewById(R.id.sec114);
         racerSec1[14] = findViewById(R.id.sec115);
-        racerSec1[15] = findViewById(R.id.sec116);
-        racerSec1[16] = findViewById(R.id.sec117);
-        racerSec1[17] = findViewById(R.id.sec118);
-        racerSec1[18] = findViewById(R.id.sec119);
-        racerSec1[19] = findViewById(R.id.sec120);
-        racerSec2 = new TextView[20];
+        racerSec2 = new TextView[15];
         racerSec2[0] = findViewById(R.id.sec21);
         racerSec2[1] = findViewById(R.id.sec22);
         racerSec2[2] = findViewById(R.id.sec23);
@@ -465,12 +412,7 @@ public class QualisRound1 extends AppCompatActivity {
         racerSec2[12] = findViewById(R.id.sec213);
         racerSec2[13] = findViewById(R.id.sec214);
         racerSec2[14] = findViewById(R.id.sec215);
-        racerSec2[15] = findViewById(R.id.sec216);
-        racerSec2[16] = findViewById(R.id.sec217);
-        racerSec2[17] = findViewById(R.id.sec218);
-        racerSec2[18] = findViewById(R.id.sec219);
-        racerSec2[19] = findViewById(R.id.sec220);
-        racerSec3 = new TextView[20];
+        racerSec3 = new TextView[15];
         racerSec3[0] = findViewById(R.id.sec31);
         racerSec3[1] = findViewById(R.id.sec32);
         racerSec3[2] = findViewById(R.id.sec33);
@@ -486,12 +428,7 @@ public class QualisRound1 extends AppCompatActivity {
         racerSec3[12] = findViewById(R.id.sec313);
         racerSec3[13] = findViewById(R.id.sec314);
         racerSec3[14] = findViewById(R.id.sec315);
-        racerSec3[15] = findViewById(R.id.sec316);
-        racerSec3[16] = findViewById(R.id.sec317);
-        racerSec3[17] = findViewById(R.id.sec318);
-        racerSec3[18] = findViewById(R.id.sec319);
-        racerSec3[19] = findViewById(R.id.sec320);
-        racerGaps = new TextView[20];
+        racerGaps = new TextView[15];
         racerGaps[0] = findViewById(R.id.gap1);
         racerGaps[1] = findViewById(R.id.gap2);
         racerGaps[2] = findViewById(R.id.gap3);
@@ -507,11 +444,6 @@ public class QualisRound1 extends AppCompatActivity {
         racerGaps[12] = findViewById(R.id.gap13);
         racerGaps[13] = findViewById(R.id.gap14);
         racerGaps[14] = findViewById(R.id.gap15);
-        racerGaps[15] = findViewById(R.id.gap16);
-        racerGaps[16] = findViewById(R.id.gap17);
-        racerGaps[17] = findViewById(R.id.gap18);
-        racerGaps[18] = findViewById(R.id.gap19);
-        racerGaps[19] = findViewById(R.id.gap20);
     }
 
     private class GraphicsTask extends TimerTask {
@@ -519,6 +451,7 @@ public class QualisRound1 extends AppCompatActivity {
         @Override
         public void run() {
             runOnUiThread(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void run() {
                     update();
@@ -559,8 +492,6 @@ public class QualisRound1 extends AppCompatActivity {
                 public void onFinish() {
                     finished = true;
                     runOnUiThread(new Runnable() {
-                        @TargetApi(Build.VERSION_CODES.M)
-                        @RequiresApi(api = Build.VERSION_CODES.M)
                         @Override
                         public void run() {
                             information.setBackgroundColor(getColor(R.color.colorWhite));
@@ -570,7 +501,7 @@ public class QualisRound1 extends AppCompatActivity {
                     });
                 }
             }.start();
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 15; i++) {
                 final int index = i;
                 int startTime = (int) (Math.random() * 60000 + 1);
                 new CountDownTimer(startTime, 1000) {
@@ -670,7 +601,7 @@ public class QualisRound1 extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            for (int i = 0; i < 20; i++) {
+                            for (int i = 0; i < 15; i++) {
                                 racerBest[i].setTextColor(getColor(R.color.colorWhite));
                                 racerLast[i].setTextColor(getColor(R.color.colorWhite));
                                 if (racer.equals(racers[i])) {
@@ -694,7 +625,7 @@ public class QualisRound1 extends AppCompatActivity {
                     else {
                         racer.finished = true;
                         finishedNumber++;
-                        if (finishedNumber == 20) {
+                        if (finishedNumber == 15) {
                             ended = true;
                             endRound();
                         }

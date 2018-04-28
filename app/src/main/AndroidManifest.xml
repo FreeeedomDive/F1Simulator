@@ -19,7 +19,9 @@
         <activity android:name=".SelectingRace" />
         <activity android:name=".RaceActivity" />
         <activity android:name=".SelectingRaceForWeekend" />
-        <activity android:name=".QualisRound1"></activity>
+        <activity android:name=".QualisRound1" />
+        <activity android:name=".QualisRound2" />
+        <activity android:name=".QualisRound3"></activity>
     </application>
 
 </manifest>
