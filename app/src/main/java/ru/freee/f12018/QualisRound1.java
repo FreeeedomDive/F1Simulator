@@ -53,7 +53,7 @@ public class QualisRound1 extends AppCompatActivity {
         secondThread = new RaceThread();
         graphicsTask = new GraphicsTask();
         timer = new Timer();
-        timer.schedule(graphicsTask, 10, 10);
+        timer.schedule(graphicsTask, 50, 50);
 
         information = findViewById(R.id.info);
 
@@ -584,7 +584,7 @@ public class QualisRound1 extends AppCompatActivity {
 
         private void startFirstSector(final DriverQualis racer) {
             final int sector1 = (int) (Math.random() * (racer.rightBorder1 - racer.leftBorder1) + racer.leftBorder1);
-            new CountDownTimer(sector1, 50) {
+            new CountDownTimer(sector1, 25) {
 
                 @Override
                 public void onTick(long l) {
@@ -609,7 +609,7 @@ public class QualisRound1 extends AppCompatActivity {
 
         private void startSecondSector(final DriverQualis racer, final int sector1) {
             final int sector2 = (int) (Math.random() * (racer.rightBorder2 - racer.leftBorder2) + racer.leftBorder2);
-            new CountDownTimer(sector2, 50) {
+            new CountDownTimer(sector2, 25) {
 
                 @Override
                 public void onTick(long l) {
@@ -632,7 +632,7 @@ public class QualisRound1 extends AppCompatActivity {
 
         private void startThirdSector(final DriverQualis racer, final int sector1, final int sector2) {
             final int sector3 = (int) (Math.random() * (racer.rightBorder3 - racer.leftBorder3) + racer.leftBorder3);
-            new CountDownTimer(sector3, 50) {
+            new CountDownTimer(sector3, 25) {
 
                 @Override
                 public void onTick(long l) {
