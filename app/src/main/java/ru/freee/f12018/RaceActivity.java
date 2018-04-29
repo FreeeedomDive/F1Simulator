@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -84,11 +85,11 @@ public class RaceActivity extends AppCompatActivity {
         tabSpec.setIndicator("");
         tabs.addTab(tabSpec);
 
-        if (type.equals("Race")){
+        if (type.equals("Race")) {
             names = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
-                                "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
-                                "Gasly", "Hartley", "Grosjean", "Magnussen",
-                                "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
+                    "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
+                    "Gasly", "Hartley", "Grosjean", "Magnussen",
+                    "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
             createDrivers();
         }
         if (type.equals("Weekend")) {
@@ -137,8 +138,8 @@ public class RaceActivity extends AppCompatActivity {
     private String[] getNamesFromIntent() {
         String[] result = new String[20];
         String top = "top";
-        for(int i = 0; i < 20; i++)
-            result[i] = getIntent().getStringExtra(top + (i+1));
+        for (int i = 0; i < 20; i++)
+            result[i] = getIntent().getStringExtra(top + (i + 1));
         return result;
     }
 
@@ -160,7 +161,6 @@ public class RaceActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
-
 
 
     @SuppressLint("SetTextI18n")
@@ -199,7 +199,35 @@ public class RaceActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "FINISH", Toast.LENGTH_SHORT).show();
             for (int i = 0; i < 20; i++)
                 racerTotal[i].setTextColor(getColor(R.color.colorWhite));
+            goToStatistic();
         }
+    }
+
+    private void goToStatistic() {
+        final Intent intent = new Intent(RaceActivity.this, Statistics.class);
+        intent.putExtra("top1", racers[0].name);
+        intent.putExtra("time1", DriverRace.generateTime(racers[0].totalTime));
+        for (int i = 1; i < 20; i++) {
+            intent.putExtra("top" + (i + 1), racers[i].name);
+            if (!racers[i].crashed)
+                intent.putExtra("time" + (i + 1), "+" +
+                        DriverRace.generateTime(racers[i].totalTime - racers[0].totalTime));
+            else
+                intent.putExtra("time" + (i + 1), "DNF");
+        }
+        new CountDownTimer(5000, 5000) {
+
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                startActivity(intent);
+                finish();
+            }
+        }.start();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -288,7 +316,7 @@ public class RaceActivity extends AppCompatActivity {
                         racerTotal[i].setText("+" + DriverRace.generateTime(racers[i].totalTime -
                                 racers[i - 1].totalTime));
                 }
-                if(i != 0 && racers[i].totalTime - racers[i-1].totalTime <= 1000 && racers[i].laps >= 5)
+                if (i != 0 && racers[i].totalTime - racers[i - 1].totalTime <= 1000 && racers[i].laps >= 5)
                     racerTotal[i].setTextColor(getColor(R.color.colorGreen));
                 else
                     racerTotal[i].setTextColor(getColor(R.color.colorWhite));
@@ -333,170 +361,6 @@ public class RaceActivity extends AppCompatActivity {
                 racerBest[i].setTextColor(getColor(R.color.colorWhite));
                 racerLast[i].setTextColor(getColor(R.color.colorWhite));
             }
-        }
-    }
-
-    private class GraphicsTask extends TimerTask {
-
-        @Override
-        public void run() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    update();
-                }
-            });
-        }
-    }
-
-    private class RaceThread implements Runnable{
-
-        @Override
-        public void run() {
-            thisLap = 1;
-            runOnUiThread(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.M)
-                @Override
-                public void run() {
-                    top.setText("Laps:");
-                    top.setBackgroundColor(getColor(R.color.colorGreen));
-                    lap.setText(thisLap + "/" + laps);
-                    lap.setBackgroundColor(getColor(R.color.colorGreen));
-                }
-            });
-            for (int i = 0; i < 20; i++) {
-                racers[i].allPositions[0] = i + 1;
-                Log.i(racers[i].shortName, Arrays.toString(racers[i].allPositions));
-                startRace(racers[i]);
-            }
-        }
-
-        private void startRace(final DriverRace racer) {
-            int position = -1;
-            for (int i = 0; i < 20; i++) {
-                if (racer.equals(racers[i]))
-                    position = i;
-            }
-            racer.laps = 1;
-            racer.futureLap = (int) (Math.random() * (racer.rightTime - racer.leftTime) +
-                    racer.leftTime + 10000 + position * 350);
-            new CountDownTimer(racer.futureLap, 25) {
-
-                @Override
-                public void onTick(long l) {
-                    racer.lapTime = (int) (racer.futureLap - l);
-                    //update();
-                }
-
-                @Override
-                public void onFinish() {
-                    racer.totalTime += racer.futureLap;
-                    racer.lastTime = racer.futureLap;
-                    if (racer.lastTime < racer.bestTime) {
-                        racer.bestTime = racer.lastTime;
-                        if (racer.bestTime < bestLap)
-                            bestLap = racer.bestTime;
-                    }
-                    racer.lapTime = 0;
-                    racer.laps++;
-                    Arrays.sort(racers);
-                    int position = -1;
-                    for (int i = 0; i < 20; i++) {
-                        racers[i].allPositions[1] = i + 1;
-                        if (racer.equals(racers[i]))
-                            position = i;
-                    }
-                    Log.i(racer.shortName, Arrays.toString(racer.allPositions));
-                    if (position == 0) {
-                        thisLap = racer.laps;
-                        lap.setText(thisLap + "/" + laps);
-                    }
-                    startLap(racer);
-                    cancel();
-                }
-            }.start();
-        }
-
-        private void startLap(final DriverRace racer) {
-            racer.timeOnPit = 0;
-            int pitChance = (int) (Math.random() * 50 + 1);
-            if (racer.laps == racer.lapTime || pitChance == 15 && racer.laps <= laps - 3)
-                racer.timeOnPit = (int) (Math.random() * 5000 + 12000);
-            int drs = 0;
-            if(racers[0].laps >= 5){
-                for(int i = 0; i < 20; i++){
-                    if(racers[i].equals(racer)){
-                        if(i == 0)
-                            break;
-                        if(racer.totalTime - racers[i-1].totalTime <= 1000)
-                            drs = (int) (Math.random()*1300 + 200);
-                    }
-                }
-                Log.i("DRS for " + racer.name, Integer.toString(drs));
-            }
-            racer.futureLap = (int) (Math.random() * (racer.rightTime - racer.leftTime) +
-                    racer.leftTime + racer.timeOnPit - drs);
-            new CountDownTimer(racer.futureLap, 25) {
-                int crash = 0;
-
-                @Override
-                public void onTick(long l) {
-                    crash = (int) (Math.random() * crashValue + 1);
-                    if (crash == crashID && !racer.crashed) {
-                        racer.crashed = true;
-                        racer.finished = true;
-                        finishCount++;
-                        Log.i("Crash", racer.name + " crashed!");
-                        Log.i("Crash", "Count: " + finishCount);
-                        Arrays.sort(racers);
-                        if (finishCount == 20)
-                            finishRace();
-                        cancel();
-                    } else {
-                        racer.lapTime = (int) (racer.futureLap - l);
-                    }
-                    //update();
-                }
-
-                @Override
-                public void onFinish() {
-                    if (!racer.crashed) {
-                        racer.totalTime += racer.futureLap;
-                        racer.lastTime = racer.futureLap;
-                        if (racer.lastTime < racer.bestTime) {
-                            racer.bestTime = racer.lastTime;
-                            if (racer.bestTime < bestLap)
-                                bestLap = racer.bestTime;
-                        }
-                        racer.lapTime = 0;
-                        racer.laps++;
-                        Arrays.sort(racers);
-                        int position = -1;
-                        for (int i = 0; i < 20; i++) {
-                            if (racers[i].laps == racers[0].laps)
-                                racers[i].allPositions[racers[i].laps - 1] = i + 1;
-                            if (racer.equals(racers[i]))
-                                position = i;
-                        }
-                        racer.allPositions[racer.laps - 1] = position + 1;
-                        Log.i(racer.shortName, Arrays.toString(racer.allPositions));
-                        if (position == 0) {
-                            thisLap = racer.laps;
-                            lap.setText(thisLap + "/" + laps);
-                        }
-                    }
-                    if (racer.laps <= laps && !finish)
-                        startLap(racer);
-                    else {
-                        finish = true;
-                        racer.finished = true;
-                        finishCount++;
-                        Log.i("Finished: ", racer.name);
-                        finishRace();
-                    }
-                    cancel();
-                }
-            }.start();
         }
     }
 
@@ -579,7 +443,7 @@ public class RaceActivity extends AppCompatActivity {
 
     private void createDrivers() {
         racers = new DriverRace[20];
-        for(int i = 0; i < 20; i++){
+        for (int i = 0; i < 20; i++) {
             racers[i] = new DriverRace(names[i], timeOfLap);
             racers[i].allPositions = new int[laps + 1];
         }
@@ -733,5 +597,169 @@ public class RaceActivity extends AppCompatActivity {
         racerPositions[17] = findViewById(R.id.pos18);
         racerPositions[18] = findViewById(R.id.pos19);
         racerPositions[19] = findViewById(R.id.pos20);
+    }
+
+    private class GraphicsTask extends TimerTask {
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    update();
+                }
+            });
+        }
+    }
+
+    private class RaceThread implements Runnable {
+
+        @Override
+        public void run() {
+            thisLap = 1;
+            runOnUiThread(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void run() {
+                    top.setText("Laps:");
+                    top.setBackgroundColor(getColor(R.color.colorGreen));
+                    lap.setText(thisLap + "/" + laps);
+                    lap.setBackgroundColor(getColor(R.color.colorGreen));
+                }
+            });
+            for (int i = 0; i < 20; i++) {
+                racers[i].allPositions[0] = i + 1;
+                Log.i(racers[i].shortName, Arrays.toString(racers[i].allPositions));
+                startRace(racers[i]);
+            }
+        }
+
+        private void startRace(final DriverRace racer) {
+            int position = -1;
+            for (int i = 0; i < 20; i++) {
+                if (racer.equals(racers[i]))
+                    position = i;
+            }
+            racer.laps = 1;
+            racer.futureLap = (int) (Math.random() * (racer.rightTime - racer.leftTime) +
+                    racer.leftTime + 10000 + position * 350);
+            new CountDownTimer(racer.futureLap, 25) {
+
+                @Override
+                public void onTick(long l) {
+                    racer.lapTime = (int) (racer.futureLap - l);
+                    //update();
+                }
+
+                @Override
+                public void onFinish() {
+                    racer.totalTime += racer.futureLap;
+                    racer.lastTime = racer.futureLap;
+                    if (racer.lastTime < racer.bestTime) {
+                        racer.bestTime = racer.lastTime;
+                        if (racer.bestTime < bestLap)
+                            bestLap = racer.bestTime;
+                    }
+                    racer.lapTime = 0;
+                    racer.laps++;
+                    Arrays.sort(racers);
+                    int position = -1;
+                    for (int i = 0; i < 20; i++) {
+                        racers[i].allPositions[1] = i + 1;
+                        if (racer.equals(racers[i]))
+                            position = i;
+                    }
+                    Log.i(racer.shortName, Arrays.toString(racer.allPositions));
+                    if (position == 0) {
+                        thisLap = racer.laps;
+                        lap.setText(thisLap + "/" + laps);
+                    }
+                    startLap(racer);
+                    cancel();
+                }
+            }.start();
+        }
+
+        private void startLap(final DriverRace racer) {
+            racer.timeOnPit = 0;
+            int pitChance = (int) (Math.random() * 50 + 1);
+            if (racer.laps == racer.lapTime || pitChance == 15 && racer.laps <= laps - 3)
+                racer.timeOnPit = (int) (Math.random() * 5000 + 12000);
+            int drs = 0;
+            if (racers[0].laps >= 5) {
+                for (int i = 0; i < 20; i++) {
+                    if (racers[i].equals(racer)) {
+                        if (i == 0)
+                            break;
+                        if (racer.totalTime - racers[i - 1].totalTime <= 1000)
+                            drs = (int) (Math.random() * 1300 + 200);
+                    }
+                }
+                Log.i("DRS for " + racer.name, Integer.toString(drs));
+            }
+            racer.futureLap = (int) (Math.random() * (racer.rightTime - racer.leftTime) +
+                    racer.leftTime + racer.timeOnPit - drs);
+            new CountDownTimer(racer.futureLap, 25) {
+                int crash = 0;
+
+                @Override
+                public void onTick(long l) {
+                    crash = (int) (Math.random() * crashValue + 1);
+                    if (crash == crashID && !racer.crashed) {
+                        racer.crashed = true;
+                        racer.finished = true;
+                        finishCount++;
+                        Log.i("Crash", racer.name + " crashed!");
+                        Log.i("Crash", "Count: " + finishCount);
+                        Arrays.sort(racers);
+                        if (finishCount == 20)
+                            finishRace();
+                        cancel();
+                    } else {
+                        racer.lapTime = (int) (racer.futureLap - l);
+                    }
+                    //update();
+                }
+
+                @Override
+                public void onFinish() {
+                    if (!racer.crashed) {
+                        racer.totalTime += racer.futureLap;
+                        racer.lastTime = racer.futureLap;
+                        if (racer.lastTime < racer.bestTime) {
+                            racer.bestTime = racer.lastTime;
+                            if (racer.bestTime < bestLap)
+                                bestLap = racer.bestTime;
+                        }
+                        racer.lapTime = 0;
+                        racer.laps++;
+                        Arrays.sort(racers);
+                        int position = -1;
+                        for (int i = 0; i < 20; i++) {
+                            if (racers[i].laps == racers[0].laps)
+                                racers[i].allPositions[racers[i].laps - 1] = i + 1;
+                            if (racer.equals(racers[i]))
+                                position = i;
+                        }
+                        racer.allPositions[racer.laps - 1] = position + 1;
+                        Log.i(racer.shortName, Arrays.toString(racer.allPositions));
+                        if (position == 0) {
+                            thisLap = racer.laps;
+                            lap.setText(thisLap + "/" + laps);
+                        }
+                    }
+                    if (racer.laps <= laps && !finish)
+                        startLap(racer);
+                    else {
+                        finish = true;
+                        racer.finished = true;
+                        finishCount++;
+                        Log.i("Finished: ", racer.name);
+                        finishRace();
+                    }
+                    cancel();
+                }
+            }.start();
+        }
     }
 }

@@ -21,7 +21,8 @@
         <activity android:name=".SelectingRaceForWeekend" />
         <activity android:name=".QualisRound1" />
         <activity android:name=".QualisRound2" />
-        <activity android:name=".QualisRound3"></activity>
+        <activity android:name=".QualisRound3" />
+        <activity android:name=".Statistics"></activity>
     </application>
 
 </manifest>
