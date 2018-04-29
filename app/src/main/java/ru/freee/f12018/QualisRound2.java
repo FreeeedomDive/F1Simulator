@@ -135,7 +135,7 @@ public class QualisRound2 extends AppCompatActivity {
         intent.putExtra("Track", trackName);
         intent.putExtra("Time", trackTime);
         intent.putExtra("Laps", 1200000 / trackTime);
-        intent.putExtra("Crash", 100000);
+        intent.putExtra("Crash", 200000);
         intent.putExtra("Duration", dur);
         startActivity(intent);
         finish();

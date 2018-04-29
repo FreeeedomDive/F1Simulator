@@ -160,7 +160,7 @@ public class SelectingRace extends AppCompatActivity {
                     i.putExtra("Track", selectedTrack.name);
                     i.putExtra("Time", selectedTrack.time);
                     i.putExtra("Laps", laps);
-                    int crashVariety = 101000 - (crashes.getProgress())*1000;
+                    int crashVariety = 202000 - (crashes.getProgress())*2000;
                     i.putExtra("Crash", crashVariety);
                     i.putExtra("Type", "Race");
                     startActivity(i);
