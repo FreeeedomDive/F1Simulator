@@ -2,6 +2,8 @@ package ru.freee.f12018;
 
 public class Driver{
 
+    int id;
+
     final public String name;
     public int points;
 
@@ -10,7 +12,7 @@ public class Driver{
     public int wins, retires, poles;
 
     public int totalRaces;
-    public long summaryPositions;
+    public int summaryPositions;
 
     public Driver(String name) {
         this.name = name;
@@ -22,8 +24,8 @@ public class Driver{
         this.summaryPositions = 0;
     }
 
-    public Driver(String name, int points, int wins, int retires, int poles,
-                  int totalRaces, long summaryPositions){
+    public Driver(int id, String name, int points, int wins, int retires, int poles,
+                  int totalRaces, int summaryPositions){
         this.name = name;
         this.points = points;
         this.wins = wins;

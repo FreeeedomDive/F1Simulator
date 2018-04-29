@@ -6,12 +6,30 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        DataBase myDataBase = new DataBase(getApplicationContext());
+        ArrayList<Driver> drivers = myDataBase.getAllDrivers();
+        Toast.makeText(getApplicationContext(), "Size of database = " + drivers.size(), Toast.LENGTH_SHORT).show();
+        if(drivers.size() < 20){
+            Toast.makeText(getApplicationContext(), "Creating database...",
+                    Toast.LENGTH_SHORT).show();
+
+            String[] names = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
+                    "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
+                    "Gasly", "Hartley", "Grosjean", "Magnussen",
+                    "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
+
+            for(int i = 0; i < 20; i++)
+                myDataBase.addDriver(new Driver(names[i]));
+        }
     }
 
     public void SelectRace(View view) {
