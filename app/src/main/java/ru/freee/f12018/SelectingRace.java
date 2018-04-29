@@ -164,6 +164,7 @@ public class SelectingRace extends AppCompatActivity {
                     i.putExtra("Crash", crashVariety);
                     i.putExtra("Type", "Race");
                     startActivity(i);
+                    finish();
                 }
             }
         });

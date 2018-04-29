@@ -68,8 +68,32 @@ public class SelectingRaceForWeekend extends AppCompatActivity {
             }
         });
 
+        final RadioButton shortRounds = findViewById(R.id.shortRounds);
+        final RadioButton normalRounds = findViewById(R.id.normalRounds);
+        normalRounds.setChecked(true);
+        final RadioButton longRounds = findViewById(R.id.longRounds);
+        final TextView selectingOfRounds = findViewById(R.id.selectingOfRounds);
+
         final RadioButton oneRound = findViewById(R.id.oneRound);
+        oneRound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectingOfRounds.setText("Select duration of qualification");
+                shortRounds.setText("1 lap");
+                normalRounds.setText("5 minutes");
+                longRounds.setText("10 minutes");
+            }
+        });
         final RadioButton threeRounds = findViewById(R.id.threeRounds);
+        threeRounds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectingOfRounds.setText("Select duration of each round (in minutes)");
+                shortRounds.setText("Short: 2-2-2");
+                normalRounds.setText("Normal: 6-4-2");
+                longRounds.setText("Long: 10-7-4");
+            }
+        });
         threeRounds.setChecked(true);
 
         Button start = findViewById(R.id.start);
@@ -87,7 +111,14 @@ public class SelectingRaceForWeekend extends AppCompatActivity {
                         i.putExtra("Segments", "One");
                     else
                         i.putExtra("Segments", "Three");
+                    if(shortRounds.isChecked())
+                        i.putExtra("Duration", "Short");
+                    else if(normalRounds.isChecked())
+                        i.putExtra("Duration", "Normal");
+                    else if(longRounds.isChecked())
+                        i.putExtra("Duration", "Long");
                     startActivity(i);
+                    finish();
                 }
             }
         });

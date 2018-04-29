@@ -40,7 +40,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="Choose duration of qualification" />
+                        android:text="Choose number of rounds" />
 
                     <RadioGroup
                         android:layout_width="match_parent"
@@ -60,7 +60,45 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="3 rounds" />
+
+
                     </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/selectingOfRounds"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Select duration of each round (in minutes)" />
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <RadioButton
+                            android:id="@+id/shortRounds"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Short - 2-2-2" />
+
+                        <RadioButton
+                            android:id="@+id/normalRounds"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Normal - 6-4-2" />
+
+                        <RadioButton
+                            android:id="@+id/longRounds"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Long - 10-7-4" />
+                    </RadioGroup>
+
                 </LinearLayout>
 
                 <LinearLayout

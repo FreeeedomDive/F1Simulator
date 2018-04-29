@@ -2,6 +2,8 @@ package ru.freee.f12018;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
@@ -37,6 +39,8 @@ public class QualisRound3 extends AppCompatActivity {
     RaceThread secondThread;
     GraphicsTask graphicsTask;
     Timer timer;
+    int duration;
+    String dur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,17 @@ public class QualisRound3 extends AppCompatActivity {
         sec3 = getIntent().getIntExtra("Sector 3", 0);
         Log.i("Sectors on this track", sec1 + " " + sec2 + " " + sec3);
         trackTime = getIntent().getIntExtra("Time", 0);
+
+        dur = getIntent().getStringExtra("Duration");
+        switch(dur){
+            case "Short":
+            case "Normal":
+                duration = 120000;
+                break;
+            case "Long":
+                duration = 240000;
+                break;
+        }
 
         names = new String[20];
         for(int i = 0; i < 20; i++)
@@ -156,30 +171,8 @@ public class QualisRound3 extends AppCompatActivity {
                 racerLast[i].setText(DriverQualis.generateTime(racers[i].lastTime));
                 racerThis[i].setText("FINISH");
 
-                racerSec1[i].setText("੦");
-                if (racers[i].thisSec1 <= racers[i].bestSec1) {
-                    if (racers[i].thisSec1 == bestSec1)
-                        racerSec1[i].setTextColor(getColor(R.color.colorPurple));
-                    else
-                        racerSec1[i].setTextColor(getColor(R.color.colorGreen));
-                } else
-                    racerSec1[i].setTextColor(getColor(R.color.colorWhite));
-                racerSec2[i].setText("੦");
-                if (racers[i].thisSec2 <= racers[i].bestSec2) {
-                    if (racers[i].thisSec2 == bestSec2)
-                        racerSec2[i].setTextColor(getColor(R.color.colorPurple));
-                    else
-                        racerSec2[i].setTextColor(getColor(R.color.colorGreen));
-                } else
-                    racerSec2[i].setTextColor(getColor(R.color.colorWhite));
-                racerSec3[i].setText("੦");
-                if (racers[i].thisSec3 <= racers[i].bestSec3) {
-                    if (racers[i].thisSec3 == bestSec3)
-                        racerSec3[i].setTextColor(getColor(R.color.colorPurple));
-                    else
-                        racerSec3[i].setTextColor(getColor(R.color.colorGreen));
-                } else
-                    racerSec3[i].setTextColor(getColor(R.color.colorWhite));
+                showSectors(i);
+                showGaps(i);
                 continue;
             }
             if (racers[i].bestTime != 500000) {
@@ -197,65 +190,96 @@ public class QualisRound3 extends AppCompatActivity {
             if (racers[i].started)
                 racerThis[i].setText(DriverQualis.generateTime(racers[i].thisLap));
 
-            if (racers[i].thisSec1 != 0) {
-                racerSec1[i].setText("੦");
-                if (racers[i].thisSec1 <= racers[i].bestSec1) {
-                    if (racers[i].thisSec1 == bestSec1)
-                        racerSec1[i].setTextColor(getColor(R.color.colorPurple));
-                    else
-                        racerSec1[i].setTextColor(getColor(R.color.colorGreen));
-                } else
-                    racerSec1[i].setTextColor(getColor(R.color.colorWhite));
-            } else
-                racerSec1[i].setText(" ");
-            if (racers[i].thisSec2 != 0) {
-                racerSec2[i].setText("੦");
-                if (racers[i].thisSec2 <= racers[i].bestSec2) {
-                    if (racers[i].thisSec2 == bestSec2)
-                        racerSec2[i].setTextColor(getColor(R.color.colorPurple));
-                    else
-                        racerSec2[i].setTextColor(getColor(R.color.colorGreen));
-                } else
-                    racerSec2[i].setTextColor(getColor(R.color.colorWhite));
-            } else
-                racerSec2[i].setText(" ");
-            if (racers[i].thisSec3 != 0) {
-                racerSec3[i].setText("੦");
-                if (racers[i].thisSec3 <= racers[i].bestSec3) {
-                    if (racers[i].thisSec3 == bestSec3)
-                        racerSec3[i].setTextColor(getColor(R.color.colorPurple));
-                    else
-                        racerSec3[i].setTextColor(getColor(R.color.colorGreen));
-                } else
-                    racerSec3[i].setTextColor(getColor(R.color.colorWhite));
-            } else
-                racerSec3[i].setText(" ");
-            if (racers[i].thisSec3 != 0 && racers[i].bestTime != 500000) {
-                int gap = racers[0].bestSec3 - racers[i].thisSec3;
-                if (gap > 0)
-                    racerGaps[i].setText(1 + ": -" +
-                            DriverQualis.generateTime(Math.abs(racers[0].bestSec3 - racers[i].thisSec3)));
-                else
-                    racerGaps[i].setText(1 + ": +" +
-                            DriverQualis.generateTime(Math.abs(racers[0].bestSec3 - racers[i].thisSec3)));
-            } else if (racers[i].thisSec2 != 0 && racers[i].bestTime != 500000) {
-                int gap = racers[0].bestSec2 - racers[i].thisSec2;
-                if (gap > 0)
-                    racerGaps[i].setText(1 + ": -" +
-                            DriverQualis.generateTime(Math.abs(racers[0].bestSec2 - racers[i].thisSec2)));
-                else
-                    racerGaps[i].setText(1 + ": +" +
-                            DriverQualis.generateTime(Math.abs(racers[0].bestSec2 - racers[i].thisSec2)));
-            } else if (racers[i].thisSec1 != 0 && racers[i].bestTime != 500000) {
-                int gap = racers[0].bestSec1 - racers[i].thisSec1;
-                if (gap > 0)
-                    racerGaps[i].setText(1 + ": -" +
-                            DriverQualis.generateTime(Math.abs(racers[0].bestSec1 - racers[i].thisSec1)));
-                else
-                    racerGaps[i].setText(1 + ": +" +
-                            DriverQualis.generateTime(Math.abs(racers[0].bestSec1 - racers[i].thisSec1)));
-            }
+            showSectors(i);
+            showGaps(i);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void showSectors(int i){
+        if (racers[i].thisSec1 != 0) {
+            racerSec1[i].setText("੦");
+            if (racers[i].thisSec1 <= racers[i].bestSec1) {
+                if (racers[i].thisSec1 == bestSec1)
+                    racerSec1[i].setTextColor(getColor(R.color.colorPurple));
+                else
+                    racerSec1[i].setTextColor(getColor(R.color.colorGreen));
+            } else
+                racerSec1[i].setTextColor(getColor(R.color.colorWhite));
+        } else
+            racerSec1[i].setText(" ");
+        if (racers[i].thisSec2 != 0) {
+            racerSec2[i].setText("੦");
+            if (racers[i].thisSec2 <= racers[i].bestSec2) {
+                if (racers[i].thisSec2 == bestSec2)
+                    racerSec2[i].setTextColor(getColor(R.color.colorPurple));
+                else
+                    racerSec2[i].setTextColor(getColor(R.color.colorGreen));
+            } else
+                racerSec2[i].setTextColor(getColor(R.color.colorWhite));
+        } else
+            racerSec2[i].setText(" ");
+        if (racers[i].thisSec3 != 0) {
+            racerSec3[i].setText("੦");
+            if (racers[i].thisSec3 <= racers[i].bestSec3) {
+                if (racers[i].thisSec3 == bestSec3)
+                    racerSec3[i].setTextColor(getColor(R.color.colorPurple));
+                else
+                    racerSec3[i].setTextColor(getColor(R.color.colorGreen));
+            } else
+                racerSec3[i].setTextColor(getColor(R.color.colorWhite));
+        } else
+            racerSec3[i].setText(" ");
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showGaps(int i){
+        int goal = 0;
+        if (racers[i].thisSec3 != 0 && racers[i].bestTime != 500000) {
+            int gap = racers[goal].bestSec3 - racers[i].thisSec3;
+            if (gap > 0)
+                racerGaps[i].setText((goal+1) + ": -" +
+                        DriverQualis.generateTime(Math.abs(racers[goal].bestSec3 - racers[i].thisSec3)));
+            else
+                racerGaps[i].setText((goal+1) + ": +" +
+                        DriverQualis.generateTime(Math.abs(racers[goal].bestSec3 - racers[i].thisSec3)));
+        } else if (racers[i].thisSec2 != 0 && racers[i].bestTime != 500000) {
+            int gap = racers[goal].bestSec2 - racers[i].thisSec2;
+            if (gap > 0)
+                racerGaps[i].setText((goal+1) + ": -" +
+                        DriverQualis.generateTime(Math.abs(racers[goal].bestSec2 - racers[i].thisSec2)));
+            else
+                racerGaps[i].setText((goal+1) + ": +" +
+                        DriverQualis.generateTime(Math.abs(racers[goal].bestSec2 - racers[i].thisSec2)));
+        } else if (racers[i].thisSec1 != 0 && racers[i].bestTime != 500000) {
+            int gap = racers[goal].bestSec1 - racers[i].thisSec1;
+            if (gap > 0)
+                racerGaps[i].setText((goal+1) + ": -" +
+                        DriverQualis.generateTime(Math.abs(racers[goal].bestSec1 - racers[i].thisSec1)));
+            else
+                racerGaps[i].setText((goal+1) + ": +" +
+                        DriverQualis.generateTime(Math.abs(racers[goal].bestSec1 - racers[i].thisSec1)));
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(QualisRound3.this);
+        builder.setTitle("Confirm quit");  // заголовок
+        builder.setMessage("Do you really want to quit?"); // сообщение
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        builder.setCancelable(true);
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -419,13 +443,14 @@ public class QualisRound3 extends AppCompatActivity {
 
         private void startRound() {
             started = true;
-            new CountDownTimer(120000, 1000) {
+            new CountDownTimer(duration, 1000) {
 
                 @Override
                 public void onTick(long l) {
                     final int min = (int) (l / 60000);
                     final int sec = (int) (l % 60000) / 1000;
                     runOnUiThread(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
                         @Override
                         public void run() {
                             information.setBackgroundColor(getColor(R.color.colorGreen));
@@ -441,6 +466,7 @@ public class QualisRound3 extends AppCompatActivity {
                 public void onFinish() {
                     finished = true;
                     runOnUiThread(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
                         @Override
                         public void run() {
                             information.setBackgroundColor(getColor(R.color.colorWhite));
