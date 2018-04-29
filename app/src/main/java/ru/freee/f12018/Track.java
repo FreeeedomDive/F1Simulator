@@ -24,10 +24,10 @@ public class Track {
                 break;
             case "Bahrain":
                 this.raceTime = 93769;
-                this.sectors = new int[]{24124, 27100, 40500};
+                this.sectors = new int[]{23124, 26100, 40500};
                 break;
             case "China":
-                this.raceTime = 96678;
+                this.raceTime = 93678;
                 this.sectors = new int[]{28330, 38300, 22200};
                 break;
             case "Azerbaijan":
@@ -36,27 +36,27 @@ public class Track {
                 break;
             case "Spain":
                 this.raceTime = 84149;
-                this.sectors = new int[]{22475, 30800, 28800};
+                this.sectors = new int[]{21475, 30800, 28800};
                 break;
             case "Monaco":
                 this.raceTime = 77178;
                 this.sectors = new int[]{19453, 34700, 19500};
                 break;
             case "Canada":
-                this.raceTime = 77812;
-                this.sectors = new int[]{25425, 25400, 25400};
+                this.raceTime = 78812;
+                this.sectors = new int[]{24425, 25400, 25400};
                 break;
             case "France":
-                this.raceTime = 81449;
-                this.sectors = new int[]{23489, 23400, 24400};
+                this.raceTime = 80449;
+                this.sectors = new int[]{25489, 25400, 24400};
                 break;
             case "Austria":
                 this.raceTime = 69251;
-                this.sectors = new int[]{16877, 30400, 21300};
+                this.sectors = new int[]{16877, 27400, 20300};
                 break;
             case "Britain":
                 this.raceTime = 91600;
-                this.sectors = new int[]{29170, 37700, 25500};
+                this.sectors = new int[]{29170, 32700, 25500};
                 break;
             case "Germany":
                 this.raceTime = 79363;
@@ -68,15 +68,15 @@ public class Track {
                 break;
             case "Belgium":
                 this.raceTime = 107553;
-                this.sectors = new int[]{30332, 47600, 28700};
+                this.sectors = new int[]{28332, 47600, 28700};
                 break;
             case "Italy":
                 this.raceTime = 88361;
-                this.sectors = new int[]{26579, 27600, 27000};
+                this.sectors = new int[]{27579, 29600, 27000};
                 break;
             case "Singapore":
                 this.raceTime = 104491;
-                this.sectors = new int[]{27484, 49300, 35900};
+                this.sectors = new int[]{25484, 41300, 35900};
                 break;
             case "Russia":
                 this.raceTime = 98194;

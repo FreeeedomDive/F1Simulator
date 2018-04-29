@@ -1,7 +1,10 @@
 package ru.freee.f12018;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -11,10 +14,47 @@ public class ChampionshipLobby extends AppCompatActivity {
     ArrayList<Track> tracks;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_championship_lobby);
+
+        initialize();
+        tracks = new ArrayList<>();
+        createTracksList();
+
+        TabHost tabs = findViewById(R.id.tabhost);
+        tabs.setup();
+
+        TabHost.TabSpec tabSpec = tabs.newTabSpec("tag1");
+
+        tabSpec.setContent(R.id.tab1);
+        tabSpec.setIndicator("Tracks");
+        tabs.addTab(tabSpec);
+
+        tabSpec = tabs.newTabSpec("tag2");
+        tabSpec.setContent(R.id.tab2);
+        tabSpec.setIndicator("Drivers");
+        tabs.addTab(tabSpec);
+
+        tabSpec = tabs.newTabSpec("tag3");
+        tabSpec.setContent(R.id.tab3);
+        tabSpec.setIndicator("Constructors");
+        tabs.addTab(tabSpec);
+
+        tabSpec = tabs.newTabSpec("tag4");
+        tabSpec.setContent(R.id.tab3);
+        tabSpec.setIndicator("Current track");
+        tabs.addTab(tabSpec);
+        tabs.setCurrentTab(0);
+
+
+        for(int i = 0; i < tracks.size(); i++){
+            trackNames[i].setText(tracks.get(i).name);
+            if(i % 2 == 0)
+                trackNames[i].setBackgroundColor(getColor(R.color.colorGrey));
+        }
     }
 
     private void createTracksList(){

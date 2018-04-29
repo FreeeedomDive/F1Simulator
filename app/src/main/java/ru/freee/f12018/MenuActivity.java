@@ -45,6 +45,8 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void SelectChamp(View view) {
-        Toast.makeText(this, "Not yet implemented...", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Not yet implemented...", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(MenuActivity.this, ChampionshipLobby.class);
+        startActivity(i);
     }
 }
