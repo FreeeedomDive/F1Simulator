@@ -135,7 +135,7 @@ public class SelectingRace extends AppCompatActivity {
                     }
                     if(selectTime.isChecked()){
                         int millis = Integer.parseInt(text) * 60000;
-                        laps = millis / (selectedTrack.time + 2000) + 1;
+                        laps = millis / (selectedTrack.raceTime + 2000) + 1;
                         len.setText("Laps: " + laps);
                     }
                 }
@@ -158,7 +158,7 @@ public class SelectingRace extends AppCompatActivity {
                 if(selectedTrack != null && laps > 0){
                     Intent i = new Intent(SelectingRace.this, RaceActivity.class);
                     i.putExtra("Track", selectedTrack.name);
-                    i.putExtra("Time", selectedTrack.time);
+                    i.putExtra("Time", selectedTrack.raceTime);
                     i.putExtra("Laps", laps);
                     int crashVariety = 202000 - (crashes.getProgress())*2000;
                     i.putExtra("Crash", crashVariety);
@@ -171,26 +171,26 @@ public class SelectingRace extends AppCompatActivity {
     }
 
     private void createTracksList(){
-        tracks.add(new Track("Australia", "Melbourne", 82188));
-        tracks.add(new Track("Bahrain", "Sahir", 88769));
-        tracks.add(new Track("China", "Shanghai", 91678));
-        tracks.add(new Track("Azerbaijan", "Baku", 100593));
-        tracks.add(new Track("Spain", "Catalonia", 79149));
-        tracks.add(new Track("Monaco", "Monte-Carlo", 72178));
-        tracks.add(new Track("Canada", "Monreal", 72812));
-        tracks.add(new Track("France", "Nevers", 76449));
-        tracks.add(new Track("Austria", "Spielberg", 64251));
-        tracks.add(new Track("Britain", "Silverstone", 86600));
-        tracks.add(new Track("Germany", "Hockenheimring", 74363));
-        tracks.add(new Track("Hungary", "Hungaroring", 76276));
-        tracks.add(new Track("Belgium", "Spa Francorchamps", 102553));
-        tracks.add(new Track("Italy", "Monza", 83361));
-        tracks.add(new Track("Singapore", "Marina Bay", 99491));
-        tracks.add(new Track("Russia", "Sochi", 93194));
-        tracks.add(new Track("Japan", "Suzuka", 87319));
-        tracks.add(new Track("USA", "Ostin", 93108));
-        tracks.add(new Track("Mexico", "Mexico City", 76488));
-        tracks.add(new Track("Brazil", "Interlagos", 68322));
-        tracks.add(new Track("Abu Dhabi", "Yas Marina", 98755));
+        tracks.add(new Track("Australia", "Melbourne"));
+        tracks.add(new Track("Bahrain", "Sahir"));
+        tracks.add(new Track("China", "Shanghai"));
+        tracks.add(new Track("Azerbaijan", "Baku"));
+        tracks.add(new Track("Spain", "Catalonia"));
+        tracks.add(new Track("Monaco", "Monte-Carlo"));
+        tracks.add(new Track("Canada", "Monreal"));
+        tracks.add(new Track("France", "Nevers"));
+        tracks.add(new Track("Austria", "Spielberg"));
+        tracks.add(new Track("Britain", "Silverstone"));
+        tracks.add(new Track("Germany", "Hockenheimring"));
+        tracks.add(new Track("Hungary", "Hungaroring"));
+        tracks.add(new Track("Belgium", "Spa Francorchamps"));
+        tracks.add(new Track("Italy", "Monza"));
+        tracks.add(new Track("Singapore", "Marina Bay"));
+        tracks.add(new Track("Russia", "Sochi"));
+        tracks.add(new Track("Japan", "Suzuka"));
+        tracks.add(new Track("USA", "Ostin"));
+        tracks.add(new Track("Mexico", "Mexico City"));
+        tracks.add(new Track("Brazil", "Interlagos"));
+        tracks.add(new Track("Abu Dhabi", "Yas Marina"));
     }
 }

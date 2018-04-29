@@ -383,16 +383,16 @@ public class QualisRound1 extends AppCompatActivity {
 
     private void initializeTextViews() {
         racerNames = new TextView[20];
-        racerNames[0] = findViewById(R.id.name1);
-        racerNames[1] = findViewById(R.id.name2);
-        racerNames[2] = findViewById(R.id.name3);
-        racerNames[3] = findViewById(R.id.name4);
-        racerNames[4] = findViewById(R.id.name5);
-        racerNames[5] = findViewById(R.id.name6);
-        racerNames[6] = findViewById(R.id.name7);
-        racerNames[7] = findViewById(R.id.name8);
-        racerNames[8] = findViewById(R.id.name9);
-        racerNames[9] = findViewById(R.id.name10);
+        racerNames[0 ] = findViewById(R.id.name1);
+        racerNames[1 ] = findViewById(R.id.name2);
+        racerNames[2 ] = findViewById(R.id.name3);
+        racerNames[3 ] = findViewById(R.id.name4);
+        racerNames[4 ] = findViewById(R.id.name5);
+        racerNames[5 ] = findViewById(R.id.name6);
+        racerNames[6 ] = findViewById(R.id.name7);
+        racerNames[7 ] = findViewById(R.id.name8);
+        racerNames[8 ] = findViewById(R.id.name9);
+        racerNames[9 ] = findViewById(R.id.name10);
         racerNames[10] = findViewById(R.id.name11);
         racerNames[11] = findViewById(R.id.name12);
         racerNames[12] = findViewById(R.id.name13);

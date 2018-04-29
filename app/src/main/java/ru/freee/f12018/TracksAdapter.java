@@ -56,7 +56,8 @@ public class TracksAdapter extends BaseAdapter{
         TextView p = v.findViewById(R.id.place);
         p.setText(track.place);
         TextView t = v.findViewById(R.id.time);
-        t.setText("Time: " + getTime(track.time));
+        t.setText("Race time: " + getTime(track.raceTime) + "\nQualification time: " +
+                getTime(track.sectors[0] + track.sectors[1] + track.sectors[2]));
         return v;
     }
 
