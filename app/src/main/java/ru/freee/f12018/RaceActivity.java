@@ -137,9 +137,8 @@ public class RaceActivity extends AppCompatActivity {
     private String[] getNamesFromIntent() {
         String[] result = new String[20];
         String top = "top";
-        for(int i = 0; i < 20; i++){
+        for(int i = 0; i < 20; i++)
             result[i] = getIntent().getStringExtra(top + (i+1));
-        }
         return result;
     }
 
@@ -167,7 +166,6 @@ public class RaceActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     @TargetApi(Build.VERSION_CODES.M)
     private void finishRace() {
-        System.gc();
         top.setText("");
         top.setBackgroundColor(getColor(R.color.colorWhite));
         lap.setText("FINISH");
@@ -228,6 +226,19 @@ public class RaceActivity extends AppCompatActivity {
             }
             if (racers[i].finished && !racers[i].crashed) {
                 racerTotal[i].setTextColor(getColor(R.color.colorWhite));
+                int pos = racers[i].allPositions[racers[i].laps - 1];
+                int last = racers[i].allPositions[racers[i].laps - 2];
+                int dif = last - pos;
+                if (dif == 0) {
+                    racerPositions[i].setTextColor(getColor(R.color.colorWhite));
+                    racerPositions[i].setText("-");
+                } else if (dif > 0) {
+                    racerPositions[i].setTextColor(getColor(R.color.colorGreen));
+                    racerPositions[i].setText("+" + dif);
+                } else {
+                    racerPositions[i].setTextColor(getColor(R.color.colorRed));
+                    racerPositions[i].setText("-" + Math.abs(dif));
+                }
                 racerLaps[i].setText("");
                 if (showTotal) {
                     racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
@@ -570,7 +581,7 @@ public class RaceActivity extends AppCompatActivity {
         racers = new DriverRace[20];
         for(int i = 0; i < 20; i++){
             racers[i] = new DriverRace(names[i], timeOfLap);
-            racers[i].allPositions = new int[laps + 2];
+            racers[i].allPositions = new int[laps + 1];
         }
     }
 

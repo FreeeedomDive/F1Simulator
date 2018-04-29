@@ -128,6 +128,7 @@ public class QualisRound3 extends AppCompatActivity {
         intent.putExtra("Laps", 1200000 / trackTime);
         intent.putExtra("Crash", 100000);
         startActivity(intent);
+        finish();
     }
 
     public void changeView(View view) {
