@@ -1,7 +1,10 @@
 package ru.freee.f12018;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -14,28 +17,7 @@ public class Statistics extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
-
-        TabHost tabs = findViewById(R.id.tabhost);
-        tabs.setup();
-
-        TabHost.TabSpec tabSpec = tabs.newTabSpec("tag1");
-
-        tabSpec.setContent(R.id.tab1);
-        tabSpec.setIndicator("Results");
-        tabs.addTab(tabSpec);
-
-        tabSpec = tabs.newTabSpec("tag2");
-        tabSpec.setContent(R.id.tab2);
-        tabSpec.setIndicator("Championship\nDrivers");
-        tabs.addTab(tabSpec);
-
-        tabSpec = tabs.newTabSpec("tag3");
-        tabSpec.setContent(R.id.tab3);
-        tabSpec.setIndicator("Championship\nConstructors");
-        tabs.addTab(tabSpec);
-
-        tabs.setCurrentTab(0);
-
+        final String type = getIntent().getStringExtra("Type");
         initializeTextViews();
 
         names = new String[20];
@@ -50,6 +32,27 @@ public class Statistics extends AppCompatActivity {
             racerNames[i].setText("       " + names[i]);
             timesTV[i].setText(times[i] + "  ");
         }
+
+        Button ret = findViewById(R.id.ret);
+        if(type.equals("Championship"))
+            ret.setText("Return to lobby");
+        else
+            ret.setText("Return to menu");
+        ret.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(type.equals("Championship")){
+                    Intent intent = new Intent(Statistics.this, ChampionshipLobby.class);
+                    intent.putExtra("From", "Race");
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Intent intent = new Intent(Statistics.this, MenuActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
 
     }
 

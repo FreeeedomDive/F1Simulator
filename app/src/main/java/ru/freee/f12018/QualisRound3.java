@@ -24,7 +24,7 @@ import java.util.TimerTask;
 public class QualisRound3 extends AppCompatActivity {
 
     String names[];
-    String trackName;
+    String trackName, type;
     int sec1, sec2, sec3, trackTime;
     int bestSec1 = 500000, bestSec2 = 500000, bestSec3 = 500000;
     TextView[] racerNames, racerBest, racerLast, racerThis, racerSec1, racerSec2, racerSec3, racerGaps;
@@ -48,6 +48,7 @@ public class QualisRound3 extends AppCompatActivity {
         setContentView(R.layout.activity_qualis_round3);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         table = findViewById(R.id.table);
+        type = getIntent().getStringExtra("Type");
         trackName = getIntent().getStringExtra("Track");
         sec1 = getIntent().getIntExtra("Sector 1", 0);
         sec2 = getIntent().getIntExtra("Sector 2", 0);
@@ -117,16 +118,30 @@ public class QualisRound3 extends AppCompatActivity {
     }
 
     private void moveToRace() {
+        if(type.equals("Championship")){
+            Log.i("DB", "It is champ");
+            DataBase db = new DataBase(getApplicationContext());
+            Driver[] drivers = new Driver[20];
+            db.getAllDrivers().toArray(drivers);
+            for(int i = 0; i < 20; i++){
+                if(drivers[i].name.equals(racers[0].name)){
+                    drivers[i].poles++;
+                    Log.i("Pole writed in code", racers[0].name + ", " + drivers[i]);
+                    db.updateDriver(drivers[i]);
+                }
+            }
+            db.close();
+        }
         Intent intent = new Intent(QualisRound3.this, RaceActivity.class);
         for (int i = 0; i < 10; i++)
             intent.putExtra("top" + (i + 1), racers[i].name);
         for (int i = 10; i < 20; i++)
             intent.putExtra("top" + (i + 1), names[i]);
-        intent.putExtra("Type", "Weekend");
         intent.putExtra("Track", trackName);
         intent.putExtra("Time", trackTime);
         intent.putExtra("Laps", 1200000 / trackTime);
         intent.putExtra("Crash", 200000);
+        intent.putExtra("Type", type);
         startActivity(intent);
         finish();
     }

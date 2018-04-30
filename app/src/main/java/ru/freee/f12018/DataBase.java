@@ -5,9 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DataBase extends SQLiteOpenHelper {
 
@@ -18,8 +18,8 @@ public class DataBase extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_POINTS = "points";
     private static final String KEY_WINS = "wins";
-    private static final String KEY_POLES = "retires";
-    private static final String KEY_RETIRES = "poles";
+    private static final String KEY_POLES = "poles";
+    private static final String KEY_RETIRES = "retires";
     private static final String KEY_RACES = "races";
     private static final String KEY_POSITIONS = "poistions";
 
@@ -82,7 +82,7 @@ public class DataBase extends SQLiteOpenHelper {
 
     public int updateDriver(Driver driver) {
         SQLiteDatabase db = this.getWritableDatabase();
-
+        Log.i("Making changes in DB", driver.toString());
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, driver.name);
         values.put(KEY_POINTS, driver.points);

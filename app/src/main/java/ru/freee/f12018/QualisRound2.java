@@ -24,7 +24,7 @@ import java.util.TimerTask;
 public class QualisRound2 extends AppCompatActivity {
 
     String names[];
-    String trackName;
+    String trackName, type;
     int sec1, sec2, sec3, trackTime;
     int bestSec1 = 500000, bestSec2 = 500000, bestSec3 = 500000;
     TextView[] racerNames, racerBest, racerLast, racerThis, racerSec1, racerSec2, racerSec3, racerGaps;
@@ -49,7 +49,7 @@ public class QualisRound2 extends AppCompatActivity {
         setContentView(R.layout.activity_qualis_round2);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         table = findViewById(R.id.table);
-        String type = getIntent().getStringExtra("Type");
+        type = getIntent().getStringExtra("Type");
         timeOfLap = getIntent().getIntExtra("Time", timeOfLap);
         dur = getIntent().getStringExtra("Duration");
         switch(dur){
@@ -137,6 +137,7 @@ public class QualisRound2 extends AppCompatActivity {
         intent.putExtra("Laps", 1200000 / trackTime);
         intent.putExtra("Crash", 200000);
         intent.putExtra("Duration", dur);
+        intent.putExtra("Type", type);
         startActivity(intent);
         finish();
     }

@@ -17,19 +17,17 @@ public class MenuActivity extends AppCompatActivity {
 
         DataBase myDataBase = new DataBase(getApplicationContext());
         ArrayList<Driver> drivers = myDataBase.getAllDrivers();
-        Toast.makeText(getApplicationContext(), "Size of database = " + drivers.size(), Toast.LENGTH_SHORT).show();
-        if(drivers.size() < 20){
-            Toast.makeText(getApplicationContext(), "Creating database...",
-                    Toast.LENGTH_SHORT).show();
+        if (drivers.size() < 20) {
 
             String[] names = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
                     "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
                     "Gasly", "Hartley", "Grosjean", "Magnussen",
                     "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
 
-            for(int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++)
                 myDataBase.addDriver(new Driver(names[i]));
         }
+        myDataBase.close();
     }
 
     public void SelectRace(View view) {
@@ -47,6 +45,7 @@ public class MenuActivity extends AppCompatActivity {
     public void SelectChamp(View view) {
         //Toast.makeText(this, "Not yet implemented...", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(MenuActivity.this, ChampionshipLobby.class);
+        i.putExtra("From", "Menu");
         startActivity(i);
     }
 }

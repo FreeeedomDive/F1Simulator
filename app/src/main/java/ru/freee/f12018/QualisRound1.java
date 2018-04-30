@@ -23,7 +23,7 @@ import java.util.TimerTask;
 
 public class QualisRound1 extends AppCompatActivity {
 
-    String trackName;
+    String trackName, type;
     int sec1, sec2, sec3, trackTime;
     int bestSec1 = 500000, bestSec2 = 500000, bestSec3 = 500000;
     TextView[] racerNames, racerBest, racerLast, racerThis, racerSec1, racerSec2, racerSec3, racerGaps;
@@ -48,6 +48,7 @@ public class QualisRound1 extends AppCompatActivity {
         setContentView(R.layout.activity_qualis_round1);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         table = findViewById(R.id.table);
+        type = getIntent().getStringExtra("Type");
         trackName = getIntent().getStringExtra("Name");
         sec1 = getIntent().getIntExtra("Sector 1", 0);
         sec2 = getIntent().getIntExtra("Sector 2", 0);
@@ -56,8 +57,8 @@ public class QualisRound1 extends AppCompatActivity {
         trackTime = getIntent().getIntExtra("Time", 0);
         rounds = getIntent().getStringExtra("Segments");
         dur = getIntent().getStringExtra("Duration");
-        if(rounds.equals("One")){
-            switch(dur){
+        if (rounds.equals("One")) {
+            switch (dur) {
                 case "Short":
                     duration = 60500;
                     break;
@@ -68,8 +69,8 @@ public class QualisRound1 extends AppCompatActivity {
                     duration = 600000;
                     break;
             }
-        }else{
-            switch(dur){
+        } else {
+            switch (dur) {
                 case "Short":
                     duration = 120000;
                     break;
@@ -139,10 +140,14 @@ public class QualisRound1 extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if(rounds.equals("One"))
-                    moveToRace();
-                else
+                if(type.equals("Championship"))
                     moveToNextRound();
+                else{
+                    if (rounds.equals("One"))
+                        moveToRace();
+                    else
+                        moveToNextRound();
+                }
                 timer.cancel();
                 cancel();
             }
@@ -156,12 +161,12 @@ public class QualisRound1 extends AppCompatActivity {
         intent.putExtra("Sector 1", sec1);
         intent.putExtra("Sector 2", sec2);
         intent.putExtra("Sector 3", sec3);
-        intent.putExtra("Type", "Weekend");
         intent.putExtra("Track", trackName);
         intent.putExtra("Time", trackTime);
         intent.putExtra("Laps", 1200000 / trackTime);
         intent.putExtra("Crash", 100000);
         intent.putExtra("Duration", dur);
+        intent.putExtra("Type", type);
         startActivity(intent);
         finish();
     }
@@ -243,7 +248,7 @@ public class QualisRound1 extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void showSectors(int i){
+    private void showSectors(int i) {
         if (racers[i].thisSec1 != 0) {
             racerSec1[i].setText("੦");
             if (racers[i].thisSec1 <= racers[i].bestSec1) {
@@ -280,33 +285,33 @@ public class QualisRound1 extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    private void showGaps(int i){
+    private void showGaps(int i) {
         int goal = 0;
         if (i > 14)
             goal = 14;
         if (racers[i].thisSec3 != 0 && racers[i].bestTime != 500000) {
             int gap = racers[goal].bestSec3 - racers[i].thisSec3;
             if (gap > 0)
-                racerGaps[i].setText((goal+1) + ": -" +
+                racerGaps[i].setText((goal + 1) + ": -" +
                         DriverQualis.generateTime(Math.abs(racers[goal].bestSec3 - racers[i].thisSec3)));
             else
-                racerGaps[i].setText((goal+1) + ": +" +
+                racerGaps[i].setText((goal + 1) + ": +" +
                         DriverQualis.generateTime(Math.abs(racers[goal].bestSec3 - racers[i].thisSec3)));
         } else if (racers[i].thisSec2 != 0 && racers[i].bestTime != 500000) {
             int gap = racers[goal].bestSec2 - racers[i].thisSec2;
             if (gap > 0)
-                racerGaps[i].setText((goal+1) + ": -" +
+                racerGaps[i].setText((goal + 1) + ": -" +
                         DriverQualis.generateTime(Math.abs(racers[goal].bestSec2 - racers[i].thisSec2)));
             else
-                racerGaps[i].setText((goal+1) + ": +" +
+                racerGaps[i].setText((goal + 1) + ": +" +
                         DriverQualis.generateTime(Math.abs(racers[goal].bestSec2 - racers[i].thisSec2)));
         } else if (racers[i].thisSec1 != 0 && racers[i].bestTime != 500000) {
             int gap = racers[goal].bestSec1 - racers[i].thisSec1;
             if (gap > 0)
-                racerGaps[i].setText((goal+1) + ": -" +
+                racerGaps[i].setText((goal + 1) + ": -" +
                         DriverQualis.generateTime(Math.abs(racers[goal].bestSec1 - racers[i].thisSec1)));
             else
-                racerGaps[i].setText((goal+1) + ": +" +
+                racerGaps[i].setText((goal + 1) + ": +" +
                         DriverQualis.generateTime(Math.abs(racers[goal].bestSec1 - racers[i].thisSec1)));
         }
     }
@@ -383,16 +388,16 @@ public class QualisRound1 extends AppCompatActivity {
 
     private void initializeTextViews() {
         racerNames = new TextView[20];
-        racerNames[0 ] = findViewById(R.id.name1);
-        racerNames[1 ] = findViewById(R.id.name2);
-        racerNames[2 ] = findViewById(R.id.name3);
-        racerNames[3 ] = findViewById(R.id.name4);
-        racerNames[4 ] = findViewById(R.id.name5);
-        racerNames[5 ] = findViewById(R.id.name6);
-        racerNames[6 ] = findViewById(R.id.name7);
-        racerNames[7 ] = findViewById(R.id.name8);
-        racerNames[8 ] = findViewById(R.id.name9);
-        racerNames[9 ] = findViewById(R.id.name10);
+        racerNames[0] = findViewById(R.id.name1);
+        racerNames[1] = findViewById(R.id.name2);
+        racerNames[2] = findViewById(R.id.name3);
+        racerNames[3] = findViewById(R.id.name4);
+        racerNames[4] = findViewById(R.id.name5);
+        racerNames[5] = findViewById(R.id.name6);
+        racerNames[6] = findViewById(R.id.name7);
+        racerNames[7] = findViewById(R.id.name8);
+        racerNames[8] = findViewById(R.id.name9);
+        racerNames[9] = findViewById(R.id.name10);
         racerNames[10] = findViewById(R.id.name11);
         racerNames[11] = findViewById(R.id.name12);
         racerNames[12] = findViewById(R.id.name13);

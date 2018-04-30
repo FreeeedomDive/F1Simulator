@@ -21,13 +21,14 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class RaceActivity extends AppCompatActivity {
 
-    String trackName;
+    String trackName, type;
     String[] names;
     int timeOfLap;
     int laps;
@@ -50,7 +51,7 @@ public class RaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_race_activivty);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        String type = getIntent().getStringExtra("Type");
+        type = getIntent().getStringExtra("Type");
 
         gap = findViewById(R.id.gap);
 
@@ -92,7 +93,7 @@ public class RaceActivity extends AppCompatActivity {
                     "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
             createDrivers();
         }
-        if (type.equals("Weekend")) {
+        if (type.equals("Weekend") || type.equals("Championship")) {
             names = getNamesFromIntent();
             createDrivers();
         }
@@ -204,7 +205,45 @@ public class RaceActivity extends AppCompatActivity {
     }
 
     private void goToStatistic() {
+        if(type.equals("Championship")){
+            DataBase db = new DataBase(getApplicationContext());
+            Driver[] drivers = new Driver[20];
+            db.getAllDrivers().toArray(drivers);
+            for(int i = 0; i < 20; i++){
+                drivers[i].totalRaces++;
+                for(int j = 0; j < 20; j++){
+                    if(drivers[i].name.equals(racers[j].name))
+                        drivers[i].summaryPositions += (j+1);
+                }
+            }
+            for(int i = 0; i < 20; i++){
+                if(drivers[i].name.equals(racers[0].name))
+                    drivers[i].wins++;
+            }
+            increasePoints(drivers, racers[0].name, 25);
+            increasePoints(drivers, racers[1].name, 18);
+            increasePoints(drivers, racers[2].name, 15);
+            increasePoints(drivers, racers[3].name, 12);
+            increasePoints(drivers, racers[4].name, 10);
+            increasePoints(drivers, racers[5].name, 8);
+            increasePoints(drivers, racers[6].name, 6);
+            increasePoints(drivers, racers[7].name, 4);
+            increasePoints(drivers, racers[8].name, 2);
+            increasePoints(drivers, racers[9].name, 1);
+            for(int i = 0; i < 20; i++){
+                if(racers[i].crashed){
+                    for(int j = 0; j < 20; j++){
+                        if(drivers[j].name.equals(racers[i].name))
+                            drivers[i].retires++;
+                    }
+                }
+            }
+            for(int i = 0; i < 20; i++)
+                db.updateDriver(drivers[i]);
+            db.close();
+        }
         final Intent intent = new Intent(RaceActivity.this, Statistics.class);
+        intent.putExtra("Type", type);
         intent.putExtra("top1", racers[0].name);
         intent.putExtra("time1", DriverRace.generateTime(racers[0].totalTime));
         for (int i = 1; i < 20; i++) {
@@ -228,6 +267,13 @@ public class RaceActivity extends AppCompatActivity {
                 finish();
             }
         }.start();
+    }
+
+    private void increasePoints(Driver[] drivers, String name, int points){
+        for(int i = 0; i < 20; i++){
+            if(drivers[i].name.equals(name))
+                drivers[i].points += points;
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -695,7 +741,6 @@ public class RaceActivity extends AppCompatActivity {
                             drs = (int) (Math.random() * 1300 + 200);
                     }
                 }
-                Log.i("DRS for " + racer.name, Integer.toString(drs));
             }
             racer.futureLap = (int) (Math.random() * (racer.rightTime - racer.leftTime) +
                     racer.leftTime + racer.timeOnPit - drs);
