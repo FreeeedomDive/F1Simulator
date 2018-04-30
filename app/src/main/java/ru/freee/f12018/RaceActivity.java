@@ -234,7 +234,7 @@ public class RaceActivity extends AppCompatActivity {
                 if(racers[i].crashed){
                     for(int j = 0; j < 20; j++){
                         if(drivers[j].name.equals(racers[i].name))
-                            drivers[i].retires++;
+                            drivers[j].retires++;
                     }
                 }
             }
