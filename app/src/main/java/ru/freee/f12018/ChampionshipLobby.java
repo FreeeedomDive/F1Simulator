@@ -23,6 +23,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class ChampionshipLobby extends AppCompatActivity {
+    final String CHAMPIONSHIP_MODE = "Mode";
+    final String CHAMPIONSHIP_RACES = "Races";
+    final String CHAMPIONSHIP_CURRENT_RACE = "Current";
     TextView[] trackNames, names, points, wins, poles, retires;
     TextView[] ttrackNames, tnames, tpoints, twins, tpoles, tretires;
     ArrayList<Track> tracks;
@@ -36,10 +39,6 @@ public class ChampionshipLobby extends AppCompatActivity {
     boolean tsortedByPoints = true, tsortedByName = false, tsortedByWins = false,
             tsortedByPoles = false, tsortedByRetires = false;
     SharedPreferences mSharedPref;
-
-    final String CHAMPIONSHIP_MODE = "Mode";
-    final String CHAMPIONSHIP_RACES = "Races";
-    final String CHAMPIONSHIP_CURRENT_RACE = "Current";
     int currentRace;
     Track current;
     boolean finishedChampionship = false;
@@ -55,7 +54,7 @@ public class ChampionshipLobby extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.create:
                 createNewChampionship();
                 return true;
@@ -74,10 +73,10 @@ public class ChampionshipLobby extends AppCompatActivity {
 
         mSharedPref = getPreferences(MODE_PRIVATE);
         String from = getIntent().getStringExtra("From");
-        if(from.equals("Race")){
+        if (from.equals("Race")) {
             currentRace = mSharedPref.getInt(CHAMPIONSHIP_CURRENT_RACE, 0);
             currentRace++;
-            if(currentRace == 21)
+            if (currentRace == 21)
                 finishedChampionship = true;
             SharedPreferences.Editor mEditor = mSharedPref.edit();
             mEditor.putInt(CHAMPIONSHIP_CURRENT_RACE, currentRace);
@@ -138,46 +137,45 @@ public class ChampionshipLobby extends AppCompatActivity {
 
         show();
 
-        if(!mSharedPref.contains(CHAMPIONSHIP_CURRENT_RACE)){
+        if (!mSharedPref.contains(CHAMPIONSHIP_CURRENT_RACE)) {
             SharedPreferences.Editor mEditor = mSharedPref.edit();
             mEditor.putInt(CHAMPIONSHIP_CURRENT_RACE, 0);
             mEditor.apply();
             currentRace = 0;
-        }else{
+        } else {
             currentRace = mSharedPref.getInt(CHAMPIONSHIP_CURRENT_RACE, 0);
-            if(currentRace == 21)
+            if (currentRace == 21)
                 finishedChampionship = true;
         }
-        for(int i = 0; i <= currentRace; i++){
-            if(finishedChampionship){
-                trackNames[i].setBackgroundColor(getColor(R.color.colorGreen));
-                continue;
-            }
-            if(i == currentRace){
-                current = tracks.get(i);
-                trackNames[i].setBackgroundColor(getColor(R.color.colorPurple));
-                continue;
-            }
-            trackNames[i].setBackgroundColor(getColor(R.color.colorGreen));
-        }
 
-        if(!finishedChampionship){
-            currentTrackNumber.setText("Stage " + (currentRace+1) + "/21");
-            currentTrackName.setText("Race in " + current.name);
-            leader.setText("Leader of championship: " + drivers[0].name + " with " +
-                    drivers[0].points + " points");
-        }else{
+        if (finishedChampionship) {
+            for (int i = 0; i < 21; i++) {
+                trackNames[i].setBackgroundColor(getColor(R.color.colorGreen));
+            }
             currentTrackNumber.setText("All stages were completed");
             currentTrackName.setText("The championship is over");
             leader.setText("Winner of championship: " + drivers[0].name + " with " +
                     drivers[0].points + " points");
             nextRace.setText("Reset championship and start new");
+        } else {
+            for (int i = 0; i <= currentRace; i++) {
+                if (i == currentRace) {
+                    current = tracks.get(i);
+                    trackNames[i].setBackgroundColor(getColor(R.color.colorPurple));
+                    continue;
+                }
+                trackNames[i].setBackgroundColor(getColor(R.color.colorGreen));
+            }
+            currentTrackNumber.setText("Stage " + (currentRace + 1) + "/21");
+            currentTrackName.setText("Race in " + current.name);
+            leader.setText("Leader of championship: " + drivers[0].name + " with " +
+                    drivers[0].points + " points");
         }
 
         nextRace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!finishedChampionship){
+                if (!finishedChampionship) {
                     Intent intent = new Intent(ChampionshipLobby.this, QualisRound1.class);
                     intent.putExtra("Name", current.name);
                     intent.putExtra("Sector 1", current.sectors[0]);
@@ -189,7 +187,7 @@ public class ChampionshipLobby extends AppCompatActivity {
                     intent.putExtra("Type", "Championship");
                     startActivity(intent);
                     finish();
-                }else{
+                } else {
                     createNewChampionship();
                 }
             }
@@ -197,8 +195,8 @@ public class ChampionshipLobby extends AppCompatActivity {
         myDataBase.close();
     }
 
-    private void createNewChampionship(){
-        for(int i = 0; i < 20; i++){
+    private void createNewChampionship() {
+        for (int i = 0; i < 20; i++) {
             drivers[i].points = 0;
             drivers[i].wins = 0;
             drivers[i].poles = 0;
