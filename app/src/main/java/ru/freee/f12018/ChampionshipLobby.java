@@ -75,13 +75,32 @@ public class ChampionshipLobby extends AppCompatActivity {
         String from = getIntent().getStringExtra("From");
         if (from.equals("Race")) {
             currentRace = mSharedPref.getInt(CHAMPIONSHIP_CURRENT_RACE, 0);
+            Log.i("Current race", String.valueOf(currentRace));
             currentRace++;
-            if (currentRace == 21)
+            if (currentRace >= 21){
                 finishedChampionship = true;
+                currentRace = 20;
+            }
             SharedPreferences.Editor mEditor = mSharedPref.edit();
             mEditor.putInt(CHAMPIONSHIP_CURRENT_RACE, currentRace);
             mEditor.apply();
+        }else{
+            if (!mSharedPref.contains(CHAMPIONSHIP_CURRENT_RACE)) {
+                SharedPreferences.Editor mEditor = mSharedPref.edit();
+                mEditor.putInt(CHAMPIONSHIP_CURRENT_RACE, 0);
+                mEditor.apply();
+                currentRace = 0;
+            } else {
+                currentRace = mSharedPref.getInt(CHAMPIONSHIP_CURRENT_RACE, 0);
+                Log.i("Current race", String.valueOf(currentRace));
+                if (currentRace >= 21){
+                    finishedChampionship = true;
+                    currentRace = 20;
+                }
+            }
         }
+
+
 
         tracks = new ArrayList<>();
         createTracksList();
@@ -137,16 +156,7 @@ public class ChampionshipLobby extends AppCompatActivity {
 
         show();
 
-        if (!mSharedPref.contains(CHAMPIONSHIP_CURRENT_RACE)) {
-            SharedPreferences.Editor mEditor = mSharedPref.edit();
-            mEditor.putInt(CHAMPIONSHIP_CURRENT_RACE, 0);
-            mEditor.apply();
-            currentRace = 0;
-        } else {
-            currentRace = mSharedPref.getInt(CHAMPIONSHIP_CURRENT_RACE, 0);
-            if (currentRace == 21)
-                finishedChampionship = true;
-        }
+
 
         if (finishedChampionship) {
             for (int i = 0; i < 21; i++) {

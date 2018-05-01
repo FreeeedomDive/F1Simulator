@@ -70,7 +70,11 @@ public class Comparators {
         public int compare(Team team, Team comp) {
             if (team.points > comp.points)
                 return -1;
-            return team.points < comp.points ? 1 : 0;
+            if (team.points < comp.points)
+                return 1;
+            if (team.wins > comp.wins)
+                return -1;
+            return team.wins < comp.wins ? 1 : 0;
         }
     }
 

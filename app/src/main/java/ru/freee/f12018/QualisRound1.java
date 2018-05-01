@@ -83,7 +83,11 @@ public class QualisRound1 extends AppCompatActivity {
             }
         }
         initializeTextViews();
-        createDrivers();
+
+        if (type.equals("Championship"))
+            getDriversFromDB();
+        else
+            createDrivers();
         setTitle("Qualification Round 1 - " + trackName);
         update();
         secondThread = new RaceThread();
@@ -105,6 +109,19 @@ public class QualisRound1 extends AppCompatActivity {
                 secondThread.run();
             }
         }.start();
+    }
+
+    private void getDriversFromDB() {
+        DataBase db = new DataBase(getApplicationContext());
+        Driver[] dr = new Driver[20];
+        db.getAllDrivers().toArray(dr);
+        Comparators.PointsComparator comp = new Comparators.PointsComparator();
+        Arrays.sort(dr, comp);
+        racers = new DriverQualis[20];
+        for(int i = 0; i < 20; i++){
+            racers[i] = new DriverQualis(dr[i].name, sec1, sec2, sec3);
+        }
+        db.close();
     }
 
     @Override
@@ -140,9 +157,9 @@ public class QualisRound1 extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if(type.equals("Championship"))
+                if (type.equals("Championship"))
                     moveToNextRound();
-                else{
+                else {
                     if (rounds.equals("One"))
                         moveToRace();
                     else
@@ -185,11 +202,11 @@ public class QualisRound1 extends AppCompatActivity {
     }
 
     public void changeView(View view) {
+        Log.i("Click", "LL was pressed");
         if (showIntervals) {
             showIntervals = false;
             showTimes = true;
-        }
-        if (showTimes) {
+        } else if (showTimes) {
             showIntervals = true;
             showTimes = false;
         }

@@ -146,8 +146,7 @@ public class QualisRound2 extends AppCompatActivity {
         if (showIntervals) {
             showIntervals = false;
             showTimes = true;
-        }
-        if (showTimes) {
+        } else if (showTimes) {
             showIntervals = true;
             showTimes = false;
         }

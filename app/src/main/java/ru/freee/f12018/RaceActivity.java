@@ -30,7 +30,7 @@ public class RaceActivity extends AppCompatActivity {
 
     String trackName, type;
     String[] names;
-    int timeOfLap;
+    int timeOfLap, amplitude;
     int laps;
     int thisLap = 0;
     int crashID, crashValue;
@@ -52,6 +52,11 @@ public class RaceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_race_activivty);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         type = getIntent().getStringExtra("Type");
+
+        if(type.equals("Championship") || type.equals("Weekend"))
+            amplitude = 750;
+        else
+            amplitude = 500;
 
         gap = findViewById(R.id.gap);
 
@@ -688,7 +693,7 @@ public class RaceActivity extends AppCompatActivity {
             }
             racer.laps = 1;
             racer.futureLap = (int) (Math.random() * (racer.rightTime - racer.leftTime) +
-                    racer.leftTime + 10000 + position * 350);
+                    racer.leftTime + 10000 + position * amplitude);
             new CountDownTimer(racer.futureLap, 25) {
 
                 @Override
