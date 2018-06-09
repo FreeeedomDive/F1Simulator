@@ -3,6 +3,7 @@ package ru.freee.f12018;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -69,6 +70,7 @@ public class ChampionshipLobby extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_championship_lobby);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initialize();
 
         mSharedPref = getPreferences(MODE_PRIVATE);
@@ -79,7 +81,6 @@ public class ChampionshipLobby extends AppCompatActivity {
             currentRace++;
             if (currentRace >= 21){
                 finishedChampionship = true;
-                currentRace = 20;
             }
             SharedPreferences.Editor mEditor = mSharedPref.edit();
             mEditor.putInt(CHAMPIONSHIP_CURRENT_RACE, currentRace);
@@ -95,12 +96,9 @@ public class ChampionshipLobby extends AppCompatActivity {
                 Log.i("Current race", String.valueOf(currentRace));
                 if (currentRace >= 21){
                     finishedChampionship = true;
-                    currentRace = 20;
                 }
             }
         }
-
-
 
         tracks = new ArrayList<>();
         createTracksList();

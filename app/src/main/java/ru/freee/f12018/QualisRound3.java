@@ -250,7 +250,7 @@ public class QualisRound3 extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void showGaps(int i){
         int goal = 0;
-        if (racers[i].thisSec3 != 0 && racers[i].bestTime != 500000) {
+        if (racers[i].thisSec3 != 0 && racers[0].bestTime != 500000) {
             int gap = racers[goal].bestSec3 - racers[i].thisSec3;
             if (gap > 0)
                 racerGaps[i].setText((goal+1) + ": -" +
@@ -258,7 +258,7 @@ public class QualisRound3 extends AppCompatActivity {
             else
                 racerGaps[i].setText((goal+1) + ": +" +
                         DriverQualis.generateTime(Math.abs(racers[goal].bestSec3 - racers[i].thisSec3)));
-        } else if (racers[i].thisSec2 != 0 && racers[i].bestTime != 500000) {
+        } else if (racers[i].thisSec2 != 0 && racers[0].bestTime != 500000) {
             int gap = racers[goal].bestSec2 - racers[i].thisSec2;
             if (gap > 0)
                 racerGaps[i].setText((goal+1) + ": -" +
@@ -266,7 +266,7 @@ public class QualisRound3 extends AppCompatActivity {
             else
                 racerGaps[i].setText((goal+1) + ": +" +
                         DriverQualis.generateTime(Math.abs(racers[goal].bestSec2 - racers[i].thisSec2)));
-        } else if (racers[i].thisSec1 != 0 && racers[i].bestTime != 500000) {
+        } else if (racers[i].thisSec1 != 0 && racers[0].bestTime != 500000) {
             int gap = racers[goal].bestSec1 - racers[i].thisSec1;
             if (gap > 0)
                 racerGaps[i].setText((goal+1) + ": -" +

@@ -53,7 +53,7 @@ public class RaceActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         type = getIntent().getStringExtra("Type");
 
-        if(type.equals("Championship") || type.equals("Weekend"))
+        if (type.equals("Championship") || type.equals("Weekend"))
             amplitude = 750;
         else
             amplitude = 500;
@@ -92,10 +92,13 @@ public class RaceActivity extends AppCompatActivity {
         tabs.addTab(tabSpec);
 
         if (type.equals("Race")) {
-            names = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
+            String[] temp = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
                     "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
                     "Gasly", "Hartley", "Grosjean", "Magnussen",
                     "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
+            for (int i = 0; i < 20; i++){
+                names[i] = temp[19-i];
+            }
             createDrivers();
         }
         if (type.equals("Weekend") || type.equals("Championship")) {
@@ -117,6 +120,11 @@ public class RaceActivity extends AppCompatActivity {
         if (laps >= 20) {
             for (int i = 0; i < 20; i++) {
                 racers[i].pitLap = (int) (Math.random() * (laps / 2) + (laps / 2) - 2);
+                Log.i("Pit", racers[i].name + " " + racers[i].pitLap);
+            }
+        } else {
+            for (int i = 0; i < 20; i++) {
+                racers[i].pitLap = -1;
             }
         }
 
@@ -168,7 +176,6 @@ public class RaceActivity extends AppCompatActivity {
         alert.show();
     }
 
-
     @SuppressLint("SetTextI18n")
     @TargetApi(Build.VERSION_CODES.M)
     private void finishRace() {
@@ -176,29 +183,6 @@ public class RaceActivity extends AppCompatActivity {
         top.setBackgroundColor(getColor(R.color.colorWhite));
         lap.setText("FINISH");
         lap.setBackgroundColor(getColor(R.color.colorWhite));
-        for (int i = 0; i < 20; i++) {
-            if (racers[i].finished || racers[i].crashed) {
-                racerLaps[i].setText("");
-                if (showTotal && !racers[i].crashed) {
-                    racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
-                } else if (showLeader && !racers[i].crashed) {
-                    if (i == 0)
-                        racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
-                    else
-                        racerTotal[i].setText("+" + DriverRace.generateTime(racers[i].totalTime -
-                                racers[0].totalTime));
-                } else if (showInterval && !racers[i].crashed) {
-                    if (i == 0)
-                        racerTotal[i].setText(DriverRace.generateTime(racers[i].totalTime));
-                    else
-                        racerTotal[i].setText("+" + DriverRace.generateTime(racers[i].totalTime -
-                                racers[i - 1].totalTime));
-                }
-                racerThis[i].setText("");
-                racerLast[i].setText(DriverRace.generateTime(racers[i].lastTime));
-                racerBest[i].setText(DriverRace.generateTime(racers[i].bestTime));
-            }
-        }
         if (finishCount == 20) {
             //finish
             endOfRace = true;
@@ -210,19 +194,19 @@ public class RaceActivity extends AppCompatActivity {
     }
 
     private void goToStatistic() {
-        if(type.equals("Championship")){
+        if (type.equals("Championship")) {
             DataBase db = new DataBase(getApplicationContext());
             Driver[] drivers = new Driver[20];
             db.getAllDrivers().toArray(drivers);
-            for(int i = 0; i < 20; i++){
+            for (int i = 0; i < 20; i++) {
                 drivers[i].totalRaces++;
-                for(int j = 0; j < 20; j++){
-                    if(drivers[i].name.equals(racers[j].name))
-                        drivers[i].summaryPositions += (j+1);
+                for (int j = 0; j < 20; j++) {
+                    if (drivers[i].name.equals(racers[j].name))
+                        drivers[i].summaryPositions += (j + 1);
                 }
             }
-            for(int i = 0; i < 20; i++){
-                if(drivers[i].name.equals(racers[0].name))
+            for (int i = 0; i < 20; i++) {
+                if (drivers[i].name.equals(racers[0].name))
                     drivers[i].wins++;
             }
             increasePoints(drivers, racers[0].name, 25);
@@ -235,15 +219,12 @@ public class RaceActivity extends AppCompatActivity {
             increasePoints(drivers, racers[7].name, 4);
             increasePoints(drivers, racers[8].name, 2);
             increasePoints(drivers, racers[9].name, 1);
-            for(int i = 0; i < 20; i++){
-                if(racers[i].crashed){
-                    for(int j = 0; j < 20; j++){
-                        if(drivers[j].name.equals(racers[i].name))
+            for (int i = 0; i < 20; i++)
+                if (racers[i].crashed)
+                    for (int j = 0; j < 20; j++)
+                        if (drivers[j].name.equals(racers[i].name))
                             drivers[j].retires++;
-                    }
-                }
-            }
-            for(int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++)
                 db.updateDriver(drivers[i]);
             db.close();
         }
@@ -274,9 +255,9 @@ public class RaceActivity extends AppCompatActivity {
         }.start();
     }
 
-    private void increasePoints(Driver[] drivers, String name, int points){
-        for(int i = 0; i < 20; i++){
-            if(drivers[i].name.equals(name))
+    private void increasePoints(Driver[] drivers, String name, int points) {
+        for (int i = 0; i < 20; i++) {
+            if (drivers[i].name.equals(name))
                 drivers[i].points += points;
         }
     }
@@ -343,7 +324,15 @@ public class RaceActivity extends AppCompatActivity {
                 racerLaps[i].setText(String.valueOf(racers[i].laps));
                 racerTotal[i].setText("");
                 racerPositions[i].setTextColor(getColor(R.color.colorWhite));
-                racerPositions[i].setText("-");
+                if (racers[i].laps == racers[0].laps) {
+                    int pos = racers[i].allPositions[racers[i].laps - 1];
+                    int last = racers[i].allPositions[racers[i].laps - 2];
+                    int dif = last - pos;
+                    racerPositions[i].setTextColor(getColor(R.color.colorRed));
+                    racerPositions[i].setText("-" + Math.abs(dif));
+                } else {
+                    racerPositions[i].setText("");
+                }
                 racerThis[i].setText("OUT");
                 racerLast[i].setText(DriverRace.generateTime(racers[i].lastTime));
                 racerBest[i].setText(DriverRace.generateTime(racers[i].bestTime));
@@ -733,9 +722,13 @@ public class RaceActivity extends AppCompatActivity {
 
         private void startLap(final DriverRace racer) {
             racer.timeOnPit = 0;
-            int pitChance = (int) (Math.random() * 50 + 1);
-            if (racer.laps == racer.lapTime || pitChance == 15 && racer.laps <= laps - 3)
+            if(racer.laps == racer.pitLap)
                 racer.timeOnPit = (int) (Math.random() * 5000 + 12000);
+            else{
+                int pitChance = (int) (Math.random() * 50 + 1);
+                if (racer.laps == racer.lapTime || pitChance == 15 && racer.laps <= laps - 3)
+                    racer.timeOnPit = (int) (Math.random() * 5000 + 12000);
+            }
             int drs = 0;
             if (racers[0].laps >= 5) {
                 for (int i = 0; i < 20; i++) {
@@ -751,17 +744,19 @@ public class RaceActivity extends AppCompatActivity {
                     racer.leftTime + racer.timeOnPit - drs);
             new CountDownTimer(racer.futureLap, 25) {
                 int crash = 0;
-
                 @Override
                 public void onTick(long l) {
                     crash = (int) (Math.random() * crashValue + 1);
-                    if (crash == crashID && !racer.crashed) {
+                    if (isCrashed(racer) && !racer.crashed) {
                         racer.crashed = true;
                         racer.finished = true;
                         finishCount++;
+                        Arrays.sort(racers);
+                        for (int i = 0; i < 20; i++){
+                            racers[i].allPositions[racers[i].laps - 1] = i+1;
+                        }
                         Log.i("Crash", racer.name + " crashed!");
                         Log.i("Crash", "Count: " + finishCount);
-                        Arrays.sort(racers);
                         if (finishCount == 20)
                             finishRace();
                         cancel();
@@ -810,6 +805,24 @@ public class RaceActivity extends AppCompatActivity {
                     cancel();
                 }
             }.start();
+        }
+
+        private boolean isCrashed(DriverRace driver) {
+            int crash = (int) (Math.random() * crashValue + 1);
+            if (crash == crashID)
+                return true;
+            int index = 0;
+            for (; index < 20; index++) {
+                if (racers[index].equals(driver))
+                    break;
+            }
+            if (index == 0)
+                return false;
+            if (racers[index].totalTime - racers[index - 1].totalTime < 250) {
+                crash = (int) (Math.random() * crashValue + 1);
+                return crash == crashID;
+            }
+            return false;
         }
     }
 }

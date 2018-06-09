@@ -92,7 +92,6 @@ public class DataBase extends SQLiteOpenHelper {
         values.put(KEY_RACES, driver.totalRaces);
         values.put(KEY_POSITIONS, driver.summaryPositions);
 
-
         return db.update(TABLE_DRIVERS, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(driver.id) });
     }

@@ -1,6 +1,8 @@
 package ru.freee.f12018;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 
 public class DriverQualis implements Comparable{
 
@@ -49,11 +51,11 @@ public class DriverQualis implements Comparable{
         }
         if (this.name.equals("Ricciardo") || this.name.equals("Verstappen")) {
             this.leftBorder1 = sec1;
-            this.rightBorder1 = (int) (sec1 * 1.03);
+            this.rightBorder1 = (int) (sec1 * 1.027);
             this.leftBorder2 = sec2;
-            this.rightBorder2 = (int) (sec2 * 1.03);
+            this.rightBorder2 = (int) (sec2 * 1.027);
             this.leftBorder3 = sec3;
-            this.rightBorder3 = (int) (sec3 * 1.03);
+            this.rightBorder3 = (int) (sec3 * 1.027);
         }
         if (this.name.equals("Perez") || this.name.equals("Ocon")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
@@ -65,11 +67,11 @@ public class DriverQualis implements Comparable{
         }
         if (this.name.equals("Stroll") || this.name.equals("Sirotkin")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
-            this.rightBorder1 = (int) (sec1 * 1.04);
+            this.rightBorder1 = (int) (sec1 * 1.045);
             this.leftBorder2 = (int) (sec2 * 1.005);
-            this.rightBorder2 = (int) (sec2 * 1.04);
+            this.rightBorder2 = (int) (sec2 * 1.045);
             this.leftBorder3 = (int) (sec3 * 1.005);
-            this.rightBorder3 = (int) (sec3 * 1.04);
+            this.rightBorder3 = (int) (sec3 * 1.045);
         }
         if (this.name.equals("Hulkenberg") || this.name.equals("Sainz")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
@@ -97,11 +99,11 @@ public class DriverQualis implements Comparable{
         }
         if (this.name.equals("Alonso") || this.name.equals("Vandoorne")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
-            this.rightBorder1 = (int) (sec1 * 1.045);
+            this.rightBorder1 = (int) (sec1 * 1.04);
             this.leftBorder2 = (int) (sec2 * 1.005);
-            this.rightBorder2 = (int) (sec2 * 1.045);
+            this.rightBorder2 = (int) (sec2 * 1.04);
             this.leftBorder3 = (int) (sec3 * 1.005);
-            this.rightBorder3 = (int) (sec3 * 1.045);
+            this.rightBorder3 = (int) (sec3 * 1.04);
         }
         if (this.name.equals("Ericsson") || this.name.equals("Leclerc")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
@@ -135,13 +137,10 @@ public class DriverQualis implements Comparable{
         return hours + ":" + min + ":" + correctSec + "." + correctMillis;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int compareTo(@NonNull Object o) {
         DriverQualis comp = (DriverQualis) o;
-        if(this.bestTime < comp.bestTime)
-            return -1;
-        if(this.bestTime > comp.bestTime)
-            return 1;
-        return 0;
+        return Integer.compare(this.bestTime, comp.bestTime);
     }
 }

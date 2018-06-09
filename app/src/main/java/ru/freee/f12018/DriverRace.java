@@ -43,15 +43,6 @@ public class DriverRace implements Comparable {
         this.pitLap = -1;
     }
 
-    public int getPosition(){
-        for(int i = this.allPositions.length - 1; i >= 0; i++){
-            if(this.allPositions[i] != 0) {
-                return this.allPositions[i];
-            }
-        }
-        return 0;
-    }
-
     private void generateBorders(int time) {
         if (this.name.equals("Hamilton") || this.name.equals("Vettel")) {
             this.leftTime = time;
@@ -59,15 +50,15 @@ public class DriverRace implements Comparable {
         }
         if (this.name.equals("Bottas") || this.name.equals("Raikkonen")) {
             this.leftTime = time;
-            this.rightTime = (int) (time * 1.035);
+            this.rightTime = (int) (time * 1.033);
         }
         if (this.name.equals("Ricciardo") || this.name.equals("Verstappen")) {
             this.leftTime = time;
-            this.rightTime = (int) (time * 1.035);
+            this.rightTime = (int) (time * 1.032);
         }
         if (this.name.equals("Perez") || this.name.equals("Ocon")) {
             this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.04);
+            this.rightTime = (int) (time * 1.045);
         }
         if (this.name.equals("Stroll") || this.name.equals("Sirotkin")) {
             this.leftTime = (int) (time * 1.01);
@@ -91,7 +82,7 @@ public class DriverRace implements Comparable {
         }
         if (this.name.equals("Ericsson") || this.name.equals("Leclerc")) {
             this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.05);
+            this.rightTime = (int) (time * 1.045);
         }
     }
 

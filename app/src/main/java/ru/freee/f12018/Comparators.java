@@ -20,6 +20,10 @@ public class Comparators {
                 return -1;
             if (driver.points < comp.points)
                 return 1;
+            if (driver.wins > comp.wins)
+                return -1;
+            if (driver.wins < comp.wins)
+                return 1;
             if (driver.summaryPositions < comp.summaryPositions)
                 return -1;
             return driver.summaryPositions > comp.summaryPositions ? 1 : 0;

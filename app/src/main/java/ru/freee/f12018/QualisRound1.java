@@ -303,9 +303,7 @@ public class QualisRound1 extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void showGaps(int i) {
-        int goal = 0;
-        if (i > 14)
-            goal = 14;
+        int goal = i > 14 ? 14 : 0;
         if (racers[i].thisSec3 != 0 && racers[i].bestTime != 500000) {
             int gap = racers[goal].bestSec3 - racers[i].thisSec3;
             if (gap > 0)
