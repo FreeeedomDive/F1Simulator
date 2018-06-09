@@ -92,6 +92,7 @@ public class RaceActivity extends AppCompatActivity {
         tabs.addTab(tabSpec);
 
         if (type.equals("Race")) {
+            names = new String[20];
             String[] temp = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
                     "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
                     "Gasly", "Hartley", "Grosjean", "Magnussen",
@@ -688,33 +689,11 @@ public class RaceActivity extends AppCompatActivity {
                 @Override
                 public void onTick(long l) {
                     racer.lapTime = (int) (racer.futureLap - l);
-                    //update();
                 }
 
                 @Override
                 public void onFinish() {
-                    racer.totalTime += racer.futureLap;
-                    racer.lastTime = racer.futureLap;
-                    if (racer.lastTime < racer.bestTime) {
-                        racer.bestTime = racer.lastTime;
-                        if (racer.bestTime < bestLap)
-                            bestLap = racer.bestTime;
-                    }
-                    racer.lapTime = 0;
-                    racer.laps++;
-                    Arrays.sort(racers);
-                    int position = -1;
-                    for (int i = 0; i < 20; i++) {
-                        racers[i].allPositions[1] = i + 1;
-                        if (racer.equals(racers[i]))
-                            position = i;
-                    }
-                    Log.i(racer.shortName, Arrays.toString(racer.allPositions));
-                    if (position == 0) {
-                        thisLap = racer.laps;
-                        lap.setText(thisLap + "/" + laps);
-                    }
-                    startLap(racer);
+                    finishLap(racer);
                     cancel();
                 }
             }.start();
@@ -763,48 +742,51 @@ public class RaceActivity extends AppCompatActivity {
                     } else {
                         racer.lapTime = (int) (racer.futureLap - l);
                     }
-                    //update();
                 }
 
                 @Override
                 public void onFinish() {
-                    if (!racer.crashed) {
-                        racer.totalTime += racer.futureLap;
-                        racer.lastTime = racer.futureLap;
-                        if (racer.lastTime < racer.bestTime) {
-                            racer.bestTime = racer.lastTime;
-                            if (racer.bestTime < bestLap)
-                                bestLap = racer.bestTime;
-                        }
-                        racer.lapTime = 0;
-                        racer.laps++;
-                        Arrays.sort(racers);
-                        int position = -1;
-                        for (int i = 0; i < 20; i++) {
-                            if (racers[i].laps == racers[0].laps)
-                                racers[i].allPositions[racers[i].laps - 1] = i + 1;
-                            if (racer.equals(racers[i]))
-                                position = i;
-                        }
-                        racer.allPositions[racer.laps - 1] = position + 1;
-                        Log.i(racer.shortName, Arrays.toString(racer.allPositions));
-                        if (position == 0) {
-                            thisLap = racer.laps;
-                            lap.setText(thisLap + "/" + laps);
-                        }
-                    }
-                    if (racer.laps <= laps && !finish)
-                        startLap(racer);
-                    else {
-                        finish = true;
-                        racer.finished = true;
-                        finishCount++;
-                        Log.i("Finished: ", racer.name);
-                        finishRace();
-                    }
+                    finishLap(racer);
                     cancel();
                 }
             }.start();
+        }
+
+        private void finishLap(final DriverRace racer){
+            if (!racer.crashed) {
+                racer.totalTime += racer.futureLap;
+                racer.lastTime = racer.futureLap;
+                if (racer.lastTime < racer.bestTime) {
+                    racer.bestTime = racer.lastTime;
+                    if (racer.bestTime < bestLap)
+                        bestLap = racer.bestTime;
+                }
+                racer.lapTime = 0;
+                racer.laps++;
+                Arrays.sort(racers);
+                int position = -1;
+                for (int i = 0; i < 20; i++) {
+                    if (racers[i].laps == racers[0].laps)
+                        racers[i].allPositions[racers[i].laps - 1] = i + 1;
+                    if (racer.equals(racers[i]))
+                        position = i;
+                }
+                racer.allPositions[racer.laps - 1] = position + 1;
+                Log.i(racer.shortName, Arrays.toString(racer.allPositions));
+                if (position == 0) {
+                    thisLap = racer.laps;
+                    lap.setText(thisLap + "/" + laps);
+                }
+            }
+            if (racer.laps <= laps && !finish)
+                startLap(racer);
+            else {
+                finish = true;
+                racer.finished = true;
+                finishCount++;
+                Log.i("Finished: ", racer.name);
+                finishRace();
+            }
         }
 
         private boolean isCrashed(DriverRace driver) {

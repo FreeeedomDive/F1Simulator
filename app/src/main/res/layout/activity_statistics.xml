@@ -11,7 +11,7 @@
         android:id="@+id/tab1"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:background="@drawable/statistics"
+        android:background="@drawable/statistics2"
         android:orientation="horizontal"
         android:weightSum="10">
 
