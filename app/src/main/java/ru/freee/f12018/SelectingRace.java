@@ -178,7 +178,7 @@ public class SelectingRace extends AppCompatActivity {
         tracks.add(new Track("Spain", "Catalonia"));
         tracks.add(new Track("Monaco", "Monte-Carlo"));
         tracks.add(new Track("Canada", "Monreal"));
-        tracks.add(new Track("France", "Nevers"));
+        tracks.add(new Track("France", "Paul Ricard"));
         tracks.add(new Track("Austria", "Spielberg"));
         tracks.add(new Track("Britain", "Silverstone"));
         tracks.add(new Track("Germany", "Hockenheimring"));
