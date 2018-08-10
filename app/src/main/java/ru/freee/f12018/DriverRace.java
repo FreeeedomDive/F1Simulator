@@ -50,11 +50,11 @@ public class DriverRace implements Comparable {
         }
         if (this.name.equals("Bottas") || this.name.equals("Raikkonen")) {
             this.leftTime = time;
-            this.rightTime = (int) (time * 1.033);
+            this.rightTime = (int) (time * 1.032);
         }
         if (this.name.equals("Ricciardo") || this.name.equals("Verstappen")) {
             this.leftTime = time;
-            this.rightTime = (int) (time * 1.032);
+            this.rightTime = (int) (time * 1.031);
         }
         if (this.name.equals("Perez") || this.name.equals("Ocon")) {
             this.leftTime = (int) (time * 1.01);
@@ -62,27 +62,35 @@ public class DriverRace implements Comparable {
         }
         if (this.name.equals("Stroll") || this.name.equals("Sirotkin")) {
             this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.045);
+            this.rightTime = (int) (time * 1.048);
         }
         if (this.name.equals("Hulkenberg") || this.name.equals("Sainz")) {
             this.leftTime = (int) (time * 1.01);
             this.rightTime = (int) (time * 1.04);
         }
-        if (this.name.equals("Gasly") || this.name.equals("Hartley")) {
+        if (this.name.equals("Gasly")) {
             this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.045);
+            this.rightTime = (int) (time * 1.0425);
+        }
+        if(this.name.equals("Hartley")){
+            this.leftTime = (int) (time * 1.01);
+            this.rightTime = (int) (time * 1.05);
         }
         if (this.name.equals("Grosjean") || this.name.equals("Magnussen")) {
             this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.045);
+            this.rightTime = (int) (time * 1.04);
         }
         if (this.name.equals("Alonso") || this.name.equals("Vandoorne")) {
             this.leftTime = (int) (time * 1.01);
             this.rightTime = (int) (time * 1.04);
         }
-        if (this.name.equals("Ericsson") || this.name.equals("Leclerc")) {
+        if(this.name.equals("Leclerc")){
             this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.045);
+            this.rightTime = (int) (time * 1.043);
+        }
+        if (this.name.equals("Ericsson")) {
+            this.leftTime = (int) (time * 1.01);
+            this.rightTime = (int) (time * 1.046);
         }
     }
 

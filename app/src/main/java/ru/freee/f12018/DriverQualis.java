@@ -4,7 +4,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
-public class DriverQualis implements Comparable{
+public class DriverQualis implements Comparable {
 
     final public String name;
     final public String shortName;
@@ -25,7 +25,7 @@ public class DriverQualis implements Comparable{
     public boolean started = false;
     public boolean finished = false;
 
-    public DriverQualis(String name, int sec1, int sec2, int sec3){
+    public DriverQualis(String name, int sec1, int sec2, int sec3) {
         this.name = name;
         this.shortName = name.substring(0, 3).toUpperCase();
         generateBorders(sec1, sec2, sec3);
@@ -43,19 +43,19 @@ public class DriverQualis implements Comparable{
         }
         if (this.name.equals("Bottas") || this.name.equals("Raikkonen")) {
             this.leftBorder1 = sec1;
-            this.rightBorder1 = (int) (sec1 * 1.029);
-            this.leftBorder2 = sec2;
-            this.rightBorder2 = (int) (sec2 * 1.029);
-            this.leftBorder3 = sec3;
-            this.rightBorder3 = (int) (sec3 * 1.029);
-        }
-        if (this.name.equals("Ricciardo") || this.name.equals("Verstappen")) {
-            this.leftBorder1 = sec1;
             this.rightBorder1 = (int) (sec1 * 1.027);
             this.leftBorder2 = sec2;
             this.rightBorder2 = (int) (sec2 * 1.027);
             this.leftBorder3 = sec3;
             this.rightBorder3 = (int) (sec3 * 1.027);
+        }
+        if (this.name.equals("Ricciardo") || this.name.equals("Verstappen")) {
+            this.leftBorder1 = sec1;
+            this.rightBorder1 = (int) (sec1 * 1.026);
+            this.leftBorder2 = sec2;
+            this.rightBorder2 = (int) (sec2 * 1.026);
+            this.leftBorder3 = sec3;
+            this.rightBorder3 = (int) (sec3 * 1.026);
         }
         if (this.name.equals("Perez") || this.name.equals("Ocon")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
@@ -81,21 +81,13 @@ public class DriverQualis implements Comparable{
             this.leftBorder3 = (int) (sec3 * 1.005);
             this.rightBorder3 = (int) (sec3 * 1.04);
         }
-        if (this.name.equals("Gasly") || this.name.equals("Hartley")) {
-            this.leftBorder1 = (int) (sec1 * 1.01);
-            this.rightBorder1 = (int) (sec1 * 1.045);
-            this.leftBorder2 = (int) (sec2 * 1.01);
-            this.rightBorder2 = (int) (sec2 * 1.045);
-            this.leftBorder3 = (int) (sec3 * 1.01);
-            this.rightBorder3 = (int) (sec3 * 1.045);
-        }
         if (this.name.equals("Grosjean") || this.name.equals("Magnussen")) {
-            this.leftBorder1 = (int) (sec1 * 1.01);
-            this.rightBorder1 = (int) (sec1 * 1.045);
-            this.leftBorder2 = (int) (sec2 * 1.01);
-            this.rightBorder2 = (int) (sec2 * 1.045);
-            this.leftBorder3 = (int) (sec3 * 1.01);
-            this.rightBorder3 = (int) (sec3 * 1.045);
+            this.leftBorder1 = (int) (sec1 * 1.005);
+            this.rightBorder1 = (int) (sec1 * 1.04);
+            this.leftBorder2 = (int) (sec2 * 1.005);
+            this.rightBorder2 = (int) (sec2 * 1.04);
+            this.leftBorder3 = (int) (sec3 * 1.005);
+            this.rightBorder3 = (int) (sec3 * 1.04);
         }
         if (this.name.equals("Alonso") || this.name.equals("Vandoorne")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
@@ -105,7 +97,7 @@ public class DriverQualis implements Comparable{
             this.leftBorder3 = (int) (sec3 * 1.005);
             this.rightBorder3 = (int) (sec3 * 1.04);
         }
-        if (this.name.equals("Ericsson") || this.name.equals("Leclerc")) {
+        if (this.name.equals("Ericsson") || this.name.equals("Hartley")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
             this.rightBorder1 = (int) (sec1 * 1.05);
             this.leftBorder2 = (int) (sec2 * 1.005);
@@ -113,26 +105,34 @@ public class DriverQualis implements Comparable{
             this.leftBorder3 = (int) (sec3 * 1.005);
             this.rightBorder3 = (int) (sec3 * 1.05);
         }
+        if (this.name.equals("Leclerc") || this.name.equals("Gasly")) {
+            this.leftBorder1 = (int) (sec1 * 1.005);
+            this.rightBorder1 = (int) (sec1 * 1.042);
+            this.leftBorder2 = (int) (sec2 * 1.005);
+            this.rightBorder2 = (int) (sec2 * 1.042);
+            this.leftBorder3 = (int) (sec3 * 1.005);
+            this.rightBorder3 = (int) (sec3 * 1.042);
+        }
     }
 
-    static String generateTime(int time){
+    static String generateTime(int time) {
         int hours = time / 3600000;
         time %= 3600000;
         int millis = time % 1000;
         String correctMillis;
-        if(millis >= 100)
+        if (millis >= 100)
             correctMillis = Integer.toString(millis);
-        else if(millis >= 10)
+        else if (millis >= 10)
             correctMillis = "0" + millis;
         else correctMillis = "00" + millis;
         int sec = time / 1000;
         int min = sec / 60;
         sec = sec % 60;
         String correctSec;
-        if(sec >= 10)
+        if (sec >= 10)
             correctSec = Integer.toString(sec);
         else correctSec = "0" + sec;
-        if(hours == 0)
+        if (hours == 0)
             return min + ":" + correctSec + "." + correctMillis;
         return hours + ":" + min + ":" + correctSec + "." + correctMillis;
     }
