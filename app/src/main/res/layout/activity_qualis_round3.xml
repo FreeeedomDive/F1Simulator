@@ -755,7 +755,7 @@
                 android:id="@+id/gap1"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 
@@ -763,7 +763,7 @@
                 android:id="@+id/gap2"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 
@@ -771,7 +771,7 @@
                 android:id="@+id/gap3"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 
@@ -779,7 +779,7 @@
                 android:id="@+id/gap4"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 
@@ -787,7 +787,7 @@
                 android:id="@+id/gap5"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 
@@ -795,7 +795,7 @@
                 android:id="@+id/gap6"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 
@@ -803,7 +803,7 @@
                 android:id="@+id/gap7"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 
@@ -811,7 +811,7 @@
                 android:id="@+id/gap8"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 
@@ -819,7 +819,7 @@
                 android:id="@+id/gap9"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 
@@ -827,7 +827,7 @@
                 android:id="@+id/gap10"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:text=""
                 android:textColor="@android:color/white" />
 

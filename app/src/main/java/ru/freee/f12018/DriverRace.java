@@ -1,8 +1,5 @@
 package ru.freee.f12018;
 
-
-import java.util.ArrayList;
-
 public class DriverRace implements Comparable {
 
     public String name;
@@ -74,7 +71,7 @@ public class DriverRace implements Comparable {
         }
         if(this.name.equals("Hartley")){
             this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.05);
+            this.rightTime = (int) (time * 1.048);
         }
         if (this.name.equals("Grosjean") || this.name.equals("Magnussen")) {
             this.leftTime = (int) (time * 1.01);

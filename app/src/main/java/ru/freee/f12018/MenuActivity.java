@@ -31,19 +31,16 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void SelectRace(View view) {
-        //Toast.makeText(this, "Not yet implemented...", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(MenuActivity.this, SelectingRace.class);
         startActivity(i);
     }
 
     public void SelectWeekend(View view) {
-        //Toast.makeText(this, "Not yet implemented...", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(MenuActivity.this, SelectingRaceForWeekend.class);
         startActivity(i);
     }
 
     public void SelectChamp(View view) {
-        //Toast.makeText(this, "Not yet implemented...", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(MenuActivity.this, ChampionshipLobby.class);
         i.putExtra("From", "Menu");
         startActivity(i);

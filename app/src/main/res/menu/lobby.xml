@@ -5,4 +5,7 @@
     <item
         android:id="@+id/create"
         android:title="Reset championship" />
+    <item
+        android:id="@+id/info"
+        android:title="Show more info" />
 </menu>

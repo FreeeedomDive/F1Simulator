@@ -15,6 +15,12 @@ public class Driver{
     public int totalRaces;
     public int summaryPositions;
 
+    public int q2;
+    public int q3;
+
+    public int qualTeammateWins;
+    public int raceTeammateWins;
+
     public Driver(String name) {
         this.name = name;
         this.shortName = name.substring(0, 3).toUpperCase();
@@ -24,10 +30,14 @@ public class Driver{
         this.poles = 0;
         this.totalRaces = 0;
         this.summaryPositions = 0;
+        this.q2 = 0;
+        this.q3 = 0;
+        this.qualTeammateWins = 0;
+        this.raceTeammateWins = 0;
     }
 
     public Driver(int id, String name, int points, int wins, int poles, int retires,
-                  int totalRaces, int summaryPositions){
+                  int totalRaces, int summaryPositions, int q2, int q3, int qual, int race){
         this.id = id;
         this.name = name;
         this.shortName = name.substring(0, 3).toUpperCase();
@@ -37,6 +47,10 @@ public class Driver{
         this.retires = retires;
         this.totalRaces = totalRaces;
         this.summaryPositions = summaryPositions;
+        this.q2 = q2;
+        this.q3 = q3;
+        this.qualTeammateWins = qual;
+        this.raceTeammateWins = race;
     }
 
     @Override

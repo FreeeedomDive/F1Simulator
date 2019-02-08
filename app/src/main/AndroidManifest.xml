@@ -4,11 +4,12 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo_square"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DriversInformation"></activity>
         <activity android:name=".MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +24,7 @@
         <activity android:name=".QualisRound2" />
         <activity android:name=".QualisRound3" />
         <activity android:name=".Statistics" />
-        <activity android:name=".ChampionshipLobby"></activity>
+        <activity android:name=".ChampionshipLobby" />
     </application>
 
 </manifest>

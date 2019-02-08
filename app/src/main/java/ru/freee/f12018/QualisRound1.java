@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import es.dmoral.toasty.Toasty;
+
 public class QualisRound1 extends AppCompatActivity {
 
     String trackName, type;
@@ -146,7 +148,7 @@ public class QualisRound1 extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void endRound() {
-        Toast.makeText(getApplicationContext(), "End of round 1", Toast.LENGTH_SHORT).show();
+        Toasty.success(getApplicationContext(), "End of Q1", Toast.LENGTH_SHORT).show();
         table.setBackground(getDrawable(R.drawable.tablequals1finish));
         new CountDownTimer(5000, 1000) {
 
@@ -623,7 +625,7 @@ public class QualisRound1 extends AppCompatActivity {
                         @Override
                         public void run() {
                             information.setBackgroundColor(getColor(R.color.colorWhite));
-                            Toast.makeText(getApplicationContext(), "Сheckered flag", Toast.LENGTH_SHORT).show();
+                            Toasty.info(getApplicationContext(), "Checkered flag", Toast.LENGTH_SHORT).show();
                             information.setText("Сheckered flag!");
                         }
                     });

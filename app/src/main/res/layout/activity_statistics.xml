@@ -2,446 +2,501 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ap="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Statistics">
 
-    <LinearLayout
-        android:id="@+id/tab1"
+    <TabHost
+        android:id="@+id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:background="@drawable/statistics2"
-        android:orientation="horizontal"
-        android:weightSum="10">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/namesLayout"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_weight="5"
-            android:orientation="vertical"
-            android:weightSum="20">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/name1"
+            <TabWidget
+                android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/name2"
+            <FrameLayout
+                android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/name3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/name4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                    <com.androidplot.xy.XYPlot
+                        android:id="@+id/plot"
+                        style="@style/APDefacto.Dark"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        ap:domainLineColor="@color/ap_transparent"
+                        ap:domainOriginLineColor="@color/ap_transparent"
+                        ap:domainTitle="laps"
+                        ap:lineLabelRotationBottom="-45"
+                        ap:rangeLineColor="@color/ap_transparent"
+                        ap:rangeOriginLineColor="@color/ap_transparent"
+                        ap:rangeTitle="positions"
+                        ap:title="Laps history"
+                        app:lineLabels="left|right|bottom" />
 
-            <TextView
-                android:id="@+id/name5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/name6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/name7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:background="@drawable/statistics2"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
 
-            <TextView
-                android:id="@+id/name8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                        <LinearLayout
+                            android:id="@+id/namesLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="400dp"
+                            android:layout_weight="5"
+                            android:orientation="vertical"
+                            android:weightSum="20">
 
-            <TextView
-                android:id="@+id/name9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name13"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name7"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name17"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name9"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name18"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name10"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name19"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name20"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/name12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
+                            <TextView
+                                android:id="@+id/name13"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/name14"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/name15"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/name16"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/name17"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/name18"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/name19"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/name20"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/timeLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="400dp"
+                            android:layout_weight="5"
+                            android:orientation="vertical"
+                            android:weightSum="20">
+
+                            <TextView
+                                android:id="@+id/time1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time7"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time9"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time10"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time13"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time14"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time15"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time16"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time17"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time18"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time19"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time20"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="right|center_vertical"
+                                android:text="TextView"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/ret"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Return" />
+
+                </LinearLayout>
+
+            </FrameLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/timeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_weight="5"
-            android:orientation="vertical"
-            android:weightSum="20">
-
-            <TextView
-                android:id="@+id/time1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time13"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time16"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time17"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time18"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time19"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/time20"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="TextView"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/ret"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Return" />
+    </TabHost>
 
 </LinearLayout>

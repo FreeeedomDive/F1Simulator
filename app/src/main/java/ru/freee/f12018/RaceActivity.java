@@ -2,29 +2,27 @@ package ru.freee.f12018;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import es.dmoral.toasty.Toasty;
 
 public class RaceActivity extends AppCompatActivity {
 
@@ -54,7 +52,7 @@ public class RaceActivity extends AppCompatActivity {
         type = getIntent().getStringExtra("Type");
 
         if (type.equals("Championship") || type.equals("Weekend"))
-            amplitude = 750;
+            amplitude = 650;
         else
             amplitude = 500;
 
@@ -77,28 +75,14 @@ public class RaceActivity extends AppCompatActivity {
         laps = getIntent().getIntExtra("Laps", 0);
         setTitle("Race in " + trackName);
 
-        TabHost tabs = findViewById(R.id.tabHost);
-        tabs.setup();
-
-        TabHost.TabSpec tabSpec = tabs.newTabSpec("tag1");
-
-        tabSpec.setContent(R.id.tab1);
-        tabSpec.setIndicator("Race");
-        tabs.addTab(tabSpec);
-
-        tabSpec = tabs.newTabSpec("tag2");
-        tabSpec.setContent(R.id.tab2);
-        tabSpec.setIndicator("");
-        tabs.addTab(tabSpec);
-
         if (type.equals("Race")) {
             names = new String[20];
             String[] temp = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
                     "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
                     "Gasly", "Hartley", "Grosjean", "Magnussen",
                     "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
-            for (int i = 0; i < 20; i++){
-                names[i] = temp[19-i];
+            for (int i = 0; i < 20; i++) {
+                names[i] = temp[19 - i];
             }
             createDrivers();
         }
@@ -160,8 +144,8 @@ public class RaceActivity extends AppCompatActivity {
 
     private void exit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(RaceActivity.this);
-        builder.setTitle("Confirm quit");  // заголовок
-        builder.setMessage("Do you really want to quit?"); // сообщение
+        builder.setTitle("Confirm quit");
+        builder.setMessage("Do you really want to quit?");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 finish();
@@ -187,9 +171,12 @@ public class RaceActivity extends AppCompatActivity {
         if (finishCount == 20) {
             //finish
             endOfRace = true;
-            Toast.makeText(getApplicationContext(), "FINISH", Toast.LENGTH_SHORT).show();
+            Toasty.success(getApplicationContext(), "FINISH", Toast.LENGTH_SHORT).show();
             for (int i = 0; i < 20; i++)
                 racerTotal[i].setTextColor(getColor(R.color.colorWhite));
+            for (int i = 0; i < 20; i++) {
+                Log.i(racers[i].shortName, Arrays.toString(racers[i].allPositions));
+            }
             goToStatistic();
         }
     }
@@ -199,6 +186,25 @@ public class RaceActivity extends AppCompatActivity {
             DataBase db = new DataBase(getApplicationContext());
             Driver[] drivers = new Driver[20];
             db.getAllDrivers().toArray(drivers);
+            for (int i = 0; i < 20; i++) {
+                if (drivers[i].name.equals(names[0])) {
+                    drivers[i].poles++;
+                    Log.i("Pole writed in code", names[0] + ", " + drivers[i]);
+                    db.updateDriver(drivers[i]);
+                }
+            }
+            for (int i = 0; i < 15; i++) {
+                for (int j = 0; j < 20; j++) {
+                    if (drivers[j].name.equals(names[i]))
+                        drivers[j].q2++;
+                }
+            }
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 20; j++) {
+                    if (drivers[j].name.equals(names[i]))
+                        drivers[j].q3++;
+                }
+            }
             for (int i = 0; i < 20; i++) {
                 drivers[i].totalRaces++;
                 for (int j = 0; j < 20; j++) {
@@ -210,6 +216,28 @@ public class RaceActivity extends AppCompatActivity {
                 if (drivers[i].name.equals(racers[0].name))
                     drivers[i].wins++;
             }
+            setTeamQualRivalry(drivers, "Hamilton", "Bottas");
+            setTeamQualRivalry(drivers, "Vettel", "Raikkonen");
+            setTeamQualRivalry(drivers, "Ricciardo", "Verstappen");
+            setTeamQualRivalry(drivers, "Perez", "Ocon");
+            setTeamQualRivalry(drivers, "Stroll", "Sirotkin");
+            setTeamQualRivalry(drivers, "Hulkenberg", "Sainz");
+            setTeamQualRivalry(drivers, "Gasly", "Hartley");
+            setTeamQualRivalry(drivers, "Grosjean", "Magnussen");
+            setTeamQualRivalry(drivers, "Alonso", "Vandoorne");
+            setTeamQualRivalry(drivers, "Ericsson", "Leclerc");
+
+            setTeamRaceRivalry(drivers, "Hamilton", "Bottas");
+            setTeamRaceRivalry(drivers, "Vettel", "Raikkonen");
+            setTeamRaceRivalry(drivers, "Ricciardo", "Verstappen");
+            setTeamRaceRivalry(drivers, "Perez", "Ocon");
+            setTeamRaceRivalry(drivers, "Stroll", "Sirotkin");
+            setTeamRaceRivalry(drivers, "Hulkenberg", "Sainz");
+            setTeamRaceRivalry(drivers, "Gasly", "Hartley");
+            setTeamRaceRivalry(drivers, "Grosjean", "Magnussen");
+            setTeamRaceRivalry(drivers, "Alonso", "Vandoorne");
+            setTeamRaceRivalry(drivers, "Ericsson", "Leclerc");
+
             increasePoints(drivers, racers[0].name, 25);
             increasePoints(drivers, racers[1].name, 18);
             increasePoints(drivers, racers[2].name, 15);
@@ -241,6 +269,10 @@ public class RaceActivity extends AppCompatActivity {
             else
                 intent.putExtra("time" + (i + 1), "DNF");
         }
+        intent.putExtra("laps", laps);
+        for (int i = 0; i < 20; i++) {
+            intent.putExtra(racers[i].shortName, racers[i].allPositions);
+        }
         new CountDownTimer(5000, 5000) {
 
             @Override
@@ -254,6 +286,40 @@ public class RaceActivity extends AppCompatActivity {
                 finish();
             }
         }.start();
+    }
+
+    private void setTeamQualRivalry(Driver[] drivers, String name1, String name2) {
+        int pos1 = 0, pos2 = 0;
+        for (int i = 0; i < 20; i++) {
+            if (names[i].equals(name1))
+                pos1 = i;
+            else if (names[i].equals(name2))
+                pos2 = i;
+        }
+        String winner = pos1 < pos2 ? name1 : name2;
+        for (int i = 0; i < 20; i++) {
+            if (drivers[i].name.equals(winner))
+                drivers[i].qualTeammateWins++;
+        }
+    }
+
+    private void setTeamRaceRivalry(Driver[] drivers, String name1, String name2) {
+        DriverRace racer1 = null, racer2 = null;
+        for (int i = 0; i < 20; i++) {
+            if (racers[i].name.equals(name1))
+                racer1 = racers[i];
+            else if (racers[i].name.equals(name2))
+                racer2 = racers[i];
+        }
+        assert racer1 != null;
+        assert racer2 != null;
+        Log.i("Race rival", racer1.shortName + " - " + racer1.allPositions[racer1.allPositions.length - 1] + " "
+            + racer2.shortName + " - " + racer2.allPositions[racer2.allPositions.length - 1]);
+        DriverRace winner = racer1.allPositions[racer1.allPositions.length - 1] < racer2.allPositions[racer2.allPositions.length - 1] ? racer1 : racer2;
+        for (int i = 0; i < 20; i++) {
+            if (drivers[i].name.equals(winner.name))
+                drivers[i].raceTeammateWins++;
+        }
     }
 
     private void increasePoints(Driver[] drivers, String name, int points) {
@@ -683,7 +749,7 @@ public class RaceActivity extends AppCompatActivity {
             }
             racer.laps = 1;
             racer.futureLap = (int) (Math.random() * (racer.rightTime - racer.leftTime) +
-                    racer.leftTime + 10000 + position * amplitude);
+                    racer.leftTime + 3000 + position * amplitude);
             new CountDownTimer(racer.futureLap, 25) {
 
                 @Override
@@ -701,10 +767,10 @@ public class RaceActivity extends AppCompatActivity {
 
         private void startLap(final DriverRace racer) {
             racer.timeOnPit = 0;
-            if(racer.laps == racer.pitLap)
+            if (racer.laps == racer.pitLap)
                 racer.timeOnPit = (int) (Math.random() * 5000 + 12000);
-            else{
-                int pitChance = (int) (Math.random() * 50 + 1);
+            else {
+                int pitChance = (int) (Math.random() * 250 + 1);
                 if (racer.laps == racer.lapTime || pitChance == 15 && racer.laps <= laps - 3)
                     racer.timeOnPit = (int) (Math.random() * 5000 + 12000);
             }
@@ -715,7 +781,7 @@ public class RaceActivity extends AppCompatActivity {
                         if (i == 0)
                             break;
                         if (racer.totalTime - racers[i - 1].totalTime <= 1000)
-                            drs = (int) (Math.random() * 1300 + 200);
+                            drs = (int) (Math.random() * 800 + 200);
                     }
                 }
             }
@@ -723,6 +789,7 @@ public class RaceActivity extends AppCompatActivity {
                     racer.leftTime + racer.timeOnPit - drs);
             new CountDownTimer(racer.futureLap, 25) {
                 int crash = 0;
+
                 @Override
                 public void onTick(long l) {
                     crash = (int) (Math.random() * crashValue + 1);
@@ -731,8 +798,13 @@ public class RaceActivity extends AppCompatActivity {
                         racer.finished = true;
                         finishCount++;
                         Arrays.sort(racers);
-                        for (int i = 0; i < 20; i++){
-                            racers[i].allPositions[racers[i].laps - 1] = i+1;
+                        int pos = 0;
+                        for (int i = 0; i < 20; i++) {
+                            if (racers[i].equals(racer))
+                                pos = i + 1;
+                        }
+                        for (int i = racer.laps; i <= laps; i++) {
+                            racer.allPositions[i] = pos;
                         }
                         Log.i("Crash", racer.name + " crashed!");
                         Log.i("Crash", "Count: " + finishCount);
@@ -752,14 +824,17 @@ public class RaceActivity extends AppCompatActivity {
             }.start();
         }
 
-        private void finishLap(final DriverRace racer){
+        private void finishLap(final DriverRace racer) {
             if (!racer.crashed) {
                 racer.totalTime += racer.futureLap;
                 racer.lastTime = racer.futureLap;
                 if (racer.lastTime < racer.bestTime) {
                     racer.bestTime = racer.lastTime;
-                    if (racer.bestTime < bestLap)
+                    if (racer.bestTime < bestLap) {
                         bestLap = racer.bestTime;
+                        Toasty.custom(getApplicationContext(), racer.name + "\nBest lap: " + DriverRace.generateTime(bestLap), null,
+                                Color.rgb(172, 0, 240), Color.WHITE, 1, false, true).show();
+                    }
                 }
                 racer.lapTime = 0;
                 racer.laps++;

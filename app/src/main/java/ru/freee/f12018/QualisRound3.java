@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import es.dmoral.toasty.Toasty;
+
 public class QualisRound3 extends AppCompatActivity {
 
     String names[];
@@ -99,7 +101,7 @@ public class QualisRound3 extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void endRound() {
-        Toast.makeText(getApplicationContext(), "End of round 3", Toast.LENGTH_SHORT).show();
+        Toasty.success(getApplicationContext(), "End of Q3", Toast.LENGTH_SHORT).show();
         table.setBackground(getDrawable(R.drawable.tablequals3finish));
         new CountDownTimer(5000, 1000) {
 
@@ -118,20 +120,6 @@ public class QualisRound3 extends AppCompatActivity {
     }
 
     private void moveToRace() {
-        if(type.equals("Championship")){
-            Log.i("DB", "It is champ");
-            DataBase db = new DataBase(getApplicationContext());
-            Driver[] drivers = new Driver[20];
-            db.getAllDrivers().toArray(drivers);
-            for(int i = 0; i < 20; i++){
-                if(drivers[i].name.equals(racers[0].name)){
-                    drivers[i].poles++;
-                    Log.i("Pole writed in code", racers[0].name + ", " + drivers[i]);
-                    db.updateDriver(drivers[i]);
-                }
-            }
-            db.close();
-        }
         Intent intent = new Intent(QualisRound3.this, RaceActivity.class);
         for (int i = 0; i < 10; i++)
             intent.putExtra("top" + (i + 1), racers[i].name);
@@ -140,7 +128,7 @@ public class QualisRound3 extends AppCompatActivity {
         intent.putExtra("Track", trackName);
         intent.putExtra("Time", trackTime);
         intent.putExtra("Laps", 1200000 / trackTime);
-        intent.putExtra("Crash", 125000);
+        intent.putExtra("Crash", 650000);
         intent.putExtra("Type", type);
         startActivity(intent);
         finish();
@@ -485,7 +473,7 @@ public class QualisRound3 extends AppCompatActivity {
                         @Override
                         public void run() {
                             information.setBackgroundColor(getColor(R.color.colorWhite));
-                            Toast.makeText(getApplicationContext(), "Сheckered flag", Toast.LENGTH_SHORT).show();
+                            Toasty.info(getApplicationContext(), "Checkered flag", Toast.LENGTH_SHORT).show();
                             information.setText("Сheckered flag!");
                         }
                     });

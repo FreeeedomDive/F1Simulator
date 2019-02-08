@@ -1,6 +1,8 @@
 package ru.freee.f12018;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -57,7 +59,26 @@ public class ChampionshipLobby extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.create:
-                createNewChampionship();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ChampionshipLobby.this);
+                builder.setTitle("Reset championship");  // заголовок
+                builder.setMessage("Are you sure want to reset current championship?"); // сообщение
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        createNewChampionship();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setCancelable(true);
+                AlertDialog alert = builder.create();
+                alert.show();
+                return true;
+            case R.id.info:
+                Intent intent = new Intent(ChampionshipLobby.this, DriversInformation.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -79,13 +100,20 @@ public class ChampionshipLobby extends AppCompatActivity {
             currentRace = mSharedPref.getInt(CHAMPIONSHIP_CURRENT_RACE, 0);
             Log.i("Current race", String.valueOf(currentRace));
             currentRace++;
-            if (currentRace >= 21){
+            myDataBase = new DataBase(getApplicationContext());
+            driverArrayList = myDataBase.getAllDrivers();
+            drivers = new Driver[20];
+            driverArrayList.toArray(drivers);
+            if (currentRace != drivers[0].totalRaces)
+                currentRace = drivers[0].totalRaces;
+            if (currentRace >= 21) {
                 finishedChampionship = true;
             }
             SharedPreferences.Editor mEditor = mSharedPref.edit();
             mEditor.putInt(CHAMPIONSHIP_CURRENT_RACE, currentRace);
             mEditor.apply();
-        }else{
+            myDataBase.close();
+        } else {
             if (!mSharedPref.contains(CHAMPIONSHIP_CURRENT_RACE)) {
                 SharedPreferences.Editor mEditor = mSharedPref.edit();
                 mEditor.putInt(CHAMPIONSHIP_CURRENT_RACE, 0);
@@ -93,10 +121,17 @@ public class ChampionshipLobby extends AppCompatActivity {
                 currentRace = 0;
             } else {
                 currentRace = mSharedPref.getInt(CHAMPIONSHIP_CURRENT_RACE, 0);
+                myDataBase = new DataBase(getApplicationContext());
+                driverArrayList = myDataBase.getAllDrivers();
+                drivers = new Driver[20];
+                driverArrayList.toArray(drivers);
+                if (currentRace != drivers[0].totalRaces)
+                    currentRace = drivers[0].totalRaces;
                 Log.i("Current race", String.valueOf(currentRace));
-                if (currentRace >= 21){
+                if (currentRace >= 21) {
                     finishedChampionship = true;
                 }
+                myDataBase.close();
             }
         }
 
@@ -144,6 +179,9 @@ public class ChampionshipLobby extends AppCompatActivity {
         driverArrayList = myDataBase.getAllDrivers();
         drivers = new Driver[20];
         driverArrayList.toArray(drivers);
+        for (int i = 0; i < 20; i++) {
+
+        }
         Comparators.PointsComparator comparator = new Comparators.PointsComparator();
         Arrays.sort(drivers, comparator);
 
@@ -153,7 +191,6 @@ public class ChampionshipLobby extends AppCompatActivity {
         Arrays.sort(teams, comparator2);
 
         show();
-
 
 
         if (finishedChampionship) {
@@ -211,6 +248,10 @@ public class ChampionshipLobby extends AppCompatActivity {
             drivers[i].retires = 0;
             drivers[i].totalRaces = 0;
             drivers[i].summaryPositions = 0;
+            drivers[i].q2 = 0;
+            drivers[i].q3 = 0;
+            drivers[i].raceTeammateWins = 0;
+            drivers[i].qualTeammateWins = 0;
             myDataBase.updateDriver(drivers[i]);
         }
         currentRace = 0;

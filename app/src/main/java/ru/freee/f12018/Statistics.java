@@ -2,6 +2,8 @@ package ru.freee.f12018;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,10 +11,23 @@ import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.androidplot.util.PixelUtils;
+import com.androidplot.xy.SimpleXYSeries;
+import com.androidplot.xy.XYSeries;
+import com.androidplot.xy.*;
+
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.ParsePosition;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+
 public class Statistics extends AppCompatActivity {
 
     TextView[] racerNames, timesTV;
     String[] names, times;
+    private XYPlot plot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,31 +39,45 @@ public class Statistics extends AppCompatActivity {
 
         names = new String[20];
         times = new String[20];
+        TabHost tabs = findViewById(R.id.tabhost);
+        tabs.setup();
 
-        for(int i = 0; i < 20; i++){
-            names[i] = getIntent().getStringExtra("top" + (i+1));
-            times[i] = getIntent().getStringExtra("time" + (i+1));
+        TabHost.TabSpec tabSpec = tabs.newTabSpec("tag1");
+
+        tabSpec.setContent(R.id.tab1);
+        tabSpec.setIndicator("Stats");
+        tabs.addTab(tabSpec);
+
+        tabSpec = tabs.newTabSpec("tag2");
+        tabSpec.setContent(R.id.tab2);
+        tabSpec.setIndicator("Laps");
+        tabs.addTab(tabSpec);
+        tabs.setCurrentTab(0);
+
+        for (int i = 0; i < 20; i++) {
+            names[i] = getIntent().getStringExtra("top" + (i + 1));
+            times[i] = getIntent().getStringExtra("time" + (i + 1));
         }
 
-        for(int i = 0; i < 20; i++){
+        for (int i = 0; i < 20; i++) {
             racerNames[i].setText("       " + names[i]);
             timesTV[i].setText(times[i] + "  ");
         }
 
         Button ret = findViewById(R.id.ret);
-        if(type.equals("Championship"))
+        if (type.equals("Championship"))
             ret.setText("Return to lobby");
         else
             ret.setText("Return to menu");
         ret.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(type.equals("Championship")){
+                if (type.equals("Championship")) {
                     Intent intent = new Intent(Statistics.this, ChampionshipLobby.class);
                     intent.putExtra("From", "Race");
                     startActivity(intent);
                     finish();
-                }else{
+                } else {
                     Intent intent = new Intent(Statistics.this, MenuActivity.class);
                     startActivity(intent);
                     finish();
@@ -56,6 +85,89 @@ public class Statistics extends AppCompatActivity {
             }
         });
 
+        plot = findViewById(R.id.plot);
+        String[] first_racers = {"HAM", "VET", "RIC", "PER", "GRO", "ALO", "HUL", "ERI", "GAS", "STR"};
+        String[] second_racers = {"BOT", "RAI", "VER", "OCO", "MAG", "VAN", "SAI", "LEC", "HAR", "SIR"};
+        int total_laps = getIntent().getIntExtra("laps", 0);
+        final int[] labels = new int[total_laps + 1];
+        for (int i = 0; i < total_laps + 1; i++) {
+            labels[i] = i;
+        }
+        for (int i = 0; i < 10; i++) {
+            String name = first_racers[i];
+            int[] laps = getIntent().getIntArrayExtra(name);
+            ArrayList<Number> numbers = new ArrayList<>();
+            for (int lap : laps) numbers.add(lap);
+            XYSeries series = new SimpleXYSeries(
+                    numbers, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, name);
+            LineAndPointFormatter seriesFormat = new LineAndPointFormatter(getColor(name), 0, 0, null);
+            plot.addSeries(series, seriesFormat);
+        }
+        for (int i = 0; i < 10; i++) {
+            String name = second_racers[i];
+            int[] laps = getIntent().getIntArrayExtra(name);
+            ArrayList<Number> numbers = new ArrayList<>();
+            for (int lap : laps) numbers.add(lap);
+            XYSeries series = new SimpleXYSeries(
+                    numbers, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, name);
+            LineAndPointFormatter seriesFormat = new LineAndPointFormatter(getColor(name), 0, 0, null);
+            seriesFormat.getLinePaint().setPathEffect(new DashPathEffect(new float[]{
+                    PixelUtils.dpToPix(20),
+                    PixelUtils.dpToPix(15)}, 0));
+            plot.addSeries(series, seriesFormat);
+        }
+        plot.setDomainStep(StepMode.INCREMENT_BY_VAL, 1);
+        plot.setRangeStep(StepMode.INCREMENT_BY_VAL, 1);
+        plot.getLegend().setVisible(false);
+        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
+            @Override
+            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+                int i = ((Number) obj).intValue();
+                return toAppendTo.append(labels[i]);
+            }
+
+            @Override
+            public Object parseObject(String source, ParsePosition pos) {
+                return null;
+            }
+        });
+
+    }
+
+    private int getColor(String name) {
+        switch (name) {
+            case "HAM":
+            case "BOT":
+                return Color.rgb(29, 206, 183);
+            case "VET":
+            case "RAI":
+                return Color.rgb(177, 5, 14);
+            case "RIC":
+            case "VER":
+                return Color.rgb(4, 1, 94);
+            case "PER":
+            case "OCO":
+                return Color.rgb(241, 131, 191);
+            case "STR":
+            case "SIR":
+                return Color.rgb(255, 255, 255);
+            case "HUL":
+            case "SAI":
+                return Color.rgb(245, 218, 22);
+            case "GAS":
+            case "HAR":
+                return Color.rgb(0, 0, 237);
+            case "GRO":
+            case "MAG":
+                return Color.rgb(98, 0, 9);
+            case "ALO":
+            case "VAN":
+                return Color.rgb(238, 163, 40);
+            case "ERI":
+            case "LEC":
+                return Color.rgb(148, 7, 15);
+        }
+        return Color.rgb(0, 0, 0);
     }
 
     private void initializeTextViews() {

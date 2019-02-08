@@ -21,7 +21,12 @@ public class DataBase extends SQLiteOpenHelper {
     private static final String KEY_POLES = "poles";
     private static final String KEY_RETIRES = "retires";
     private static final String KEY_RACES = "races";
-    private static final String KEY_POSITIONS = "poistions";
+    private static final String KEY_POSITIONS = "positions";
+    private static final String KEY_Q2 = "q2";
+    private static final String KEY_Q3 = "q3";
+    private static final String KEY_QUAL_WINS = "qual_wins";
+    private static final String KEY_RACE_WINS = "race_wins";
+
 
 
     public DataBase(Context context) {
@@ -34,7 +39,9 @@ public class DataBase extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NAME + " TEXT,"
                 + KEY_POINTS + " INTEGER," + KEY_WINS + " INTEGER,"
                 + KEY_POLES +  " INTEGER," + KEY_RETIRES + " INTEGER,"
-                + KEY_RACES + " INTEGER," + KEY_POSITIONS + " INTEGER" + ")";
+                + KEY_RACES + " INTEGER," + KEY_POSITIONS + " INTEGER,"
+                + KEY_Q2 + " INTEGER," + KEY_Q3 + " INTEGER,"
+                + KEY_QUAL_WINS + " INTEGER," + KEY_RACE_WINS + " INTEGER" +")";
         sqLiteDatabase.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -48,6 +55,10 @@ public class DataBase extends SQLiteOpenHelper {
         values.put(KEY_RETIRES, driver.retires);
         values.put(KEY_RACES, driver.totalRaces);
         values.put(KEY_POSITIONS, driver.summaryPositions);
+        values.put(KEY_Q2, driver.q2);
+        values.put(KEY_Q3, driver.q3);
+        values.put(KEY_QUAL_WINS, driver.qualTeammateWins);
+        values.put(KEY_RACE_WINS, driver.raceTeammateWins);
 
         db.insert(TABLE_DRIVERS, null, values);
         db.close();
@@ -70,8 +81,13 @@ public class DataBase extends SQLiteOpenHelper {
                 int retires = cursor.getInt(5);
                 int races = cursor.getInt(6);
                 int positions = cursor.getInt(7);
+                int q2 = cursor.getInt(8);
+                int q3 = cursor.getInt(9);
+                int qual = cursor.getInt(10);
+                int race = cursor.getInt(11);
 
-                Driver driver = new Driver(id, name, points, wins, poles, retires, races, positions);
+
+                Driver driver = new Driver(id, name, points, wins, poles, retires, races, positions, q2, q3, qual, race);
 
                 list.add(driver);
             } while (cursor.moveToNext());
@@ -91,6 +107,10 @@ public class DataBase extends SQLiteOpenHelper {
         values.put(KEY_RETIRES, driver.retires);
         values.put(KEY_RACES, driver.totalRaces);
         values.put(KEY_POSITIONS, driver.summaryPositions);
+        values.put(KEY_Q2, driver.q2);
+        values.put(KEY_Q3, driver.q3);
+        values.put(KEY_QUAL_WINS, driver.qualTeammateWins);
+        values.put(KEY_RACE_WINS, driver.raceTeammateWins);
 
         return db.update(TABLE_DRIVERS, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(driver.id) });
