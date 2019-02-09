@@ -73,6 +73,7 @@ public class RaceActivity extends AppCompatActivity {
         trackName = getIntent().getStringExtra("Track");
         timeOfLap = getIntent().getIntExtra("Time", timeOfLap);
         laps = getIntent().getIntExtra("Laps", 0);
+        Log.i("Race", "Received " + laps + " laps");
         setTitle("Race in " + trackName);
 
         if (type.equals("Race")) {

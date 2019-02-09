@@ -43,6 +43,7 @@ public class QualisRound1 extends AppCompatActivity {
     String rounds;
     int duration;
     String dur;
+    int laps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,22 +60,24 @@ public class QualisRound1 extends AppCompatActivity {
         trackTime = getIntent().getIntExtra("Time", 0);
         rounds = getIntent().getStringExtra("Segments");
         dur = getIntent().getStringExtra("Duration");
+        laps = getIntent().getIntExtra("Laps", 0);
+        Log.i("Q1", "Received " + laps + " laps");
         if (rounds.equals("One")) {
             switch (dur) {
                 case "Short":
-                    duration = 60500;
+                    duration = 61000;
                     break;
                 case "Normal":
                     duration = 300000;
                     break;
                 case "Long":
-                    duration = 600000;
+                    duration = 480000;
                     break;
             }
         } else {
             switch (dur) {
                 case "Short":
-                    duration = 120000;
+                    duration = 61000;
                     break;
                 case "Normal":
                     duration = 360000;
@@ -120,7 +123,7 @@ public class QualisRound1 extends AppCompatActivity {
         Comparators.PointsComparator comp = new Comparators.PointsComparator();
         Arrays.sort(dr, comp);
         racers = new DriverQualis[20];
-        for(int i = 0; i < 20; i++){
+        for (int i = 0; i < 20; i++) {
             racers[i] = new DriverQualis(dr[i].name, sec1, sec2, sec3);
         }
         db.close();
@@ -182,7 +185,8 @@ public class QualisRound1 extends AppCompatActivity {
         intent.putExtra("Sector 3", sec3);
         intent.putExtra("Track", trackName);
         intent.putExtra("Time", trackTime);
-        intent.putExtra("Laps", 1200000 / trackTime);
+        int l = laps == 0 ? 1200000 / trackTime : laps;
+        intent.putExtra("Laps", l);
         intent.putExtra("Crash", 100000);
         intent.putExtra("Duration", dur);
         intent.putExtra("Type", type);
@@ -195,10 +199,11 @@ public class QualisRound1 extends AppCompatActivity {
         for (int i = 0; i < 20; i++) {
             intent.putExtra("top" + (i + 1), racers[i].name);
         }
-        intent.putExtra("Type", "Weekend");
+        intent.putExtra("Type", type);
         intent.putExtra("Track", trackName);
         intent.putExtra("Time", trackTime);
-        intent.putExtra("Laps", 1200000 / trackTime);
+        Log.i("Q1", "Sending " + laps + " laps");
+        intent.putExtra("Laps", laps);
         intent.putExtra("Crash", 200000);
         startActivity(intent);
     }

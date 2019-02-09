@@ -56,7 +56,7 @@ public class QualisRound2 extends AppCompatActivity {
         dur = getIntent().getStringExtra("Duration");
         switch(dur){
             case "Short":
-                duration = 120000;
+                duration = 61000;
                 break;
             case "Normal":
                 duration = 240000;
@@ -66,6 +66,7 @@ public class QualisRound2 extends AppCompatActivity {
                 break;
         }
         laps = getIntent().getIntExtra("Laps", 0);
+        Log.i("Q2", "Received " + laps + " laps");
         trackName = getIntent().getStringExtra("Track");
         sec1 = getIntent().getIntExtra("Sector 1", 0);
         sec2 = getIntent().getIntExtra("Sector 2", 0);
@@ -136,7 +137,8 @@ public class QualisRound2 extends AppCompatActivity {
         intent.putExtra("Type", "Weekend");
         intent.putExtra("Track", trackName);
         intent.putExtra("Time", trackTime);
-        intent.putExtra("Laps", 1200000 / trackTime);
+        Log.i("Q2", "Sending " + laps + " laps");
+        intent.putExtra("Laps", laps);
         intent.putExtra("Crash", 200000);
         intent.putExtra("Duration", dur);
         intent.putExtra("Type", type);

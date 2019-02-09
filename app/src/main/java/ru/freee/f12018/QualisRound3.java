@@ -43,6 +43,7 @@ public class QualisRound3 extends AppCompatActivity {
     Timer timer;
     int duration;
     String dur;
+    int laps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,13 @@ public class QualisRound3 extends AppCompatActivity {
         sec3 = getIntent().getIntExtra("Sector 3", 0);
         Log.i("Sectors on this track", sec1 + " " + sec2 + " " + sec3);
         trackTime = getIntent().getIntExtra("Time", 0);
-
+        laps = getIntent().getIntExtra("Laps", 0);
+        Log.i("Q3", "Received " + laps + " laps");
         dur = getIntent().getStringExtra("Duration");
         switch(dur){
             case "Short":
+                duration = 61000;
+                break;
             case "Normal":
                 duration = 120000;
                 break;
@@ -127,7 +131,8 @@ public class QualisRound3 extends AppCompatActivity {
             intent.putExtra("top" + (i + 1), names[i]);
         intent.putExtra("Track", trackName);
         intent.putExtra("Time", trackTime);
-        intent.putExtra("Laps", 1200000 / trackTime);
+        Log.i("Q3", "Sending " + laps + " laps");
+        intent.putExtra("Laps", laps);
         intent.putExtra("Crash", 650000);
         intent.putExtra("Type", type);
         startActivity(intent);

@@ -118,6 +118,7 @@ public class SelectingRaceForWeekend extends AppCompatActivity {
                     else if(longRounds.isChecked())
                         i.putExtra("Duration", "Long");
                     i.putExtra("Type", "Weekend");
+                    i.putExtra("Laps", 1200000/selectedTrack.raceTime);
                     startActivity(i);
                     finish();
                 }

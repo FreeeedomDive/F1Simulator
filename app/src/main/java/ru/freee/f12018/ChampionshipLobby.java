@@ -16,7 +16,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -179,9 +182,6 @@ public class ChampionshipLobby extends AppCompatActivity {
         driverArrayList = myDataBase.getAllDrivers();
         drivers = new Driver[20];
         driverArrayList.toArray(drivers);
-        for (int i = 0; i < 20; i++) {
-
-        }
         Comparators.PointsComparator comparator = new Comparators.PointsComparator();
         Arrays.sort(drivers, comparator);
 
@@ -217,6 +217,21 @@ public class ChampionshipLobby extends AppCompatActivity {
                     drivers[0].points + " points");
         }
 
+        final TextView hiddenQualLength = findViewById(R.id.hidden1);
+        hiddenQualLength.setVisibility(View.INVISIBLE);
+        final RadioGroup hiddenRadioGroup = findViewById(R.id.hidden2);
+        hiddenRadioGroup.setVisibility(View.INVISIBLE);
+        final RadioButton shortQual = findViewById(R.id.radioShort);
+        shortQual.setChecked(false);
+        RadioButton normalQual = findViewById(R.id.radioNormal);
+        normalQual.setChecked(true);
+        final TextView hiddenRaceLength = findViewById(R.id.hidden3);
+        hiddenRaceLength.setVisibility(View.INVISIBLE);
+        final EditText hiddenRaceEdit = findViewById(R.id.hidden4);
+        hiddenRaceEdit.setVisibility(View.INVISIBLE);
+        hiddenRaceEdit.setText("20");
+
+
         nextRace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -227,14 +242,36 @@ public class ChampionshipLobby extends AppCompatActivity {
                     intent.putExtra("Sector 2", current.sectors[1]);
                     intent.putExtra("Sector 3", current.sectors[2]);
                     intent.putExtra("Time", current.raceTime);
+                    String qualLen = shortQual.isChecked() ? "Short" : "Normal";
                     intent.putExtra("Segments", "Three");
-                    intent.putExtra("Duration", "Normal");
+                    intent.putExtra("Duration", qualLen);
+                    int len = 20;
+                    try{
+                        String temp = hiddenRaceEdit.getText().toString();
+                        len = Integer.parseInt(temp);
+                        Log.i("Length", len + " ");
+                    }
+                    catch (Exception ignored){ }
+                    int laps = 60000 * len / current.raceTime;
+                    Log.i("Lobby", "Sending " + laps + " laps");
+                    intent.putExtra("Laps", laps);
                     intent.putExtra("Type", "Championship");
                     startActivity(intent);
                     finish();
                 } else {
                     createNewChampionship();
                 }
+            }
+        });
+        nextRace.setLongClickable(true);
+        nextRace.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                hiddenQualLength.setVisibility(View.VISIBLE);
+                hiddenRadioGroup.setVisibility(View.VISIBLE);
+                hiddenRaceLength.setVisibility(View.VISIBLE);
+                hiddenRaceEdit.setVisibility(View.VISIBLE);
+                return true;
             }
         });
         myDataBase.close();
