@@ -19,100 +19,90 @@ public class Track {
     private void generateTime(){
         switch (this.name){
             case "Australia":
-                this.raceTime = 87188;
-                this.sectors = new int[]{27041, 22300, 32900};
+                this.raceTime = 85945;
+                this.sectors = new int[]{27041, 22300, 31400};
                 break;
             case "Bahrain":
                 this.raceTime = 93769;
-                this.sectors = new int[]{23124, 26100, 40500};
+                this.sectors = new int[]{22124, 25100, 40500};
                 break;
             case "China":
-                this.raceTime = 93678;
-                this.sectors = new int[]{28330, 38300, 22200};
+                this.raceTime = 95678;
+                this.sectors = new int[]{29330, 39300, 23200};
                 break;
             case "Azerbaijan":
                 this.raceTime = 105593;
                 this.sectors = new int[]{45640, 32500, 24600};
                 break;
             case "Spain":
-                this.raceTime = 84149;
-                this.sectors = new int[]{21475, 30800, 28800};
+                this.raceTime = 78441;
+                this.sectors = new int[]{20475, 29800, 27800};
                 break;
             case "Monaco":
-                this.raceTime = 77178;
-                this.sectors = new int[]{19453, 34700, 19500};
+                this.raceTime = 74178;
+                this.sectors = new int[]{19453, 33700, 18500};
                 break;
             case "Canada":
-                this.raceTime = 78812;
-                this.sectors = new int[]{24425, 25400, 25400};
+                this.raceTime = 73864;
+                this.sectors = new int[]{22605, 23400, 24400};
                 break;
             case "France":
-                this.raceTime = 80449;
-                this.sectors = new int[]{25489, 25400, 24400};
+                this.raceTime = 94225;
+                this.sectors = new int[]{30489, 30400, 29400};
                 break;
             case "Austria":
-                this.raceTime = 69251;
-                this.sectors = new int[]{16877, 27400, 20300};
+                this.raceTime = 66251;
+                this.sectors = new int[]{16377, 26400, 20300};
                 break;
             case "Britain":
-                this.raceTime = 91600;
-                this.sectors = new int[]{29170, 32700, 25500};
+                this.raceTime = 90696;
+                this.sectors = new int[]{28170, 31700, 25500};
                 break;
             case "Germany":
-                this.raceTime = 79363;
-                this.sectors = new int[]{16325, 34500, 22500};
+                this.raceTime = 75545;
+                this.sectors = new int[]{16325, 33300, 22200};
                 break;
             case "Hungary":
-                this.raceTime = 81276;
-                this.sectors = new int[]{28320, 29000, 22600};
+                this.raceTime = 80276;
+                this.sectors = new int[]{27320, 29000, 22600};
                 break;
             case "Belgium":
-                this.raceTime = 107553;
+                this.raceTime = 106286;
                 this.sectors = new int[]{28332, 47600, 28700};
                 break;
             case "Italy":
-                this.raceTime = 88361;
-                this.sectors = new int[]{27579, 29600, 27000};
+                this.raceTime = 82497;
+                this.sectors = new int[]{26079, 28100, 26000};
                 break;
             case "Singapore":
-                this.raceTime = 104491;
-                this.sectors = new int[]{25484, 41300, 35900};
+                this.raceTime = 101945;
+                this.sectors = new int[]{24084, 39300, 34400};
                 break;
             case "Russia":
-                this.raceTime = 98194;
-                this.sectors = new int[]{34110, 32900, 28400};
+                this.raceTime = 95860;
+                this.sectors = new int[]{33110, 31900, 27400};
                 break;
             case "Japan":
                 this.raceTime = 92319;
-                this.sectors = new int[]{30784, 39400, 17200};
+                this.sectors = new int[]{30784, 39400, 18200};
                 break;
             case "USA":
-                this.raceTime = 98108;
-                this.sectors = new int[]{26178, 38100, 31600};
+                this.raceTime = 97108;
+                this.sectors = new int[]{25178, 37100, 30600};
                 break;
             case "Mexico":
-                this.raceTime = 81488;
-                this.sectors = new int[]{27230, 30800, 20700};
+                this.raceTime = 78747;
+                this.sectors = new int[]{26230, 29800, 19700};
                 break;
             case "Brazil":
-                this.raceTime = 73322;
-                this.sectors = new int[]{17732, 36400, 16600};
+                this.raceTime = 70540;
+                this.sectors = new int[]{17732, 34400, 16600};
                 break;
             case "Abu Dhabi":
-                this.raceTime = 103755;
-                this.sectors = new int[]{17288, 41500, 40000};
+                this.raceTime = 100755;
+                this.sectors = new int[]{17288, 39060, 38000};
                 break;
         }
-    }
-
-    public Track(String name, String place, int time, int s1, int s2, int s3){
-        this.name = name;
-        this.place = place;
-        this.raceTime = time;
-        this.laps = getLaps();
-        this.sec1 = s1;
-        this.sec2 = s2;
-        this.sec3 = s3;
     }
 
     private int getLaps(){
