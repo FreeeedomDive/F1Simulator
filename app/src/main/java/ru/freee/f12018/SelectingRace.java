@@ -1,37 +1,52 @@
 package ru.freee.f12018;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SelectingRace extends AppCompatActivity {
 
+    RadioButton best, worst, custom;
     ArrayList<Track> tracks = new ArrayList<>();
     TracksAdapter adapter;
-    ListView lv;
+    ListView lv, order;
     EditText length;
     Track selectedTrack = null;
     RadioButton selectLaps, selectTime, selectReal;
     TextView len;
     int laps = 0;
     SeekBar crashes;
+    String[] totalNames = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
+            "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
+            "Gasly", "Hartley", "Grosjean", "Magnussen",
+            "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
+    String[] totalOrder = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
+            "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
+            "Gasly", "Hartley", "Grosjean", "Magnussen",
+            "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
+    OrderAdapter orderAdapter;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -67,6 +82,33 @@ public class SelectingRace extends AppCompatActivity {
         adapter = new TracksAdapter(this, tracks);
         lv.setAdapter(adapter);
 
+        order = findViewById(R.id.order_list);
+        order.setVisibility(View.INVISIBLE);
+        best = findViewById(R.id.best);
+        best.setChecked(true);
+        best.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                order.setVisibility(View.INVISIBLE);
+            }
+        });
+        worst = findViewById(R.id.worst);
+        worst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                order.setVisibility(View.INVISIBLE);
+            }
+        });
+        custom = findViewById(R.id.custom);
+        custom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                order.setVisibility(View.VISIBLE);
+            }
+        });
+
+        orderAdapter = new OrderAdapter(getApplicationContext(), totalOrder);
+        order.setAdapter(orderAdapter);
 
         final TextView selected = findViewById(R.id.selected);
 
@@ -156,18 +198,106 @@ public class SelectingRace extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(selectedTrack != null && laps > 0){
-                    Intent i = new Intent(SelectingRace.this, RaceActivity.class);
-                    i.putExtra("Track", selectedTrack.name);
-                    i.putExtra("Time", selectedTrack.raceTime);
-                    i.putExtra("Laps", laps);
+                    Intent intent = new Intent(SelectingRace.this, RaceActivity.class);
+                    intent.putExtra("Track", selectedTrack.name);
+                    intent.putExtra("Time", selectedTrack.raceTime);
+                    intent.putExtra("Laps", laps);
                     int crashVariety = 808000 - (crashes.getProgress())*8000;
-                    i.putExtra("Crash", crashVariety);
-                    i.putExtra("Type", "Race");
-                    startActivity(i);
+                    intent.putExtra("Crash", crashVariety);
+                    intent.putExtra("Type", "Race");
+                    String[] grid = getGrid();
+                    for(int i = 0; i < 20; i++){
+                        intent.putExtra("top" + (i + 1), grid[i]);
+                    }
+                    startActivity(intent);
                     finish();
                 }
             }
         });
+    }
+
+    private String[] getGrid(){
+        if (best.isChecked())
+            return totalNames;
+        if (worst.isChecked()){
+            String[] result = new String[20];
+            for (int i = 0; i < 20; i++){
+                result[i] = totalNames[19-i];
+            }
+            return result;
+        }
+        return totalOrder;
+    }
+
+    private class OrderAdapter extends BaseAdapter{
+
+        Context context;
+        ArrayList<String> names;
+        LayoutInflater lInflater;
+
+        public OrderAdapter(Context context, String[] names) {
+            this.context = context;
+            this.names = new ArrayList<>(Arrays.asList(names));
+            this.lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return names.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return names.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = lInflater.inflate(R.layout.order_item, parent, false);
+            }
+            String name = (String) getItem(position);
+
+            TextView nameTV = view.findViewById(R.id.name);
+            nameTV.setText(name);
+            Button up = view.findViewById(R.id.up);
+            if (position == 0)
+                up.setVisibility(View.INVISIBLE);
+            else
+                up.setVisibility(View.VISIBLE);
+            up.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String temp = totalOrder[position];
+                    totalOrder[position] = totalOrder[position - 1];
+                    totalOrder[position - 1] = temp;
+                    orderAdapter = new OrderAdapter(getApplicationContext(), totalOrder);
+                    order.setAdapter(orderAdapter);
+                }
+            });
+            Button down = view.findViewById(R.id.down);
+            if (position == 19)
+                down.setVisibility(View.INVISIBLE);
+            else
+                down.setVisibility(View.VISIBLE);
+            down.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String temp = totalOrder[position];
+                    totalOrder[position] = totalOrder[position + 1];
+                    totalOrder[position + 1] = temp;
+                    orderAdapter = new OrderAdapter(getApplicationContext(), totalOrder);
+                    order.setAdapter(orderAdapter);
+                }
+            });
+            return view;
+        }
     }
 
     private void createTracksList(){

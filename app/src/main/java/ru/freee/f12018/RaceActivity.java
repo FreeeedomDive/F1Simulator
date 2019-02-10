@@ -76,21 +76,8 @@ public class RaceActivity extends AppCompatActivity {
         Log.i("Race", "Received " + laps + " laps");
         setTitle("Race in " + trackName);
 
-        if (type.equals("Race")) {
-            names = new String[20];
-            String[] temp = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
-                    "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
-                    "Gasly", "Hartley", "Grosjean", "Magnussen",
-                    "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
-            for (int i = 0; i < 20; i++) {
-                names[i] = temp[19 - i];
-            }
-            createDrivers();
-        }
-        if (type.equals("Weekend") || type.equals("Championship")) {
-            names = getNamesFromIntent();
-            createDrivers();
-        }
+        names = getNamesFromIntent();
+        createDrivers();
 
         initializeTextViews();
 
