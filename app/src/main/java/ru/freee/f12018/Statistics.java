@@ -86,8 +86,8 @@ public class Statistics extends AppCompatActivity {
         });
 
         plot = findViewById(R.id.plot);
-        String[] first_racers = {"HAM", "VET", "RIC", "PER", "GRO", "ALO", "HUL", "ERI", "GAS", "STR"};
-        String[] second_racers = {"BOT", "RAI", "VER", "OCO", "MAG", "VAN", "SAI", "LEC", "HAR", "SIR"};
+        String[] first_racers = {"HAM", "VET", "VER", "PER", "GRO", "SAI", "HUL", "RAI", "KVY", "KUB"};
+        String[] second_racers = {"BOT", "LEC", "GAS", "STR", "MAG", "NOR", "RIC", "GIO", "ALB", "RUS"};
         int total_laps = getIntent().getIntExtra("laps", 0);
         final int[] labels = new int[total_laps + 1];
         for (int i = 0; i < total_laps + 1; i++) {
