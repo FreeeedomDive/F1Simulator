@@ -19,10 +19,10 @@ public class MenuActivity extends AppCompatActivity {
         ArrayList<Driver> drivers = myDataBase.getAllDrivers();
         if (drivers.size() < 20) {
 
-            String[] names = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
-                    "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
-                    "Gasly", "Hartley", "Grosjean", "Magnussen",
-                    "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
+            String[] names = new String[]{"Hamilton", "Bottas", "Vettel", "Leclerc", "Gasly", "Verstappen",
+                    "Perez", "Stroll", "Kubica", "Russell", "Hulkenberg", "Ricciardo",
+                    "Kvyat", "Albon", "Grosjean", "Magnussen",
+                    "Sainz", "Norris", "Raikkonen", "Giovinazzi"};
 
             for (int i = 0; i < 20; i++)
                 myDataBase.addDriver(new Driver(names[i]));

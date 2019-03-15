@@ -38,14 +38,14 @@ public class SelectingRace extends AppCompatActivity {
     TextView len;
     int laps = 0;
     SeekBar crashes;
-    String[] totalNames = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
-            "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
-            "Gasly", "Hartley", "Grosjean", "Magnussen",
-            "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
-    String[] totalOrder = new String[]{"Hamilton", "Bottas", "Vettel", "Raikkonen", "Ricciardo", "Verstappen",
-            "Perez", "Ocon", "Stroll", "Sirotkin", "Hulkenberg", "Sainz",
-            "Gasly", "Hartley", "Grosjean", "Magnussen",
-            "Alonso", "Vandoorne", "Ericsson", "Leclerc"};
+    String[] totalNames = new String[]{"Hamilton", "Bottas", "Vettel", "Leclerc", "Verstappen", "Gasly",
+            "Perez", "Stroll", "Kubica", "Russell", "Hulkenberg", "Ricciardo",
+            "Kvyat", "Albon", "Grosjean", "Magnussen",
+            "Sainz", "Norris", "Raikkonen", "Giovinazzi"};
+    String[] totalOrder = new String[]{"Hamilton", "Bottas", "Vettel", "Leclerc", "Verstappen", "Gasly",
+            "Perez", "Stroll", "Kubica", "Russell", "Hulkenberg", "Ricciardo",
+            "Kvyat", "Albon", "Grosjean", "Magnussen",
+            "Sainz", "Norris", "Raikkonen", "Giovinazzi"};
     OrderAdapter orderAdapter;
 
     @SuppressLint("SetTextI18n")

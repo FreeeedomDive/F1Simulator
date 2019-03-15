@@ -83,72 +83,73 @@ public class DriversInformation extends AppCompatActivity {
         teams[2] = new Team("Red Bull Racing");
         teams[3] = new Team("McLaren");
         teams[4] = new Team("Renault");
-        teams[5] = new Team("Force India");
+        teams[5] = new Team("Racing Point");
         teams[6] = new Team("Toro Rosso");
         teams[7] = new Team("Haas");
-        teams[8] = new Team("Sauber");
+        teams[8] = new Team("Alfa Romeo Racing");
         teams[9] = new Team("Williams");
-        for (int i = 0; i < 20; i++) {
-            if ("Hamilton".equals(drivers[i].name)) {
-                teams[1].driver1 = drivers[i];
-
-            } else if ("Bottas".equals(drivers[i].name)) {
-                teams[1].driver2 = drivers[i];
-
-            } else if ("Vettel".equals(drivers[i].name)) {
-                teams[0].driver1 = drivers[i];
-
-            } else if ("Raikkonen".equals(drivers[i].name)) {
-                teams[0].driver2 = drivers[i];
-
-            } else if ("Ricciardo".equals(drivers[i].name)) {
-                teams[2].driver1 = drivers[i];
-
-            } else if ("Verstappen".equals(drivers[i].name)) {
-                teams[2].driver2 = drivers[i];
-
-            } else if ("Perez".equals(drivers[i].name)) {
-                teams[5].driver1 = drivers[i];
-
-            } else if ("Ocon".equals(drivers[i].name)) {
-                teams[5].driver2 = drivers[i];
-
-            } else if ("Stroll".equals(drivers[i].name)) {
-                teams[9].driver1 = drivers[i];
-
-            } else if ("Sirotkin".equals(drivers[i].name)) {
-                teams[9].driver2 = drivers[i];
-
-            } else if ("Hulkenberg".equals(drivers[i].name)) {
-                teams[4].driver1 = drivers[i];
-
-            } else if ("Sainz".equals(drivers[i].name)) {
-                teams[4].driver2 = drivers[i];
-
-            } else if ("Gasly".equals(drivers[i].name)) {
-                teams[6].driver1 = drivers[i];
-
-            } else if ("Hartley".equals(drivers[i].name)) {
-                teams[6].driver2 = drivers[i];
-
-            } else if ("Grosjean".equals(drivers[i].name)) {
-                teams[7].driver1 = drivers[i];
-
-            } else if ("Magnussen".equals(drivers[i].name)) {
-                teams[7].driver2 = drivers[i];
-
-            } else if ("Alonso".equals(drivers[i].name)) {
-                teams[3].driver1 = drivers[i];
-
-            } else if ("Vandoorne".equals(drivers[i].name)) {
-                teams[3].driver2 = drivers[i];
-
-            } else if ("Ericsson".equals(drivers[i].name)) {
-                teams[8].driver1 = drivers[i];
-
-            } else if ("Leclerc".equals(drivers[i].name)) {
-                teams[8].driver2 = drivers[i];
-
+        for(int i = 0; i < 20; i++){
+            switch (drivers[i].name){
+                case "Vettel":
+                    teams[0].driver1 = drivers[i];
+                    break;
+                case "Leclerc":
+                    teams[0].driver2 = drivers[i];
+                    break;
+                case "Hamilton":
+                    teams[1].driver1 = drivers[i];
+                    break;
+                case "Bottas":
+                    teams[1].driver2 = drivers[i];
+                    break;
+                case "Verstappen":
+                    teams[2].driver1 = drivers[i];
+                    break;
+                case "Gasly":
+                    teams[2].driver2 = drivers[i];
+                    break;
+                case "Sainz":
+                    teams[3].driver1 = drivers[i];
+                    break;
+                case "Norris":
+                    teams[3].driver2 = drivers[i];
+                    break;
+                case "Hulkenberg":
+                    teams[4].driver1 = drivers[i];
+                    break;
+                case "Ricciardo":
+                    teams[4].driver2 = drivers[i];
+                    break;
+                case "Perez":
+                    teams[5].driver1 = drivers[i];
+                    break;
+                case "Stroll":
+                    teams[5].driver2 = drivers[i];
+                    break;
+                case "Kvyat":
+                    teams[6].driver1 = drivers[i];
+                    break;
+                case "Albon":
+                    teams[6].driver2 = drivers[i];
+                    break;
+                case "Grosjean":
+                    teams[7].driver1 = drivers[i];
+                    break;
+                case "Magnussen":
+                    teams[7].driver2 = drivers[i];
+                    break;
+                case "Raikkonen":
+                    teams[8].driver1 = drivers[i];
+                    break;
+                case "Giovinazzi":
+                    teams[8].driver2 = drivers[i];
+                    break;
+                case "Kubica":
+                    teams[9].driver1 = drivers[i];
+                    break;
+                case "Russell":
+                    teams[9].driver2 = drivers[i];
+                    break;
             }
         }
         for (int i = 0; i < 10; i++)

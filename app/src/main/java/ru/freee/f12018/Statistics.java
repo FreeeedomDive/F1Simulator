@@ -140,31 +140,31 @@ public class Statistics extends AppCompatActivity {
             case "BOT":
                 return Color.rgb(29, 206, 183);
             case "VET":
-            case "RAI":
+            case "LEC":
                 return Color.rgb(177, 5, 14);
-            case "RIC":
+            case "GAS":
             case "VER":
                 return Color.rgb(4, 1, 94);
             case "PER":
-            case "OCO":
-                return Color.rgb(241, 131, 191);
             case "STR":
-            case "SIR":
+                return Color.rgb(241, 131, 191);
+            case "KUB":
+            case "RUS":
                 return Color.rgb(255, 255, 255);
             case "HUL":
-            case "SAI":
+            case "RIC":
                 return Color.rgb(245, 218, 22);
-            case "GAS":
-            case "HAR":
+            case "KVY":
+            case "ALB":
                 return Color.rgb(0, 0, 237);
             case "GRO":
             case "MAG":
                 return Color.rgb(98, 0, 9);
-            case "ALO":
-            case "VAN":
+            case "SAI":
+            case "NOR":
                 return Color.rgb(238, 163, 40);
-            case "ERI":
-            case "LEC":
+            case "RAI":
+            case "GIO":
                 return Color.rgb(148, 7, 15);
         }
         return Color.rgb(0, 0, 0);

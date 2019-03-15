@@ -346,39 +346,39 @@ public class QualisRound1 extends AppCompatActivity {
                 racerNames[index].setBackground(getDrawable(R.drawable.mercedes2));
                 break;
             case "Vettel":
-            case "Raikkonen":
+            case "Leclerc":
                 racerNames[index].setBackground(getDrawable(R.drawable.ferrari2));
                 break;
-            case "Ricciardo":
+            case "Gasly":
             case "Verstappen":
                 racerNames[index].setBackground(getDrawable(R.drawable.redbull2));
                 break;
             case "Perez":
-            case "Ocon":
+            case "Stroll":
                 racerNames[index].setBackground(getDrawable(R.drawable.forceindia2));
                 break;
-            case "Stroll":
-            case "Sirotkin":
+            case "Kubica":
+            case "Russell":
                 racerNames[index].setBackground(getDrawable(R.drawable.williams2));
                 break;
             case "Hulkenberg":
-            case "Sainz":
+            case "Ricciardo":
                 racerNames[index].setBackground(getDrawable(R.drawable.renault2));
                 break;
-            case "Gasly":
-            case "Hartley":
+            case "Kvyat":
+            case "Albon":
                 racerNames[index].setBackground(getDrawable(R.drawable.tororosso2));
                 break;
             case "Grosjean":
             case "Magnussen":
                 racerNames[index].setBackground(getDrawable(R.drawable.haas2));
                 break;
-            case "Alonso":
-            case "Vandoorne":
+            case "Sainz":
+            case "Norris":
                 racerNames[index].setBackground(getDrawable(R.drawable.mclaren2));
                 break;
-            case "Ericsson":
-            case "Leclerc":
+            case "Raikkonen":
+            case "Giovinazzi":
                 racerNames[index].setBackground(getDrawable(R.drawable.sauber2));
                 break;
         }
@@ -389,23 +389,23 @@ public class QualisRound1 extends AppCompatActivity {
         racers[0] = new DriverQualis("Hamilton", sec1, sec2, sec3);
         racers[1] = new DriverQualis("Bottas", sec1, sec2, sec3);
         racers[2] = new DriverQualis("Vettel", sec1, sec2, sec3);
-        racers[3] = new DriverQualis("Raikkonen", sec1, sec2, sec3);
-        racers[4] = new DriverQualis("Ricciardo", sec1, sec2, sec3);
+        racers[3] = new DriverQualis("Leclerc", sec1, sec2, sec3);
+        racers[4] = new DriverQualis("Gasly", sec1, sec2, sec3);
         racers[5] = new DriverQualis("Verstappen", sec1, sec2, sec3);
         racers[6] = new DriverQualis("Perez", sec1, sec2, sec3);
-        racers[7] = new DriverQualis("Ocon", sec1, sec2, sec3);
-        racers[8] = new DriverQualis("Stroll", sec1, sec2, sec3);
-        racers[9] = new DriverQualis("Sirotkin", sec1, sec2, sec3);
+        racers[7] = new DriverQualis("Stroll", sec1, sec2, sec3);
+        racers[8] = new DriverQualis("Kubica", sec1, sec2, sec3);
+        racers[9] = new DriverQualis("Russell", sec1, sec2, sec3);
         racers[10] = new DriverQualis("Hulkenberg", sec1, sec2, sec3);
-        racers[11] = new DriverQualis("Sainz", sec1, sec2, sec3);
-        racers[12] = new DriverQualis("Gasly", sec1, sec2, sec3);
-        racers[13] = new DriverQualis("Hartley", sec1, sec2, sec3);
+        racers[11] = new DriverQualis("Ricciardo", sec1, sec2, sec3);
+        racers[12] = new DriverQualis("Kvyat", sec1, sec2, sec3);
+        racers[13] = new DriverQualis("Albon", sec1, sec2, sec3);
         racers[14] = new DriverQualis("Grosjean", sec1, sec2, sec3);
         racers[15] = new DriverQualis("Magnussen", sec1, sec2, sec3);
-        racers[16] = new DriverQualis("Alonso", sec1, sec2, sec3);
-        racers[17] = new DriverQualis("Vandoorne", sec1, sec2, sec3);
-        racers[18] = new DriverQualis("Ericsson", sec1, sec2, sec3);
-        racers[19] = new DriverQualis("Leclerc", sec1, sec2, sec3);
+        racers[16] = new DriverQualis("Sainz", sec1, sec2, sec3);
+        racers[17] = new DriverQualis("Norris", sec1, sec2, sec3);
+        racers[18] = new DriverQualis("Raikkonen", sec1, sec2, sec3);
+        racers[19] = new DriverQualis("Giovinazzi", sec1, sec2, sec3);
     }
 
     private void initializeTextViews() {

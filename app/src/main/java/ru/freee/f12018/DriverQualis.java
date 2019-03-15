@@ -41,7 +41,7 @@ public class DriverQualis implements Comparable {
             this.leftBorder3 = sec3;
             this.rightBorder3 = (int) (sec3 * 1.025);
         }
-        if (this.name.equals("Bottas") || this.name.equals("Raikkonen")) {
+        if (this.name.equals("Bottas") || this.name.equals("Leclerc")) {
             this.leftBorder1 = sec1;
             this.rightBorder1 = (int) (sec1 * 1.027);
             this.leftBorder2 = sec2;
@@ -49,15 +49,15 @@ public class DriverQualis implements Comparable {
             this.leftBorder3 = sec3;
             this.rightBorder3 = (int) (sec3 * 1.027);
         }
-        if (this.name.equals("Ricciardo") || this.name.equals("Verstappen")) {
+        if (this.name.equals("Gasly") || this.name.equals("Verstappen")) {
             this.leftBorder1 = sec1;
-            this.rightBorder1 = (int) (sec1 * 1.026);
+            this.rightBorder1 = (int) (sec1 * 1.028);
             this.leftBorder2 = sec2;
-            this.rightBorder2 = (int) (sec2 * 1.026);
+            this.rightBorder2 = (int) (sec2 * 1.028);
             this.leftBorder3 = sec3;
-            this.rightBorder3 = (int) (sec3 * 1.026);
+            this.rightBorder3 = (int) (sec3 * 1.028);
         }
-        if (this.name.equals("Perez") || this.name.equals("Ocon")) {
+        if (this.name.equals("Perez") || this.name.equals("Stroll")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
             this.rightBorder1 = (int) (sec1 * 1.04);
             this.leftBorder2 = (int) (sec2 * 1.005);
@@ -65,7 +65,7 @@ public class DriverQualis implements Comparable {
             this.leftBorder3 = (int) (sec3 * 1.005);
             this.rightBorder3 = (int) (sec3 * 1.04);
         }
-        if (this.name.equals("Stroll") || this.name.equals("Sirotkin")) {
+        if (this.name.equals("Kubica") || this.name.equals("Russell")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
             this.rightBorder1 = (int) (sec1 * 1.045);
             this.leftBorder2 = (int) (sec2 * 1.005);
@@ -73,7 +73,7 @@ public class DriverQualis implements Comparable {
             this.leftBorder3 = (int) (sec3 * 1.005);
             this.rightBorder3 = (int) (sec3 * 1.045);
         }
-        if (this.name.equals("Hulkenberg") || this.name.equals("Sainz")) {
+        if (this.name.equals("Hulkenberg") || this.name.equals("Ricciardo")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
             this.rightBorder1 = (int) (sec1 * 1.04);
             this.leftBorder2 = (int) (sec2 * 1.005);
@@ -89,7 +89,7 @@ public class DriverQualis implements Comparable {
             this.leftBorder3 = (int) (sec3 * 1.005);
             this.rightBorder3 = (int) (sec3 * 1.04);
         }
-        if (this.name.equals("Alonso") || this.name.equals("Vandoorne")) {
+        if (this.name.equals("Sainz") || this.name.equals("Norris")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
             this.rightBorder1 = (int) (sec1 * 1.04);
             this.leftBorder2 = (int) (sec2 * 1.005);
@@ -97,21 +97,21 @@ public class DriverQualis implements Comparable {
             this.leftBorder3 = (int) (sec3 * 1.005);
             this.rightBorder3 = (int) (sec3 * 1.04);
         }
-        if (this.name.equals("Ericsson") || this.name.equals("Hartley")) {
+        if (this.name.equals("Raikkonen") || this.name.equals("Giovinazzi")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
-            this.rightBorder1 = (int) (sec1 * 1.05);
+            this.rightBorder1 = (int) (sec1 * 1.04);
             this.leftBorder2 = (int) (sec2 * 1.005);
-            this.rightBorder2 = (int) (sec2 * 1.05);
+            this.rightBorder2 = (int) (sec2 * 1.04);
             this.leftBorder3 = (int) (sec3 * 1.005);
-            this.rightBorder3 = (int) (sec3 * 1.05);
+            this.rightBorder3 = (int) (sec3 * 1.04);
         }
-        if (this.name.equals("Leclerc") || this.name.equals("Gasly")) {
+        if (this.name.equals("Kvyat") || this.name.equals("Albon")) {
             this.leftBorder1 = (int) (sec1 * 1.005);
-            this.rightBorder1 = (int) (sec1 * 1.042);
+            this.rightBorder1 = (int) (sec1 * 1.04);
             this.leftBorder2 = (int) (sec2 * 1.005);
-            this.rightBorder2 = (int) (sec2 * 1.042);
+            this.rightBorder2 = (int) (sec2 * 1.04);
             this.leftBorder3 = (int) (sec3 * 1.005);
-            this.rightBorder3 = (int) (sec3 * 1.042);
+            this.rightBorder3 = (int) (sec3 * 1.04);
         }
     }
 

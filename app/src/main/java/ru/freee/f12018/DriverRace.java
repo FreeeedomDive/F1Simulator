@@ -45,49 +45,45 @@ public class DriverRace implements Comparable {
             this.leftTime = time;
             this.rightTime = (int) (time * 1.03);
         }
-        if (this.name.equals("Bottas") || this.name.equals("Raikkonen")) {
+        if (this.name.equals("Bottas") || this.name.equals("Leclerc")) {
             this.leftTime = time;
             this.rightTime = (int) (time * 1.032);
         }
-        if (this.name.equals("Ricciardo") || this.name.equals("Verstappen")) {
+        if (this.name.equals("Gasly") || this.name.equals("Verstappen")) {
             this.leftTime = time;
-            this.rightTime = (int) (time * 1.031);
+            this.rightTime = (int) (time * 1.034);
         }
-        if (this.name.equals("Perez") || this.name.equals("Ocon")) {
-            this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.045);
-        }
-        if (this.name.equals("Stroll") || this.name.equals("Sirotkin")) {
-            this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.048);
-        }
-        if (this.name.equals("Hulkenberg") || this.name.equals("Sainz")) {
+        if (this.name.equals("Perez") || this.name.equals("Stroll")) {
             this.leftTime = (int) (time * 1.01);
             this.rightTime = (int) (time * 1.04);
         }
-        if (this.name.equals("Gasly")) {
-            this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.0425);
-        }
-        if(this.name.equals("Hartley")){
+        if (this.name.equals("Kubica") || this.name.equals("Russell")) {
             this.leftTime = (int) (time * 1.01);
             this.rightTime = (int) (time * 1.048);
+        }
+        if (this.name.equals("Hulkenberg") || this.name.equals("Ricciardo")) {
+            this.leftTime = (int) (time * 1.01);
+            this.rightTime = (int) (time * 1.04);
+        }
+        if (this.name.equals("Kvyat") || this.name.equals("Albon")){
+            this.leftTime = (int) (time * 1.01);
+            this.rightTime = (int) (time * 1.041);
         }
         if (this.name.equals("Grosjean") || this.name.equals("Magnussen")) {
             this.leftTime = (int) (time * 1.01);
             this.rightTime = (int) (time * 1.04);
         }
-        if (this.name.equals("Alonso") || this.name.equals("Vandoorne")) {
+        if (this.name.equals("Sainz") || this.name.equals("Norris")) {
+            this.leftTime = (int) (time * 1.01);
+            this.rightTime = (int) (time * 1.042);
+        }
+        if(this.name.equals("Raikkonen")){
             this.leftTime = (int) (time * 1.01);
             this.rightTime = (int) (time * 1.04);
         }
-        if(this.name.equals("Leclerc")){
+        if (this.name.equals("Giovinazzi")) {
             this.leftTime = (int) (time * 1.01);
             this.rightTime = (int) (time * 1.043);
-        }
-        if (this.name.equals("Ericsson")) {
-            this.leftTime = (int) (time * 1.01);
-            this.rightTime = (int) (time * 1.046);
         }
     }
 

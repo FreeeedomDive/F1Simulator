@@ -290,7 +290,7 @@ public class QualisRound3 extends AppCompatActivity {
         alert.show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setTeamImage(String name, int index) {
         switch (name) {
             case "Hamilton":
@@ -298,39 +298,39 @@ public class QualisRound3 extends AppCompatActivity {
                 racerNames[index].setBackground(getDrawable(R.drawable.mercedes2));
                 break;
             case "Vettel":
-            case "Raikkonen":
+            case "Leclerc":
                 racerNames[index].setBackground(getDrawable(R.drawable.ferrari2));
                 break;
-            case "Ricciardo":
+            case "Gasly":
             case "Verstappen":
                 racerNames[index].setBackground(getDrawable(R.drawable.redbull2));
                 break;
             case "Perez":
-            case "Ocon":
+            case "Stroll":
                 racerNames[index].setBackground(getDrawable(R.drawable.forceindia2));
                 break;
-            case "Stroll":
-            case "Sirotkin":
+            case "Kubica":
+            case "Russell":
                 racerNames[index].setBackground(getDrawable(R.drawable.williams2));
                 break;
             case "Hulkenberg":
-            case "Sainz":
+            case "Ricciardo":
                 racerNames[index].setBackground(getDrawable(R.drawable.renault2));
                 break;
-            case "Gasly":
-            case "Hartley":
+            case "Kvyat":
+            case "Albon":
                 racerNames[index].setBackground(getDrawable(R.drawable.tororosso2));
                 break;
             case "Grosjean":
             case "Magnussen":
                 racerNames[index].setBackground(getDrawable(R.drawable.haas2));
                 break;
-            case "Alonso":
-            case "Vandoorne":
+            case "Sainz":
+            case "Norris":
                 racerNames[index].setBackground(getDrawable(R.drawable.mclaren2));
                 break;
-            case "Ericsson":
-            case "Leclerc":
+            case "Raikkonen":
+            case "Giovinazzi":
                 racerNames[index].setBackground(getDrawable(R.drawable.sauber2));
                 break;
         }
