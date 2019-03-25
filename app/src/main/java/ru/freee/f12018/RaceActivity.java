@@ -236,6 +236,12 @@ public class RaceActivity extends AppCompatActivity {
             increasePoints(drivers, racers[7].name, 4);
             increasePoints(drivers, racers[8].name, 2);
             increasePoints(drivers, racers[9].name, 1);
+
+            for(int i = 0; i < 10; i++){
+                if (racers[i].hasBestLapTime)
+                    increasePoints(drivers, racers[i].name, 1);
+            }
+
             for (int i = 0; i < 20; i++)
                 if (racers[i].crashed)
                     for (int j = 0; j < 20; j++)
@@ -302,7 +308,7 @@ public class RaceActivity extends AppCompatActivity {
         assert racer1 != null;
         assert racer2 != null;
         Log.i("Race rival", racer1.shortName + " - " + racer1.allPositions[racer1.allPositions.length - 1] + " "
-            + racer2.shortName + " - " + racer2.allPositions[racer2.allPositions.length - 1]);
+                + racer2.shortName + " - " + racer2.allPositions[racer2.allPositions.length - 1]);
         DriverRace winner = racer1.allPositions[racer1.allPositions.length - 1] < racer2.allPositions[racer2.allPositions.length - 1] ? racer1 : racer2;
         for (int i = 0; i < 20; i++) {
             if (drivers[i].name.equals(winner.name))
@@ -445,7 +451,7 @@ public class RaceActivity extends AppCompatActivity {
         }
         //best lap
         for (int i = 0; i < 20; i++) {
-            if (racers[i].bestTime == bestLap) {
+            if (racers[i].hasBestLapTime) {
                 racerBest[i].setTextColor(getColor(R.color.colorPurple));
                 if (racers[i].lastTime == bestLap) {
                     racerLast[i].setTextColor(getColor(R.color.colorPurple));
@@ -456,6 +462,17 @@ public class RaceActivity extends AppCompatActivity {
                 racerBest[i].setTextColor(getColor(R.color.colorWhite));
                 racerLast[i].setTextColor(getColor(R.color.colorWhite));
             }
+
+            //if (racers[i].bestTime == bestLap) {
+            //    if (racers[i].lastTime == bestLap) {
+            //        racerLast[i].setTextColor(getColor(R.color.colorPurple));
+            //    } else {
+            //        racerLast[i].setTextColor(getColor(R.color.colorWhite));
+            //    }
+            //} else {
+            //    racerBest[i].setTextColor(getColor(R.color.colorWhite));
+            //    racerLast[i].setTextColor(getColor(R.color.colorWhite));
+            //}
         }
     }
 
@@ -820,6 +837,10 @@ public class RaceActivity extends AppCompatActivity {
                     racer.bestTime = racer.lastTime;
                     if (racer.bestTime < bestLap) {
                         bestLap = racer.bestTime;
+                        for(DriverRace dr: racers){
+                            dr.hasBestLapTime = false;
+                        }
+                        racer.hasBestLapTime = true;
                         Toasty.custom(getApplicationContext(), racer.name + "\nBest lap: " + DriverRace.generateTime(bestLap), null,
                                 Color.rgb(172, 0, 240), Color.WHITE, 1, false, true).show();
                     }

@@ -25,6 +25,8 @@ public class DriverRace implements Comparable {
     public int pitLap;
     public int timeOnPit;
 
+    public boolean hasBestLapTime;
+
     public DriverRace(String name, int time) {
         this.name = name;
         this.shortName = name.substring(0, 3).toUpperCase();
